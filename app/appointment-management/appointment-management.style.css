@@ -1,0 +1,1479 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0F1117;
+  --bg-2: #161820;
+  --bg-3: #1E2029;
+  --bg-4: #252733;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-2: rgba(255, 255, 255, 0.13);
+  --teal-400: #1D9E75;
+  --teal-500: #17896A;
+  --teal-glow: rgba(29, 158, 117, 0.15);
+  --teal-ring: rgba(29, 158, 117, 0.3);
+  --coral-400: #D85A30;
+  --coral-glow: rgba(216, 90, 48, 0.13);
+  --amber-400: #EF9F27;
+  --amber-glow: rgba(239, 159, 39, 0.13);
+  --blue-400: #378ADD;
+  --blue-glow: rgba(55, 138, 221, 0.13);
+  --purple-400: #8B7EF8;
+  --purple-glow: rgba(139, 126, 248, 0.13);
+  --green-400: #34C97A;
+  --green-glow: rgba(52, 201, 122, 0.13);
+  --pink-400: #E0608A;
+  --pink-glow: rgba(224, 96, 138, 0.13);
+  --cyan-400: #22C5D9;
+  --cyan-glow: rgba(34, 197, 217, 0.13);
+  --text-1: #F0EFE8;
+  --text-2: #9A9890;
+  --text-3: #5C5B56;
+  --sidebar-w: 240px;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --tr: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html,
+body {
+  height: 100%;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-1);
+}
+
+.page-appointment-management .app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.page-appointment-management /* ─── SIDEBAR ─── */ .sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.page-appointment-management .sidebar-brand {
+  padding: 1.6rem 1.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: .5rem;
+}
+
+.page-appointment-management .brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.page-appointment-management .brand-dot {
+  width: 32px;
+  height: 32px;
+  background: var(--teal-400);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-appointment-management .brand-dot svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .brand-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-1);
+}
+
+.page-appointment-management .admin-chip {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: var(--purple-glow);
+  color: var(--purple-400);
+  border: 1px solid rgba(139, 126, 248, .3);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.page-appointment-management .nav-section {
+  padding: 0 .75rem;
+  margin-bottom: .25rem;
+}
+
+.page-appointment-management .nav-label {
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: .7rem .75rem .35rem;
+}
+
+.page-appointment-management .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--tr);
+  text-decoration: none;
+  margin-bottom: 1px;
+  position: relative;
+}
+
+.page-appointment-management .nav-item svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--text-3);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  flex-shrink: 0;
+  transition: stroke var(--tr);
+}
+
+.page-appointment-management .nav-item .lbl {
+  font-size: 13.5px;
+  color: var(--text-2);
+  font-weight: 400;
+  transition: color var(--tr);
+  flex: 1;
+}
+
+.page-appointment-management .nav-item .bdg {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 100px;
+}
+
+.page-appointment-management .nav-item .bdg.g {
+  background: var(--teal-glow);
+  color: var(--teal-400);
+  border: 1px solid var(--teal-ring);
+}
+
+.page-appointment-management .nav-item .bdg.r {
+  background: var(--coral-glow);
+  color: var(--coral-400);
+}
+
+.page-appointment-management .nav-item:hover {
+  background: rgba(255, 255, 255, .04);
+}
+
+.page-appointment-management .nav-item:hover svg {
+  stroke: var(--text-1);
+}
+
+.page-appointment-management .nav-item:hover .lbl {
+  color: var(--text-1);
+}
+
+.page-appointment-management .nav-item.active {
+  background: var(--teal-glow);
+}
+
+.page-appointment-management .nav-item.active svg {
+  stroke: var(--teal-400);
+}
+
+.page-appointment-management .nav-item.active .lbl {
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+.page-appointment-management .nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 2.5px;
+  background: var(--teal-400);
+  border-radius: 0 2px 2px 0;
+}
+
+.page-appointment-management .sidebar-footer {
+  margin-top: auto;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-appointment-management .admin-av {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--purple-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.page-appointment-management .admin-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.page-appointment-management .admin-meta .name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-appointment-management .admin-meta .role {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.page-appointment-management .sidebar-footer>svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-3);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.page-appointment-management /* ─── MAIN ─── */ .main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-appointment-management /* ─── TOPBAR ─── */ .topbar {
+  height: 60px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.page-appointment-management .topbar-left {
+  flex: 1;
+}
+
+.page-appointment-management .topbar-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-1);
+}
+
+.page-appointment-management .topbar-title span {
+  font-style: italic;
+  color: var(--teal-400);
+}
+
+.page-appointment-management .topbar-sub {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+
+.page-appointment-management .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-appointment-management .icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color var(--tr), background var(--tr);
+}
+
+.page-appointment-management .icon-btn:hover {
+  border-color: var(--border-2);
+}
+
+.page-appointment-management .icon-btn svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--text-2);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .notif-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 6px;
+  height: 6px;
+  background: var(--coral-400);
+  border-radius: 50%;
+  border: 1.5px solid var(--bg-2);
+}
+
+.page-appointment-management .topbar-av {
+  width: 36px;
+  height: 36px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.page-appointment-management /* ─── CONTENT ─── */ .content {
+  padding: 1.75rem 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-appointment-management /* Page header */ .page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-appointment-management .page-header-left h1 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--text-1);
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.page-appointment-management .page-header-left h1 em {
+  font-style: italic;
+  color: var(--teal-400);
+}
+
+.page-appointment-management .page-header-left p {
+  font-size: 13.5px;
+  color: var(--text-2);
+}
+
+.page-appointment-management .header-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.page-appointment-management .btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal-400);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--tr);
+  white-space: nowrap;
+}
+
+.page-appointment-management .btn-primary:hover {
+  background: var(--teal-500);
+}
+
+.page-appointment-management .btn-primary svg {
+  width: 15px;
+  height: 15px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-3);
+  color: var(--text-1);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background var(--tr);
+  white-space: nowrap;
+}
+
+.page-appointment-management .btn-secondary:hover {
+  background: var(--bg-4);
+}
+
+.page-appointment-management .btn-secondary svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-2);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.page-appointment-management /* ─── STATS ─── */ .stats-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.page-appointment-management .stat-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  transition: border-color var(--tr), box-shadow var(--tr);
+  animation: fadeUp .3s ease both;
+}
+
+.page-appointment-management .stat-card:hover {
+  border-color: var(--border-2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, .3);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-appointment-management .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.page-appointment-management .stat-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .si-teal {
+  background: var(--teal-glow);
+}
+
+.page-appointment-management .si-teal svg {
+  stroke: var(--teal-400);
+}
+
+.page-appointment-management .si-blue {
+  background: var(--blue-glow);
+}
+
+.page-appointment-management .si-blue svg {
+  stroke: var(--blue-400);
+}
+
+.page-appointment-management .si-purple {
+  background: var(--purple-glow);
+}
+
+.page-appointment-management .si-purple svg {
+  stroke: var(--purple-400);
+}
+
+.page-appointment-management .si-amber {
+  background: var(--amber-glow);
+}
+
+.page-appointment-management .si-amber svg {
+  stroke: var(--amber-400);
+}
+
+.page-appointment-management .si-green {
+  background: var(--green-glow);
+}
+
+.page-appointment-management .si-green svg {
+  stroke: var(--green-400);
+}
+
+.page-appointment-management .si-coral {
+  background: var(--coral-glow);
+}
+
+.page-appointment-management .si-coral svg {
+  stroke: var(--coral-400);
+}
+
+.page-appointment-management .stat-text .val {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-1);
+  line-height: 1;
+}
+
+.page-appointment-management .stat-text .lbl {
+  font-size: 11.5px;
+  color: var(--text-2);
+  margin-top: 3px;
+}
+
+.page-appointment-management .stat-text .sub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+
+.page-appointment-management /* ─── TOOLBAR ─── */ .toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.page-appointment-management .search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0 13px;
+  height: 38px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 280px;
+  transition: border-color var(--tr), box-shadow var(--tr);
+}
+
+.page-appointment-management .search-box:focus-within {
+  border-color: var(--teal-400);
+  box-shadow: 0 0 0 3px var(--teal-glow);
+}
+
+.page-appointment-management .search-box svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-3);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  flex-shrink: 0;
+}
+
+.page-appointment-management .search-box input {
+  border: none;
+  background: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--text-1);
+  width: 100%;
+}
+
+.page-appointment-management .search-box input::placeholder {
+  color: var(--text-3);
+}
+
+.page-appointment-management .filter-select {
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-1);
+  padding: 0 30px 0 12px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%235C5B56' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color var(--tr);
+}
+
+.page-appointment-management .filter-select:focus {
+  border-color: var(--teal-400);
+}
+
+.page-appointment-management .toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.page-appointment-management /* ─── TABLE ─── */ .appt-table-wrap {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  /* Was `overflow: hidden` — on narrow screens that clipped the right
+     side of the table (Status, Joined, Actions columns) instead of
+     letting it scroll into view. */
+  overflow-x: auto;
+}
+
+.page-appointment-management .appt-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.page-appointment-management thead th {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 12px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-3);
+  white-space: nowrap;
+  user-select: none;
+  transition: color var(--tr);
+}
+
+.page-appointment-management tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--tr);
+  cursor: pointer;
+}
+
+.page-appointment-management tbody tr:last-child {
+  border-bottom: none;
+}
+
+.page-appointment-management tbody tr:hover {
+  background: rgba(255, 255, 255, .022);
+}
+
+.page-appointment-management tbody tr.selected {
+  background: rgba(29, 158, 117, .07);
+}
+
+.page-appointment-management tbody td {
+  padding: 13px 18px;
+  font-size: 13.5px;
+  color: var(--text-1);
+  vertical-align: middle;
+}
+
+.page-appointment-management /* User cell */ .user-cell {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.page-appointment-management .user-av {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.page-appointment-management .user-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-1);
+  line-height: 1.2;
+}
+
+.page-appointment-management .user-email {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+
+.page-appointment-management .user-id {
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 1px;
+  font-family: monospace;
+  letter-spacing: .04em;
+}
+
+.page-appointment-management /* Status pill */ .s-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.page-appointment-management .s-pill::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.page-appointment-management .s-pill.active {
+  background: var(--green-glow);
+  color: var(--green-400);
+}
+
+.page-appointment-management .s-pill.active::before {
+  background: var(--green-400);
+  animation: blink 2s infinite;
+}
+
+.page-appointment-management .s-pill.pending {
+  background: var(--amber-glow);
+  color: var(--amber-400);
+}
+
+.page-appointment-management .s-pill.pending::before {
+  background: var(--amber-400);
+}
+
+.page-appointment-management .s-pill.inactive {
+  background: var(--bg-4);
+  color: var(--text-3);
+}
+
+.page-appointment-management .s-pill.inactive::before {
+  background: var(--text-3);
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1
+  }
+
+  50% {
+    opacity: .4
+  }
+}
+
+.page-appointment-management /* Table action buttons */ .tbl-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+.page-appointment-management .tbl-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--tr), background var(--tr);
+}
+
+.page-appointment-management .tbl-btn svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .tbl-btn.edit svg {
+  stroke: var(--teal-400);
+}
+
+.page-appointment-management .tbl-btn.edit:hover {
+  border-color: var(--teal-400);
+  background: var(--teal-glow);
+}
+
+.page-appointment-management .tbl-btn.del svg {
+  stroke: var(--coral-400);
+}
+
+.page-appointment-management .tbl-btn.del:hover {
+  border-color: var(--coral-400);
+  background: var(--coral-glow);
+}
+
+.page-appointment-management /* ─── EMPTY STATE ─── */ .empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  display: none;
+}
+
+.page-appointment-management .empty-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--bg-3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.page-appointment-management .empty-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--text-3);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .empty-state h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+
+.page-appointment-management .empty-state p {
+  font-size: 13.5px;
+  color: var(--text-2);
+  margin-bottom: 1.5rem;
+}
+
+.page-appointment-management /* ─── PAGINATION ─── */ .pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.page-appointment-management .pg-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--tr);
+}
+
+.page-appointment-management .pg-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-2);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .pg-btn:hover:not(:disabled) {
+  border-color: var(--teal-400);
+  background: var(--teal-glow);
+}
+
+.page-appointment-management .pg-btn:hover:not(:disabled) svg {
+  stroke: var(--teal-400);
+}
+
+.page-appointment-management .pg-btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.page-appointment-management .pg-pages {
+  display: flex;
+  gap: 4px;
+}
+
+.page-appointment-management .pg-num {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--tr);
+}
+
+.page-appointment-management .pg-num:hover {
+  border-color: var(--border-2);
+  color: var(--text-1);
+}
+
+.page-appointment-management .pg-num.active {
+  background: var(--teal-400);
+  border-color: var(--teal-400);
+  color: #fff;
+  font-weight: 600;
+}
+
+.page-appointment-management .pg-dots {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.page-appointment-management .pg-info {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-left: auto;
+}
+
+.page-appointment-management /* ─── DELETE MODAL ─── */ .modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .65);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--tr);
+  padding: 1rem;
+}
+
+.page-appointment-management .modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.page-appointment-management .modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 400px;
+  transform: scale(.95);
+  transition: transform .22s cubic-bezier(.4, 0, .2, 1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+}
+
+.page-appointment-management .modal-overlay.open .modal {
+  transform: scale(1);
+}
+
+.page-appointment-management .modal-inner {
+  padding: 1.75rem;
+  text-align: center;
+}
+
+.page-appointment-management .modal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--coral-glow);
+  border: 1px solid rgba(216, 90, 48, .3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.page-appointment-management .modal-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--coral-400);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.page-appointment-management /* Status-toggle modal — non-destructive, so teal instead of the delete modal's coral */ .modal-icon.status {
+  background: var(--teal-glow);
+  border-color: rgba(29, 158, 117, .3);
+}
+
+.page-appointment-management .modal-icon.status svg {
+  stroke: var(--teal-400);
+}
+
+.page-appointment-management .modal-inner h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--text-1);
+  margin-bottom: 8px;
+}
+
+.page-appointment-management .modal-inner p {
+  font-size: 13.5px;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.page-appointment-management .modal-inner p strong {
+  color: var(--text-1);
+}
+
+.page-appointment-management .modal-footer-btns {
+  padding: 0 1.75rem 1.5rem;
+  display: flex;
+  gap: 10px;
+}
+
+.page-appointment-management .btn-mcancel {
+  flex: 1;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--text-2);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background var(--tr);
+}
+
+.page-appointment-management .btn-mcancel:hover {
+  background: var(--bg-3);
+}
+
+.page-appointment-management .btn-mdelete {
+  flex: 1;
+  height: 40px;
+  background: var(--coral-400);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--tr);
+}
+
+.page-appointment-management .btn-mdelete:hover {
+  background: #be4d28;
+}
+
+.page-appointment-management /* Status-toggle confirm — non-destructive, so teal instead of coral */ .btn-mconfirm {
+  flex: 1;
+  height: 40px;
+  background: var(--teal-400);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--tr);
+}
+
+.page-appointment-management .btn-mconfirm:hover {
+  background: var(--teal-500);
+}
+
+.page-appointment-management /* ─── TOAST ─── */ .toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .4);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .3s, transform .3s;
+  pointer-events: none;
+}
+
+.page-appointment-management .toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-appointment-management .toast.success {
+  background: var(--teal-400);
+  color: #fff;
+}
+
+.page-appointment-management .toast.error {
+  background: var(--coral-400);
+  color: #fff;
+}
+
+.page-appointment-management .toast.info {
+  background: var(--blue-400);
+  color: #fff;
+}
+
+.page-appointment-management .toast.warning {
+  background: var(--amber-400);
+  color: #fff;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1200px) {
+.page-appointment-management .stats-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.page-appointment-management .hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin-right: 4px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-appointment-management .hamburger-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--text-2);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.page-appointment-management .sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+.page-appointment-management .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 300;
+  }
+
+.page-appointment-management .sidebar.open {
+    transform: translateX(0);
+  }
+
+.page-appointment-management .main {
+    margin-left: 0;
+  }
+
+.page-appointment-management .hamburger-btn {
+    display: flex;
+  }
+
+.page-appointment-management .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 250;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+.page-appointment-management .sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Appointment Management — rules specific to this page
+   (everything above is the shared admin-page shell, scoped here)
+   ───────────────────────────────────────────────────────────── */
+
+/* Toolbar: the extra date filter, "clear filters" and the result count */
+.page-appointment-management .toolbar {
+  margin-bottom: 14px;
+}
+
+.page-appointment-management .filter-date {
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-1);
+  padding: 0 10px;
+  outline: none;
+  cursor: pointer;
+  color-scheme: dark;
+  transition: border-color var(--tr);
+}
+
+.page-appointment-management .filter-date:focus {
+  border-color: var(--teal-400);
+}
+
+.page-appointment-management .clear-filters {
+  height: 38px;
+  padding: 0 12px;
+  border: 1px dashed var(--border-2);
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--text-2);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: color var(--tr), border-color var(--tr);
+}
+
+.page-appointment-management .clear-filters:hover {
+  color: var(--text-1);
+  border-color: var(--teal-400);
+}
+
+.page-appointment-management .results-count {
+  font-size: 12.5px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* Rows are not clickable here (the all-users table opens a drawer) */
+.page-appointment-management tbody tr {
+  cursor: default;
+}
+
+/* Patient / doctor / date cells */
+.page-appointment-management .user-phone {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.page-appointment-management .doc-name,
+.page-appointment-management .dt-date {
+  font-size: 13.5px;
+  color: var(--text-1);
+  line-height: 1.25;
+}
+
+.page-appointment-management .doc-spec,
+.page-appointment-management .dt-time {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.page-appointment-management .dt-time {
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.page-appointment-management .no-actions {
+  color: var(--text-3);
+  padding-right: 8px;
+}
+
+/* Status pills for the four appointment statuses */
+.page-appointment-management .s-pill.confirmed {
+  background: var(--teal-glow);
+  color: var(--teal-400);
+}
+
+.page-appointment-management .s-pill.confirmed::before {
+  background: var(--teal-400);
+}
+
+.page-appointment-management .s-pill.completed {
+  background: var(--blue-glow);
+  color: var(--blue-400);
+}
+
+.page-appointment-management .s-pill.completed::before {
+  background: var(--blue-400);
+}
+
+.page-appointment-management .s-pill.cancelled {
+  background: var(--coral-glow);
+  color: var(--coral-400);
+}
+
+.page-appointment-management .s-pill.cancelled::before {
+  background: var(--coral-400);
+}
+
+/* Row actions: Confirm / Complete advance the status, Cancel cancels */
+.page-appointment-management .act-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--tr), background var(--tr), color var(--tr);
+}
+
+.page-appointment-management .act-btn svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.page-appointment-management .act-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.page-appointment-management .act-btn.confirm {
+  color: var(--teal-400);
+}
+
+.page-appointment-management .act-btn.confirm:hover:not(:disabled) {
+  border-color: var(--teal-400);
+  background: var(--teal-glow);
+}
+
+.page-appointment-management .act-btn.complete {
+  color: var(--blue-400);
+}
+
+.page-appointment-management .act-btn.complete:hover:not(:disabled) {
+  border-color: var(--blue-400);
+  background: var(--blue-glow);
+}
+
+.page-appointment-management .act-btn.cancel {
+  color: var(--coral-400);
+}
+
+.page-appointment-management .act-btn.cancel:hover:not(:disabled) {
+  border-color: var(--coral-400);
+  background: var(--coral-glow);
+}
+
+/* Loading / error placeholder inside the table frame */
+.page-appointment-management .table-state {
+  padding: 56px 20px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text-2);
+}
+
+.page-appointment-management .table-state .btn-secondary {
+  margin: 14px auto 0;
+}
+
+.page-appointment-management .empty-state .clear-filters {
+  margin-top: 16px;
+}
+
+/* Modal text carries the booking details */
+.page-appointment-management .modal-inner .modal-sub {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+@media (max-width: 768px) {
+  .page-appointment-management .search-box {
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .page-appointment-management .toolbar-right {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+.page-appointment-management .btn-mcancel:disabled,
+.page-appointment-management .btn-mdelete:disabled,
+.page-appointment-management .btn-mconfirm:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* The table frame scrolls sideways on its own. Without min-width: 0 this flex
+   item grows to the table's full width instead and the whole page scrolls. */
+.page-appointment-management .main {
+  min-width: 0;
+}
+
+/* Room for the whole placeholder ("Search patient, phone, doctor, MB-ref…") */
+.page-appointment-management .search-box {
+  min-width: 250px;
+  max-width: 360px;
+}

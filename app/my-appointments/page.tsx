@@ -1,0 +1,327 @@
+"use client";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { notFound, useRouter } from "next/navigation";
+import "./my-appointments.style.css";
+import { getCookie, AUTH_COOKIE, getUserData, strMonth, escapeHtml, apiUrl, signOut } from "../../lib/utils";
+import Sidebar from "../../components/sidebar/Sidebar";
+import HamburgerToggle from "../../components/sidebar/HamburgerToggle";
+
+export default function MyAppointmentsPage() {
+  const router = useRouter();
+  const appointmentsRef = useRef<any[]>([]);
+  const [detailAppt, setDetailAppt] = useState<any | null>(null);
+  const [toast, setToast] = useState<{ msg: string; type: string } | null>(null);
+  const toastRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showToast = (msg: string, type = "info") => {
+    setToast({ msg, type });
+    if (toastRef.current) clearTimeout(toastRef.current);
+    toastRef.current = setTimeout(() => setToast(null), 3200);
+  };
+
+  useEffect(() => {
+    if (!getCookie(AUTH_COOKIE)) { router.push("/login"); return; }
+    const role = getCookie("role");
+    if (role !== "User" && role !== "Admin") {
+      notFound();
+    }
+    init();
+  }, [router]);
+
+  const init = async () => {
+    const userData = await getUserData();
+    if (!userData) return;
+    const user = userData.users[0];
+    const setEl = (sel: string, val: string) => { const el = document.querySelector(sel); if (el) el.textContent = val; };
+    setEl(".name", user.full_name);
+    setEl(".topbar-avatar", user.full_name[0].toUpperCase());
+    setEl(".user-avatar", user.full_name[0].toUpperCase());
+    setEl(".role", `${user.role === "User" ? "Patient" : user.role} • ID #${user.id}`);
+    await loadAppointments();
+  };
+
+  const loadAppointments = async () => {
+    const userId = getCookie("userId");
+    if (!userId) return;
+    const res = await fetch(`${apiUrl}/appointments/${userId}`, { credentials: "include" });
+    const data = await res.json();
+    appointmentsRef.current = data.appointments?.rows ?? [];
+
+    const upcomingVal = document.getElementById("upcoming-val");
+    const pendingVal = document.getElementById("pending-val");
+    const completedVal = document.getElementById("completed-val");
+    const cancelledVal = document.getElementById("cancelled-val");
+    const allCount = document.getElementById("all-count");
+    const upcomingCount = document.getElementById("upcoming-count");
+    const pendingCount = document.getElementById("pending-count");
+    const completedCount = document.getElementById("completed-count");
+    const cancelledCount = document.getElementById("cancelled-count");
+
+    if (allCount) allCount.textContent = data.appointments.count;
+    if (upcomingVal) upcomingVal.textContent = data.totalUpcoming;
+    if (upcomingCount) upcomingCount.textContent = data.totalUpcoming;
+    if (pendingVal) pendingVal.textContent = data.totalPending;
+    if (pendingCount) pendingCount.textContent = data.totalPending;
+    if (completedVal) completedVal.textContent = data.totalCompleted;
+    if (completedCount) completedCount.textContent = data.totalCompleted;
+    if (cancelledVal) cancelledVal.textContent = data.totalCancelled;
+    if (cancelledCount) cancelledCount.textContent = data.totalCancelled;
+
+    const upcomingGrid = document.getElementById("upcoming-grid");
+    const pastList = document.getElementById("past-list");
+    // Clear before appending — previously these were never reset, so
+    // re-running loadAppointments (Strict Mode double-invoke in dev,
+    // or navigating back to this page) duplicated every card. This has
+    // to happen regardless of whether count is 0 (below), otherwise
+    // cancelling your last appointment left the old cards on screen
+    // right next to the "No appointments found" empty state.
+    if (upcomingGrid) upcomingGrid.innerHTML = "";
+    if (pastList) pastList.innerHTML = "";
+
+    const empty = document.getElementById("empty-state");
+    if (empty) empty.style.display = data.appointments.count === 0 ? "block" : "none";
+    if (data.appointments.count === 0) return;
+
+    data.appointments.rows.forEach((el: any) => {
+      const status = el.status.toLowerCase();
+      const mon = strMonth(el.appointment_date);
+      const day = el.appointment_date.split("-").at(-1);
+      const docName = escapeHtml(el.doctor.user.full_name);
+      const spec = escapeHtml(el.doctor.specialization);
+      const statusLabel = escapeHtml(el.status);
+      const room = el.doctor.room_number != null ? escapeHtml(String(el.doctor.room_number)) : "—";
+      // Was appending every appointment into BOTH sections regardless of
+      // its actual status — a Completed/Cancelled appointment still
+      // showed up (with a live Cancel button) in "Upcoming & Pending",
+      // and a Pending/Confirmed one also showed up in "Past Appointments".
+      const isUpcoming = status === "pending" || status === "confirmed";
+      if (isUpcoming && upcomingGrid) upcomingGrid.innerHTML += `
+        <div class="appt-card" data-id="${escapeHtml(String(el.id))}" data-status="${status}" data-doctor="Dr. ${docName}" data-spec="${spec}">
+          <div class="appt-card-accent ${el.status === "Pending" ? "amber" : "blue"}"></div>
+          <div class="appt-card-body">
+            <div class="appt-card-top">
+              <div class="appt-doc-row">
+                <div class="appt-doc-avatar b">${escapeHtml(el.doctor.user.full_name[0])}</div>
+                <div><div class="appt-doc-name">Dr. ${docName}</div><div class="appt-doc-spec">${spec}</div></div>
+              </div>
+              <span class="status-pill ${status}">${statusLabel}</span>
+            </div>
+            <div class="appt-divider"></div>
+            <div class="appt-meta-row">
+              <div class="appt-meta-item"><div class="appt-meta-label">Date</div><div class="appt-meta-val">${mon} ${day}</div></div>
+              <div class="appt-meta-item"><div class="appt-meta-label">Time</div><div class="appt-meta-val">${escapeHtml(el.appointment_time)}</div></div>
+              <div class="appt-meta-item"><div class="appt-meta-label">Type</div><div class="appt-meta-val"><div class="type-chip in-person">In-person</div></div></div>
+            </div>
+            <div class="appt-notes">Room ${room}, ${escapeHtml(el.doctor.department)} Building.</div>
+            <div class="appt-card-actions">
+              <a href="https://yandex.com/maps/org/128432379794"><button class="card-btn primary">Directions</button></a>
+              <button class="card-btn danger" data-cancel-id="${escapeHtml(String(el.id))}">Cancel</button>
+            </div>
+          </div>
+        </div>`;
+      else if (!isUpcoming && pastList) pastList.innerHTML += `
+        <div class="past-item" data-id="${escapeHtml(String(el.id))}" data-status="${status}" data-doctor="Dr. ${docName}" data-spec="${spec}">
+          <div class="past-date-box"><div class="day">${day}</div><div class="mon">${mon}</div></div>
+          <div class="past-doc-row">
+            <div class="past-doc-avatar d">${escapeHtml(el.doctor.user.full_name[0])}</div>
+            <div><div class="past-doc-name">Dr. ${docName}</div><div class="past-doc-spec">${statusLabel} · ${escapeHtml(el.appointment_time)}</div></div>
+          </div>
+          <div class="past-tags"><span class="past-type in-person">In-person</span><span class="status-pill ${status}">${statusLabel}</span></div>
+        </div>`;
+    });
+
+    // Wire up the Cancel buttons (previously dead — no handler at all),
+    // plus clicking a card to open its full-detail modal. Delegated +
+    // assigned via onclick so re-running this function (which rebuilds
+    // the DOM anyway) can't stack duplicate listeners.
+    if (upcomingGrid) upcomingGrid.onclick = async (e) => {
+      const target = e.target as HTMLElement;
+      const cancelBtn = target.closest<HTMLElement>("[data-cancel-id]");
+      if (cancelBtn) {
+        const id = cancelBtn.dataset.cancelId!;
+        cancelBtn.setAttribute("disabled", "true");
+        try {
+          const res = await fetch(`${apiUrl}/appointments/${id}`, { method: "DELETE", credentials: "include" });
+          const result = await res.json();
+          if (!res.ok || !result.success) {
+            showToast("Could not cancel appointment", "error");
+            cancelBtn.removeAttribute("disabled");
+            return;
+          }
+          showToast("Appointment cancelled", "success");
+          await loadAppointments();
+        } catch (err) {
+          console.error("Failed to cancel appointment:", err);
+          showToast("Something went wrong", "error");
+          cancelBtn.removeAttribute("disabled");
+        }
+        return;
+      }
+      // Directions/Cancel live inside .appt-card-actions — let those
+      // handle their own click instead of also opening the modal.
+      if (target.closest(".appt-card-actions")) return;
+      const card = target.closest<HTMLElement>(".appt-card[data-id]");
+      if (card) {
+        const appt = appointmentsRef.current.find((a) => String(a.id) === card.dataset.id);
+        if (appt) setDetailAppt(appt);
+      }
+    };
+
+    if (pastList) pastList.onclick = (e) => {
+      const item = (e.target as HTMLElement).closest<HTMLElement>(".past-item[data-id]");
+      if (!item) return;
+      const appt = appointmentsRef.current.find((a) => String(a.id) === item.dataset.id);
+      if (appt) setDetailAppt(appt);
+    };
+  };
+
+  const filterTab = (btn: HTMLElement, tab: string) => {
+    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll<HTMLElement>(".appt-card, .past-item").forEach((card) => {
+      const status = card.dataset.status;
+      const show = tab === "all" || tab === status;
+      card.style.display = show ? "" : "none";
+    });
+  };
+
+  const handleSearch = (q: string) => {
+    const lower = q.toLowerCase();
+    document.querySelectorAll<HTMLElement>(".appt-card, .past-item").forEach((el) => {
+      const doc = el.dataset.doctor?.toLowerCase() ?? "";
+      const spec = el.dataset.spec?.toLowerCase() ?? "";
+      el.style.display = (!lower || doc.includes(lower) || spec.includes(lower)) ? "" : "none";
+    });
+  };
+
+  return (
+    <div className="page-my-appointments">
+    <div className="app">
+      <Sidebar>
+        <nav className="nav-section">
+          <p className="nav-label">Overview</p>
+          <Link prefetch={false} className="nav-item" href="/user-dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg><span>Dashboard</span></Link>
+          <a className="nav-item active" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg><span>Appointments</span></a>
+        </nav>
+        <nav className="nav-section">
+          <p className="nav-label">Health</p>
+          <Link prefetch={false} className="nav-item" href="/medical-records"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg><span>Medical Records</span></Link>
+          <Link prefetch={false} className="nav-item" href="/health-metrics"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg><span>Health Metrics</span></Link>
+        </nav>
+        <nav className="nav-section">
+          <p className="nav-label">Account</p>
+          <a className="nav-item" style={{ cursor: "pointer" }} onClick={signOut}><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg><span>Sign out</span></a>
+        </nav>
+        <div className="sidebar-user">
+          <div className="user-avatar">U</div>
+          <div className="user-meta"><p className="name">User</p><p className="role">User · ID #777</p></div>
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+        </div>
+      </Sidebar>
+
+      <div className="main">
+        <header className="topbar">
+          <HamburgerToggle />
+          <h1 className="topbar-title">My <span>Appointments</span></h1>
+          <div className="search-box">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+            <input type="text" placeholder="Search doctor, specialty…" onChange={(e) => handleSearch(e.target.value)} />
+          </div>
+          <div className="topbar-actions">
+            <div className="topbar-avatar">U</div>
+          </div>
+        </header>
+
+        <div className="content">
+          <div className="page-header">
+            <div className="page-header-left">
+              <h1>All <em>Appointments</em></h1>
+              <p>Manage, reschedule or book new appointments.</p>
+            </div>
+            <Link href="/book-appointment"><button className="btn-primary"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>Book Appointment</button></Link>
+          </div>
+
+          <div className="summary-strip">
+            {[
+              { id: "upcoming", icon: "teal", label: "Upcoming", path: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>` },
+              { id: "pending", icon: "amber", label: "Pending", path: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>` },
+              { id: "completed", icon: "blue", label: "Completed", path: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>` },
+              { id: "cancelled", icon: "coral", label: "Cancelled", path: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>` },
+            ].map((s) => (
+              <div className="strip-card" key={s.id}>
+                <div className={`strip-icon ${s.icon}`}><svg viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: s.path}}></svg></div>
+                <div className="strip-text"><div className="val" id={`${s.id}-val`}>0</div><div className="lbl">{s.label}</div></div>
+              </div>
+            ))}
+          </div>
+
+          <div className="filter-bar">
+            <div className="tabs">
+              {["all", "upcoming", "pending", "completed", "cancelled"].map((tab) => (
+                <button key={tab} className={`tab-btn${tab === "all" ? " active" : ""}`}
+                  onClick={(e) => filterTab(e.currentTarget, tab === 'upcoming' ? 'confirmed' : tab)}>
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)} <span className="count" id={`${tab}-count`}>0</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div id="upcoming-section">
+            <p className="appt-section-label">Upcoming & Pending</p>
+            <div className="appts-grid" id="upcoming-grid"></div>
+          </div>
+          <div id="past-section" style={{ marginTop: "0.5rem" }}>
+            <p className="appt-section-label">Past Appointments</p>
+            <div className="past-list" id="past-list"></div>
+          </div>
+          <div className="empty-state" id="empty-state" style={{ display: "none" }}>
+            <div className="empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /></svg></div>
+            <h3>No appointments found</h3>
+            <p>Book a new appointment to get started.</p>
+            <Link href="/book-appointment"><button className="btn-primary" style={{ display: "inline-flex" }}>Book Appointment</button></Link>
+          </div>
+        </div>
+      </div>
+
+      {/* APPOINTMENT DETAILS MODAL */}
+      {detailAppt && (
+        <div className="modal-overlay open" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setDetailAppt(null); }}>
+          <div className="modal">
+            <div className="modal-header">
+              <div>
+                <h2>Appointment Details</h2>
+                <p>Dr. {detailAppt.doctor?.user?.full_name} · {detailAppt.appointment_date}</p>
+              </div>
+              <button className="modal-close" onClick={() => setDetailAppt(null)}><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></button>
+            </div>
+            <div className="modal-body">
+              <div className="detail-doc-row">
+                <div className="detail-doc-avatar">{detailAppt.doctor?.user?.full_name?.[0]?.toUpperCase()}</div>
+                <div>
+                  <div className="detail-doc-name">Dr. {detailAppt.doctor?.user?.full_name}</div>
+                  <div className="detail-doc-spec">{detailAppt.doctor?.specialization}</div>
+                </div>
+                <span className={`status-pill ${detailAppt.status?.toLowerCase()}`} style={{ marginLeft: "auto" }}>{detailAppt.status}</span>
+              </div>
+              <div className="detail-grid">
+                <div className="detail-item"><div className="detail-label">Date</div><div className="detail-val">{detailAppt.appointment_date}</div></div>
+                <div className="detail-item"><div className="detail-label">Time</div><div className="detail-val">{detailAppt.appointment_time}</div></div>
+                <div className="detail-item"><div className="detail-label">Department</div><div className="detail-val">{detailAppt.doctor?.department ?? "—"}</div></div>
+                <div className="detail-item"><div className="detail-label">Room</div><div className="detail-val">{detailAppt.doctor?.room_number ?? "—"}</div></div>
+                <div className="detail-item full"><div className="detail-label">Reason for Visit</div><div className="detail-val">{detailAppt.reason || "Not specified"}</div></div>
+                <div className="detail-item full"><div className="detail-label">Notes</div><div className="detail-val">{detailAppt.notes || "—"}</div></div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn-cancel" onClick={() => setDetailAppt(null)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {toast && <div className={`toast show ${toast.type}`}>{toast.msg}</div>}
+    </div>
+    </div>
+  );
+}
