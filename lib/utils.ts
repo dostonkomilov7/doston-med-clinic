@@ -1,11 +1,3 @@
-// Med Clinic utility functions - ported from frontend/src/main.ts
-
-// Always same-origin — proxied to the real backend by next.config.ts's
-// rewrites(). A direct cross-site call to the backend's own URL would work
-// for the request itself, but the browser silently drops the auth cookie
-// from a cross-site Set-Cookie response (Safari ITP blocks it outright;
-// Chrome does too with strict third-party-cookie settings). Routing every
-// call through our own origin keeps the cookie first-party instead.
 const apiUrl = '/api';
 
 export { apiUrl };
@@ -50,20 +42,6 @@ export const getRole = async (): Promise<string | null> => {
   return getCookie('role');
 };
 
-// "Am I logged in?" is decided from the "authenticated" cookie, not
-// accessToken. accessToken/refreshToken are real HttpOnly cookies set by
-// the backend — a script can never read them, and (this was a real bug)
-// a script can't even overwrite them with a same-named non-HttpOnly
-// cookie either; the browser silently no-ops that write to stop pages
-// from stripping HttpOnly protection off an existing cookie.
-//
-// It also can't just be userId: that gets set as soon as *registration*
-// starts (before OTP verification even happens), not only on a real
-// login — checking userId here made verify-email think a brand-new,
-// unverified signup was already fully authenticated and skip straight to
-// the dashboard without ever showing the OTP form. "authenticated" is set
-// only where a real session actually starts (login/activateUser/google),
-// never on register.
 export const AUTH_COOKIE = 'authenticated';
 
 export const redirectIfAuth = async (router: { push: (path: string) => void }) => {
@@ -104,18 +82,6 @@ export const signOut = async () => {
   window.location.href = '/';
 };
 
-// Every dashboard page's mount-time auth check only looks at the
-// `authenticated` marker cookie above, which has no expiry of its own and
-// says nothing about whether the real (HttpOnly) accessToken/refreshToken
-// pair backing it is still valid server-side. So once that pair actually
-// expires or is rejected (an expired refresh token, or a backend redeploy
-// that invalidated existing sessions), the marker cookie is still there,
-// the page renders as if logged in, and every data fetch on it then comes
-// back 401 forever — reloading doesn't help, because the same stale
-// marker cookie passes the same check again. This patches window.fetch
-// once, globally, so any 401 from a protected (non-/auth/*) API call
-// clears the stale cookies and sends the user to /login instead of
-// leaving the page stuck with no data.
 let authFetchGuardInstalled = false;
 
 export const installAuthFetchGuard = () => {
@@ -155,20 +121,9 @@ export const strMonth = (date: string): string => {
   return months[month ?? ''] ?? '';
 };
 
-// Escapes a string for safe insertion into innerHTML. Use this for any
-// backend-sourced value (names, notes, etc.) before interpolating it into
-// a template string that gets assigned to innerHTML, to avoid stored XSS.
-// Quotes are escaped too, so the result is also safe inside a quoted
-// attribute (data-name="…", title="…"). The browser branch used to build the
-// result with a DOM node's innerHTML, which leaves quotes alone — a name like
-//   x" onmouseover="…
-// then broke out of the attribute it was interpolated into.
 export const escapeHtml = (str: string): string =>
   String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string));
 
-// Nest error bodies carry `message` as a string — or, for DTO validation
-// failures, as an array of strings. Turns either into one toast-friendly
-// line, falling back to `fallback` when the server said nothing useful.
 export const apiErrorMessage = (body: unknown, fallback: string): string => {
   const message = (body as { message?: unknown } | null | undefined)?.message;
   if (Array.isArray(message)) {

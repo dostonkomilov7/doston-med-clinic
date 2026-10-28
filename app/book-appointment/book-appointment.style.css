@@ -1,4 +1,4 @@
-/* ── Reset & Base ── */ *,
+  *,
 *::before,
 *::after {
     box-sizing: border-box;
@@ -27,12 +27,6 @@
     --gray-800: #1e293b;
     --gray-900: #0f172a;
     --teal-800: #085041;
-    /* Was referenced (var(--white)) in dozens of rules below — topbar,
-       cards, inputs, chips — but never actually defined, so every one
-       of those "white" backgrounds was silently computing as
-       transparent. Invisible against this page's near-white gray-50
-       body, but very obvious once something sits on a dark backdrop
-       (e.g. the booking success modal, over its dim overlay). */
     --white: #ffffff;
 
     --topbar-h: 68px;
@@ -50,20 +44,20 @@ body {
     line-height: 1.5;
 }
 
-.page-book-appointment /* ── App shell ── */ .app {
+.page-book-appointment .app {
     display: flex;
     height: 100vh;
     overflow: hidden;
 }
 
-.page-book-appointment /* ── Main ── */ .main {
+.page-book-appointment .main {
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
-.page-book-appointment /* ── Topbar ── */ .topbar {
+.page-book-appointment .topbar {
     height: var(--topbar-h);
     background: var(--white);
     border-bottom: 1px solid var(--gray-200);
@@ -219,7 +213,7 @@ body {
     cursor: pointer;
 }
 
-.page-book-appointment /* ── Scrollable content ── */ .content {
+.page-book-appointment .content {
     flex: 1;
     overflow-y: auto;
     padding: 28px;
@@ -228,7 +222,7 @@ body {
     gap: 24px;
 }
 
-.page-book-appointment /* ── Steps bar ── */ .steps-bar {
+.page-book-appointment .steps-bar {
     display: flex;
     align-items: center;
     gap: 0;
@@ -299,7 +293,7 @@ body {
     background: var(--teal-light);
 }
 
-.page-book-appointment /* ── Step panels ── */ .step-panel {
+.page-book-appointment .step-panel {
     display: none;
     flex-direction: column;
     gap: 20px;
@@ -333,7 +327,7 @@ body {
     margin-top: 4px;
 }
 
-.page-book-appointment /* ── Filter chips ── */ .filter-chips {
+.page-book-appointment .filter-chips {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
@@ -363,7 +357,7 @@ body {
     color: white;
 }
 
-.page-book-appointment /* ── Doctor grid ── */ .doctor-grid {
+.page-book-appointment .doctor-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
@@ -526,14 +520,11 @@ body {
     flex-shrink: 0;
 }
 
-/* Experience wraps under the hospital name on narrow cards */
 .page-book-appointment .doc-card-meta {
     flex-wrap: wrap;
     row-gap: 4px;
 }
 
-/* The doctor's short bio / background: two lines, the full text is in the
-   element's title attribute. */
 .page-book-appointment .doc-card-bio {
     font-size: 12.5px;
     line-height: 1.5;
@@ -545,13 +536,10 @@ body {
     overflow-wrap: anywhere;
 }
 
-/* Cards differ in height now (bio / price / experience are optional): keep
-   the Select button on one line across the row. */
 .page-book-appointment .doctor-card .select-doc-btn {
     margin-top: auto;
 }
 
-/* Consultation price */
 .page-book-appointment .doc-card-fee {
     display: flex;
     align-items: center;
@@ -598,7 +586,7 @@ body {
     border-color: var(--teal);
 }
 
-.page-book-appointment /* ── Step footer ── */ .step-footer {
+.page-book-appointment .step-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -656,14 +644,14 @@ body {
     background: var(--gray-100);
 }
 
-.page-book-appointment /* ── Card base ── */ .card {
+.page-book-appointment .card {
     background: var(--white);
     border: 1px solid var(--gray-200);
     border-radius: var(--radius);
     padding: 20px;
 }
 
-.page-book-appointment /* ── Calendar ── */ .datetime-grid {
+.page-book-appointment .datetime-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
@@ -784,7 +772,7 @@ body {
     position: relative;
 }
 
-.page-book-appointment /* ── Time slots ── */ .timeslot-card {
+.page-book-appointment .timeslot-card {
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -888,7 +876,7 @@ body {
     text-decoration: line-through;
 }
 
-.page-book-appointment /* ── Details form ── */ .details-grid {
+.page-book-appointment .details-grid {
     display: grid;
     grid-template-columns: 1fr 300px;
     gap: 16px;
@@ -991,7 +979,7 @@ body {
     cursor: pointer;
 }
 
-.page-book-appointment /* Urgency buttons */ .urgency-buttons {
+.page-book-appointment .urgency-buttons {
     display: flex;
     gap: 10px;
 }
@@ -1045,7 +1033,7 @@ body {
     color: var(--teal);
 }
 
-.page-book-appointment /* Upload zone */ .upload-zone {
+.page-book-appointment .upload-zone {
     border: 2px dashed var(--gray-200);
     border-radius: var(--radius-sm);
     padding: 24px;
@@ -1127,7 +1115,7 @@ body {
     padding: 0 2px;
 }
 
-.page-book-appointment /* Booking summary */ .booking-summary-card h4 {
+.page-book-appointment .booking-summary-card h4 {
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 14px;
@@ -1167,7 +1155,7 @@ body {
     margin: 8px 0;
 }
 
-.page-book-appointment /* ── Confirm step ── */ .confirm-layout {
+.page-book-appointment .confirm-layout {
     display: grid;
     grid-template-columns: 1fr 280px;
     gap: 16px;
@@ -1373,7 +1361,7 @@ body {
     transform: rotate(45deg) translate(-1px, -1px);
 }
 
-.page-book-appointment /* Payment card */ .payment-card h4,
+.page-book-appointment .payment-card h4,
 .page-book-appointment .reminder-card h4 {
     font-size: 14px;
     font-weight: 700;
@@ -1436,7 +1424,7 @@ body {
     font-size: 15px;
 }
 
-.page-book-appointment /* ── Success ── */ .success-screen {
+.page-book-appointment .success-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1501,7 +1489,7 @@ body {
     margin-top: 8px;
 }
 
-.page-book-appointment /* ── Booking confirmation modal ── */ .success-modal-overlay {
+.page-book-appointment .success-modal-overlay {
     position: fixed;
     inset: 0;
     background: rgba(15, 23, 42, 0.55);
@@ -1563,14 +1551,6 @@ body {
     padding: 48px 28px 32px;
 }
 
-/* ── Responsive ──
-   This file previously had zero media queries: the 240px sidebar was
-   always in-flow (eating over half the width on a phone screen), and
-   .datetime-grid / .details-grid / .confirm-layout stayed 2-column,
-   squeezing every step of the booking wizard into unreadable slivers.
-   The sidebar itself (and its hamburger/overlay toggle) is gone now —
-   this page has no sidebar at all — but the rest of the responsive
-   layout fixes below are still needed. */
 @media (max-width: 768px) {
 .page-book-appointment .topbar {
         padding: 0 16px;
@@ -1600,9 +1580,7 @@ body {
     }
 }
 
-.page-book-appointment /* ── Toast — this page had no error/success feedback of any
-   kind, e.g. a failed booking just silently re-enabled the Confirm
-   button with no explanation. ── */ .toast {
+.page-book-appointment .toast {
     position: fixed;
     bottom: 2rem;
     right: 2rem;

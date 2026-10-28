@@ -50,7 +50,6 @@ body {
     min-height: 100vh;
 }
 
-/* ─── SIDEBAR ─── */
 .page-admin-dashboard .sidebar {
     width: var(--sidebar-w);
     background: var(--bg-2);
@@ -259,7 +258,6 @@ body {
     stroke-linecap: round;
 }
 
-/* ─── MAIN ─── */
 .page-admin-dashboard .main {
     margin-left: var(--sidebar-w);
     flex: 1;
@@ -347,7 +345,6 @@ body {
     border: 1.5px solid var(--bg-2);
 }
 
-/* ─── CONTENT ─── */
 .page-admin-dashboard .content {
     padding: 1.75rem 2rem;
     flex: 1;
@@ -379,7 +376,6 @@ body {
     color: var(--text-2);
 }
 
-/* ─── STATS STRIP ─── */
 .page-admin-dashboard .stats-strip {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -446,7 +442,6 @@ body {
     margin-top: 3px;
 }
 
-/* ─── DASHBOARD GRID ─── */
 .page-admin-dashboard .dash-grid {
     display: grid;
     grid-template-columns: 1fr 340px;
@@ -501,7 +496,6 @@ body {
     padding: 1rem 0;
 }
 
-/* Active doctors list */
 .page-admin-dashboard .doctor-mini-row {
     display: flex;
     align-items: center;
@@ -587,7 +581,6 @@ body {
 .page-admin-dashboard .status-pill.active { background: var(--green-50); color: var(--green-400); }
 .page-admin-dashboard .status-pill.active::before { background: var(--green-400); }
 
-/* Quick actions */
 .page-admin-dashboard .quick-actions-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -646,7 +639,6 @@ body {
 .page-admin-dashboard .quick-action-icon.coral { background: var(--coral-50); }
 .page-admin-dashboard .quick-action-icon.coral svg { stroke: var(--coral-400); }
 
-/* System snapshot */
 .page-admin-dashboard .snapshot-row {
     display: flex;
     align-items: center;
@@ -667,7 +659,6 @@ body {
     font-weight: 600;
 }
 
-/* ─── RESPONSIVE ─── */
 @media (max-width: 1200px) {
     .page-admin-dashboard .dash-grid {
         grid-template-columns: 1fr;

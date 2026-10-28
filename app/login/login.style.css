@@ -36,17 +36,13 @@ body {
         color: var(--gray-800);
     }
 
-/* Previously this lived on the bare `body` selector — global, so
-       this page's 2-column layout could collide with (or get
-       overridden by) whatever other page's stylesheet happened to
-       still be attached to the document at the same time. Scoped to
-       the wrapper div added around this page's own JSX. */ .page-login {
+  .page-login {
         display: grid;
         grid-template-columns: 1fr 1fr;
         min-height: 100vh;
     }
 
-.page-login /* LEFT PANEL */ .panel-left {
+.page-login .panel-left {
         background: var(--teal-600);
         position: relative;
         display: flex;
@@ -169,11 +165,7 @@ body {
         align-self: stretch;
     }
 
-.page-login /* RIGHT PANEL */ /* `align-items:center` inside a fixed-height grid row with no
-       overflow handling clipped the bottom of the form (e.g. the
-       submit button) whenever the viewport was shorter than the
-       form's natural height. Let this panel grow to at least one
-       viewport tall and scroll internally instead of clipping. */ .panel-right {
+.page-login .panel-right {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -458,11 +450,9 @@ body {
     }
 
 .page-login .google-btn-wrap .btn-social {
-        pointer-events: none; /* purely visual — see the comment in the JSX */
+        pointer-events: none;
     }
 
-/* Google's real button, sized to match .btn-social and stacked exactly on
-   top of it, fully transparent — this is what actually receives the click. */
 .page-login .google-btn-real {
         position: absolute;
         inset: 0;
@@ -472,7 +462,7 @@ body {
         opacity: 0;
     }
 
-.page-login /* Alert */ .alert {
+.page-login .alert {
         background: #FEF2F2;
         border: 1px solid #FECACA;
         border-radius: var(--radius-sm);
@@ -483,7 +473,6 @@ body {
         display: none;
     }
 
-    /* Responsive */
     @media (max-width: 800px) {
 .page-login {
             grid-template-columns: 1fr;

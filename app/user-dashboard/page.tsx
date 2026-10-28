@@ -15,11 +15,6 @@ const METRIC_LABELS: Record<string, string> = {
   weight: "Weight",
   cholesterol: "Cholesterol",
 };
-// Same color-per-type mapping as the health-metrics page's icons, reused
-// here for the Health Summary bars. Same design language as before —
-// a colored fill under each row — just no longer a fabricated
-// "% of range" figure, since there's no real reference range behind
-// it: a real reading always renders as a full bar.
 const METRIC_COLORS: Record<string, string> = {
   bloodPressure: "coral",
   heartRate: "amber",
@@ -36,9 +31,6 @@ export default function UserDashboardPage() {
   const [detailAppt, setDetailAppt] = useState<any | null>(null);
   const [healthMetrics, setHealthMetrics] = useState<any[]>([]);
   const [medications, setMedications] = useState<any[]>([]);
-  // Only Pending/Confirmed appointments belong in an "Upcoming" preview —
-  // Completed/Cancelled ones cluttered this table before with visits that
-  // are already over.
   const upcomingAppointments = appointments.filter((a: any) => a.status === "Pending" || a.status === "Confirmed");
 
   useEffect(() => {
@@ -106,11 +98,6 @@ export default function UserDashboardPage() {
       const res = await fetch(`${apiUrl}/appointments/${userId}`, { credentials: "include" });
       const data = await res.json();
       const rows = data.appointments?.rows ?? [];
-      // Was built via raw innerHTML string concatenation and never kept
-      // around afterward, so there was no full appointment data left to
-      // show when "Details" was clicked — that button had no click
-      // handler at all. Keeping the rows as real state lets each row
-      // (and the Details button) open a modal with the full record.
       setAppointments(rows);
       const totalAppointments = document.querySelector(".stat-value");
       if (totalAppointments) totalAppointments.textContent = String(data.appointments?.count ?? rows.length);
@@ -122,7 +109,6 @@ export default function UserDashboardPage() {
   return (
     <div className="page-user-dashboard">
     <div className="app">
-      {/* SIDEBAR */}
       <Sidebar>
         <nav className="nav-section">
           <p className="nav-label">Overview</p>
@@ -148,22 +134,16 @@ export default function UserDashboardPage() {
         </div>
       </Sidebar>
 
-      {/* MAIN */}
       <div className="main">
         <header className="topbar">
           <HamburgerToggle />
           <h1 className="topbar-title">Good morning, <span className="headers"></span> 👋</h1>
-          <div className="search-box">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-            <input type="text" placeholder="Search doctors, records…" />
-          </div>
           <div className="topbar-actions">
             <div className="topbar-avatar">U</div>
           </div>
         </header>
 
         <div className="content">
-          {/* Welcome Banner */}
           <div className="welcome-banner">
             <div className="welcome-copy">
               <p className="date"></p>
@@ -174,12 +154,6 @@ export default function UserDashboardPage() {
             </div>
           </div>
 
-          {/* Stats — Medical Records and Health Metrics now pull real
-              counts from /medications and /health-metrics instead of
-              showing "—"/"Coming soon". Medications is the only part
-              of "Medical Records" with a working endpoint so far (visit
-              history/diagnoses still don't exist server-side), so that
-              card's count reflects medications on file for now. */}
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-card-top">
@@ -188,9 +162,6 @@ export default function UserDashboardPage() {
               <div className="stat-value">0</div>
               <div className="stat-label">Total Appointments</div>
             </div>
-            {/* This page has a blanket `a { display: contents }` rule
-                (see .quick-btn below) so the clickable box has to be a
-                real element inside the Link, not the Link itself. */}
             <Link href="/medical-records">
               <div className="stat-card stat-card-link">
                 <div className="stat-card-top"><div className="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg></div></div>
@@ -207,7 +178,6 @@ export default function UserDashboardPage() {
             </Link>
           </div>
 
-          {/* Main grid */}
           <div className="main-grid">
             <div>
               <div className="section-head"><h3>Upcoming Appointments</h3><Link href="/my-appointments">View all →</Link></div>
@@ -233,10 +203,6 @@ export default function UserDashboardPage() {
                           <div className="apt-time">{a.appointment_time}</div>
                         </td>
                         <td><span className="type-tag in-person">In-person</span></td>
-                        {/* Was hardcoded to "confirmed" regardless of the
-                            real status, and there was no .completed style
-                            at all — every row looked Confirmed even when
-                            Pending or Completed. */}
                         <td><span className={`status-pill ${a.status?.toLowerCase()}`}>{a.status}</span></td>
                         <td><button className="row-action" onClick={(e) => { e.stopPropagation(); setDetailAppt(a); }}>Details</button></td>
                       </tr>
@@ -252,12 +218,6 @@ export default function UserDashboardPage() {
               </div>
             </div>
             <div className="right-col">
-              {/* Health Summary and Medications used to render fully
-                  hardcoded demo data (fake blood pressure, cholesterol,
-                  prescriptions…) with no backend behind any of it. Now
-                  pull real rows from /health-metrics and /medications;
-                  still fall back to an honest empty state when there's
-                  nothing logged yet instead of inventing numbers. */}
               <div className="card">
                 <div className="section-head"><h3>Health Summary</h3><Link href="/health-metrics">View →</Link></div>
                 {healthMetrics.length === 0 ? (
@@ -304,7 +264,6 @@ export default function UserDashboardPage() {
         </div>
       </div>
 
-      {/* APPOINTMENT DETAILS MODAL */}
       {detailAppt && (
         <div className="modal-overlay" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setDetailAppt(null); }}>
           <div className="modal">

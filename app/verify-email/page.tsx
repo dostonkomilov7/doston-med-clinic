@@ -20,47 +20,18 @@ function VerifyEmailContent() {
   const autoVerifyRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const resendCountRef = useRef(0);
   const failCountRef = useRef(0);
-  // Typing the last digit schedules an auto-verify timeout, but pressing
-  // Enter (or clicking Verify) right after does too — without this guard
-  // both fire /auth/activate with the same code. The backend clears the
-  // OTP on the first success, so the second, still-in-flight request then
-  // reads a null otp and comes back "invalid" — whichever response lands
-  // last stomps the UI, which is how a *correct* code could flash
-  // "N attempts left" right before the success overlay.
   const verifyingRef = useRef(false);
   const lockoutTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  // Once true, nothing on this page can dismiss it — no close button, no
-  // overlay-click, no Escape key — it only ever goes away by finishing
-  // its own 3-second countdown and redirecting to /register.
   const [locked, setLocked] = useState(false);
   const [lockReason, setLockReason] = useState<"attempts" | "expired">("attempts");
   const [lockoutCountdown, setLockoutCountdown] = useState(LOCKOUT_SECONDS);
 
   useEffect(() => {
-    // Registered first and unconditionally — same as login/register —
-    // so it's guaranteed to be attached before any of the early
-    // returns below can skip past it. It was previously set up after
-    // those checks, so swiping back via touchpad to restore this page
-    // from bfcache while AUTH_COOKIE/userId happened to be in the
-    // "redirect away" state never even reached the listener
-    // registration on the *original* mount that got bfcached — the
-    // restored snapshot had no pageshow handler to catch the restore
-    // and force a fresh reload, so the stale OTP form just sat there.
     const handlePageShow = (e: PageTransitionEvent) => {
       if (e.persisted) window.location.reload();
     };
     window.addEventListener("pageshow", handlePageShow);
 
-    // window.location.href (not router.push) for the dashboard
-    // redirects: those pages' CSS is unscoped global stylesheets, and
-    // a client-side transition could paint before it's loaded. A full
-    // page nav always waits for CSS first — see app/login/page.tsx.
-    //
-    // This has to be AUTH_COOKIE, not userId: userId gets set the moment
-    // *registration* starts, well before OTP verification — checking
-    // userId here made this page think a brand-new, unverified signup
-    // was already fully logged in and skipped straight to the dashboard
-    // without ever showing the OTP form.
     if (getCookie(AUTH_COOKIE)) {
       const role = getCookie("role");
       if (role === "Doctor") window.location.href = "/doctor-dashboard";
@@ -69,16 +40,6 @@ function VerifyEmailContent() {
       return () => window.removeEventListener("pageshow", handlePageShow);
     }
 
-    // Without a pending registration to verify, this page has nothing
-    // to do — either nobody ever registered in this browser, or a
-    // lockout already ran, deleted the account, and cleared this
-    // cookie, but the user then refreshed mid-countdown or after it.
-    // failCountRef/locked only ever lived in memory, so a refresh
-    // silently reset them and re-showed the OTP form for an account
-    // that no longer exists. Checking the cookie (cleared
-    // synchronously the instant lockout starts, not after the delete
-    // request finishes — see triggerLockout) catches that case on
-    // remount instead of letting it back in.
     if (!getCookie("userId")) {
       window.location.href = "/register";
       return () => window.removeEventListener("pageshow", handlePageShow);
@@ -224,14 +185,6 @@ function VerifyEmailContent() {
       const res = await response.json();
 
       if (res.success) {
-        // accessToken/refreshToken are real HttpOnly cookies the backend
-        // already set on this response — trying to also set them from JS
-        // is not just pointless, browsers silently block it outright (a
-        // script can't clobber an existing HttpOnly cookie with a
-        // same-named non-HttpOnly one). role is the only one of these
-        // this app can actually read back later. AUTH_COOKIE marks the
-        // OTP as genuinely verified — see the mount effect above for why
-        // this can't just be userId.
         setCookie("role", res?.role);
         setCookie(AUTH_COOKIE, "1");
         setInputState("success");
@@ -242,10 +195,6 @@ function VerifyEmailContent() {
         }
         setTimeout(showSuccessOverlay, 800);
       } else {
-        // The server burns a code once it has expired (10 minutes), so no
-        // further attempt can succeed. Rather than letting the user type two
-        // more codes under an "Incorrect code" message, end the registration
-        // now and say why.
         if (/expired/i.test(res?.message ?? "")) {
           setInputState("error");
           setLockReason("expired");
@@ -280,8 +229,6 @@ function VerifyEmailContent() {
       }
     } catch (err) {
       console.error(err);
-      // Previously the button was left disabled with its spinner
-      // stuck forever on a network error — there was no way to retry.
       setStatus("error", "Something went wrong. Please check your connection and try again.");
       if (verifyBtn) {
         verifyBtn.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Verify Email`;
@@ -291,23 +238,10 @@ function VerifyEmailContent() {
     }
   };
 
-  // 3 wrong codes in a row: this registration is treated as abandoned.
-  // The half-created account (and, for a doctor sign-up, its linked
-  // doctor profile from /third-page) is deleted server-side, and the
-  // user is sent back to register from scratch — with a 3-second
-  // warning that can't be dismissed early, so it's actually read
-  // instead of reflexively clicked away.
   const triggerLockout = async () => {
     setLocked(true);
 
     const userId = getCookie("userId");
-    // Cleared immediately, before the delete request even goes out —
-    // not after it resolves. A refresh a moment later (mid-request or
-    // mid-countdown) then hits the "no pending registration" guard in
-    // the mount effect above and bounces straight to /register instead
-    // of remounting a fresh, in-memory attempt counter and showing the
-    // OTP form again for an account that's being (or already was)
-    // deleted.
     deleteCookie("userId");
     deleteCookie("role");
 
@@ -390,16 +324,11 @@ function VerifyEmailContent() {
     }
     clearStatus(); updateVerifyBtn();
     (document.getElementById("otp-0") as HTMLInputElement)?.focus();
-    // The backend has no "resend verification code" endpoint (auth
-    // controller only has register/login/activate/forgot/reset), so
-    // this restarts the cooldown UI without actually sending a new
-    // code. Say so instead of silently implying a fresh code went out.
     setStatus("info", "Resending isn't available yet — please use the code from your original email.");
   };
 
   return (
     <div className="page-verify-email">
-      {/* LEFT PANEL */}
       <div className="panel-left">
         <div className="particles" id="particles"></div>
         <div className="brand">
@@ -441,7 +370,6 @@ function VerifyEmailContent() {
         </div>
       </div>
 
-      {/* RIGHT PANEL */}
       <div className="panel-right">
         <div className="form-wrap">
           <div className="form-header">
@@ -503,7 +431,6 @@ function VerifyEmailContent() {
         </div>
       </div>
 
-      {/* SUCCESS OVERLAY */}
       <div className="success-overlay" id="successOverlay">
         <div className="success-icon-wrap" id="successIconWrap">
           <div className="success-circle">
@@ -518,9 +445,6 @@ function VerifyEmailContent() {
         </button>
       </div>
 
-      {/* LOCKOUT OVERLAY — intentionally has no close button, no
-          overlay-click handler, and no Escape-key handling. It can
-          only go away by finishing its own countdown. */}
       {locked && (
         <div className="lockout-overlay show">
           <div className="lockout-icon-wrap">

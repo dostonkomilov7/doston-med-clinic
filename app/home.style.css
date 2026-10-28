@@ -35,7 +35,7 @@ body {
       font-family: var(--font-body);
   }
 
-.page-home /* ── NAV ── */ nav {
+.page-home nav {
       position: fixed;
       top: 0;
       left: 0;
@@ -142,7 +142,6 @@ body {
       font-family: var(--font-body);
       font-size: 13.5px;
       font-weight: 500;
-      /*  ; */
       transition: border-color var(--tr), color var(--tr);
       text-decoration: none;
       display: flex;
@@ -175,7 +174,7 @@ body {
       background: var(--teal-800);
   }
 
-.page-home /* ── REVEAL ANIMATION ── */ .reveal {
+.page-home .reveal {
       opacity: 0;
       transform: translateY(32px);
       transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
@@ -186,7 +185,7 @@ body {
       transform: translateY(0);
   }
 
-.page-home /* ── HERO ── */ .hero {
+.page-home .hero {
       min-height: 100vh;
       padding: 72px 4rem 0;
       display: grid;
@@ -394,7 +393,7 @@ body {
       fill: var(--teal-600);
   }
 
-.page-home /* Hero trust badges */ .hero-trust {
+.page-home .hero-trust {
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -426,7 +425,7 @@ body {
       line-height: 1.3;
   }
 
-.page-home /* Hero right — visual */ .hero-visual {
+.page-home .hero-visual {
       position: relative;
       height: 580px;
       opacity: 0;
@@ -568,7 +567,7 @@ body {
       background: var(--teal-800);
   }
 
-.page-home /* Floating badge cards */ .float-badge {
+.page-home .float-badge {
       position: absolute;
       background: var(--white);
       border-radius: 14px;
@@ -677,7 +676,7 @@ body {
       margin-top: 2px;
   }
 
-.page-home /* Scroll indicator */ .scroll-hint {
+.page-home .scroll-hint {
       position: absolute;
       bottom: 2.5rem;
       left: 50%;
@@ -728,7 +727,7 @@ body {
       }
   }
 
-.page-home /* ── SECTION SHARED ── */ section {
+.page-home section {
       padding: 7rem 4rem;
   }
 
@@ -764,7 +763,7 @@ body {
       color: var(--teal-600);
   }
 
-.page-home /* ── HOW IT WORKS ── */ .how-section {
+.page-home .how-section {
       background: var(--ink);
   }
 
@@ -891,7 +890,7 @@ body {
       z-index: 1;
   }
 
-.page-home /* ── SPECIALTIES ── */ .specialties-section {
+.page-home .specialties-section {
       background: var(--cream);
   }
 
@@ -1001,7 +1000,7 @@ body {
       transform: translateX(0);
   }
 
-.page-home /* ── DOCTORS ── */ .doctors-section {
+.page-home .doctors-section {
       background: var(--cream-2);
   }
 
@@ -1179,7 +1178,7 @@ body {
       border-color: var(--teal-400);
   }
 
-.page-home /* ── STATS BAND ── */ .stats-band {
+.page-home .stats-band {
       background: var(--teal-600);
       padding: 5rem 4rem;
       display: grid;
@@ -1245,7 +1244,7 @@ body {
       letter-spacing: 0.02em;
   }
 
-.page-home /* ── TESTIMONIALS ── */ .testimonials-section {
+.page-home .testimonials-section {
       background: var(--cream);
   }
 
@@ -1340,7 +1339,7 @@ body {
       letter-spacing: -1px;
   }
 
-.page-home /* ── CTA SECTION ── */ .cta-section {
+.page-home .cta-section {
       padding: 7rem 4rem;
       background: var(--ink);
       position: relative;
@@ -1451,7 +1450,7 @@ body {
       border-color: rgba(255, 255, 255, 0.25);
   }
 
-.page-home /* ── FOOTER ── */ footer {
+.page-home footer {
       background: #0C0D0F;
       padding: 5rem 4rem 2.5rem;
       color: rgba(255, 255, 255, 0.5);
@@ -1568,7 +1567,7 @@ body {
       color: rgba(255, 255, 255, 0.7);
   }
 
-.page-home /* ── BOOKING MODAL ── */ .modal-overlay {
+.page-home .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.5);
@@ -1742,7 +1741,7 @@ body {
       background: var(--teal-800);
   }
 
-.page-home /* ── MOBILE NAV HAMBURGER ── */ .hamburger {
+.page-home .hamburger {
       display: none;
       flex-direction: column;
       gap: 5px;

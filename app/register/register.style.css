@@ -35,24 +35,13 @@ body {
         color: var(--gray-800);
     }
 
-/* Previously this lived on the bare `body` selector — global, so
-       this page's 2-column layout could collide with (or get
-       overridden by) whatever other page's stylesheet happened to
-       still be attached to the document at the same time. Scoped to
-       the wrapper div added around this page's own JSX. */ .page-register {
+  .page-register {
         display: grid;
         grid-template-columns: 1fr 1fr;
         min-height: 100vh;
     }
 
-.page-register /* LEFT PANEL
-       Was `height:100%` on html/body + `align-items:center` here with
-       no overflow handling — on any viewport shorter than the form's
-       natural height (most laptops, and every phone), the centered
-       content overflowed the fixed-height box and the bottom of the
-       form (role selector, terms, the Register button) ended up
-       clipped with no reliable way to scroll to it. Giving this panel
-       its own min-height + scroll makes it grow instead of clip. */ .panel-left {
+.page-register .panel-left {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -126,7 +115,7 @@ body {
         text-decoration: underline;
     }
 
-.page-register /* Steps */ .steps {
+.page-register .steps {
         display: flex;
         gap: 6px;
         margin-bottom: 2rem;
@@ -156,7 +145,7 @@ body {
         margin-left: 6px;
     }
 
-.page-register /* Form fields */ .field {
+.page-register .field {
         margin-bottom: 1.1rem;
     }
 
@@ -251,7 +240,7 @@ body {
         stroke: var(--teal-600);
     }
 
-.page-register /* Password strength */ .pw-strength {
+.page-register .pw-strength {
         display: flex;
         gap: 4px;
         margin-top: 8px;
@@ -275,7 +264,7 @@ body {
         transition: color 0.3s;
     }
 
-.page-register /* Role selector */ .role-selector {
+.page-register .role-selector {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
@@ -351,7 +340,7 @@ body {
         background: var(--gray-50);
     }
 
-.page-register /* Terms */ .terms-row {
+.page-register .terms-row {
         display: flex;
         align-items: flex-start;
         gap: 10px;
@@ -383,7 +372,7 @@ body {
         text-decoration: underline;
     }
 
-.page-register /* Buttons */ .btn-primary {
+.page-register .btn-primary {
         width: 100%;
         height: 50px;
         background: var(--teal-600);
@@ -446,7 +435,7 @@ body {
         transform: none;
     }
 
-.page-register /* Alert */ .alert {
+.page-register .alert {
         background: #FEF2F2;
         border: 1px solid #FECACA;
         border-radius: var(--radius-sm);
@@ -457,7 +446,7 @@ body {
         display: none;
     }
 
-.page-register /* RIGHT PANEL */ .panel-right {
+.page-register .panel-right {
         background: var(--teal-600);
         position: relative;
         display: flex;
@@ -592,7 +581,6 @@ body {
         color: rgba(255, 255, 255, 0.85);
     }
 
-    /* Responsive */
     @media (max-width: 850px) {
 .page-register {
             grid-template-columns: 1fr;
@@ -607,9 +595,6 @@ body {
         }
     }
 
-    /* Short viewports (small laptops, landscape phones): tighten
-       vertical rhythm so the form is more likely to fit without
-       scrolling, and the scroll that does happen covers less ground. */
     @media (max-height: 800px) {
 .page-register .panel-left {
             padding-top: 1.5rem;

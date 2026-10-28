@@ -50,12 +50,12 @@ body {
       color: var(--gray-800);
   }
 
-.doctor-shell /* ── LAYOUT ── */ .app {
+.doctor-shell .app {
       display: flex;
       min-height: 100vh;
   }
 
-.doctor-shell /* ── SIDEBAR ── */ .sidebar {
+.doctor-shell .sidebar {
       width: var(--sidebar-w);
       background: var(--gray-800);
       display: flex;
@@ -145,7 +145,7 @@ body {
       border-radius: 4px;
   }
 
-.doctor-shell /* Nav */ .nav-section {
+.doctor-shell .nav-section {
       padding: 0 0.75rem;
       margin-bottom: 0.25rem;
   }
@@ -244,7 +244,7 @@ body {
       border-radius: 0 3px 3px 0;
   }
 
-.doctor-shell /* Doctor profile card */ .sidebar-doctor {
+.doctor-shell .sidebar-doctor {
       margin: 0 0.75rem 1rem;
       padding: 1rem;
       background: rgba(255, 255, 255, 0.05);
@@ -310,7 +310,7 @@ body {
       }
   }
 
-.doctor-shell /* ── MAIN ── */ .main {
+.doctor-shell .main {
       margin-left: var(--sidebar-w);
       flex: 1;
       display: flex;
@@ -318,7 +318,7 @@ body {
       min-height: 100vh;
   }
 
-.doctor-shell /* Topbar */ .topbar {
+.doctor-shell .topbar {
       height: 64px;
       background: var(--white);
       border-bottom: 1px solid var(--gray-100);
@@ -454,12 +454,12 @@ body {
       border: 2px solid var(--teal-100);
   }
 
-.doctor-shell /* ── CONTENT ── */ .content {
+.doctor-shell .content {
       padding: 1.75rem 2rem;
       flex: 1;
   }
 
-.doctor-shell /* Today banner */ .today-banner {
+.doctor-shell .today-banner {
       background: var(--gray-800);
       border-radius: var(--radius);
       padding: 1.6rem 2rem;
@@ -577,7 +577,7 @@ body {
       background: var(--teal-600);
   }
 
-.doctor-shell /* Stats grid */ .stats-grid {
+.doctor-shell .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
@@ -702,7 +702,7 @@ body {
       color: var(--gray-400);
   }
 
-.doctor-shell /* Main grid */ .main-grid {
+.doctor-shell .main-grid {
       display: grid;
       grid-template-columns: 1fr 320px;
       gap: 1.5rem;
@@ -720,7 +720,7 @@ body {
       gap: 1.25rem;
   }
 
-.doctor-shell /* Section head */ .section-head {
+.doctor-shell .section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -744,14 +744,14 @@ body {
       text-decoration: underline;
   }
 
-.doctor-shell /* Card */ .card {
+.doctor-shell .card {
       background: var(--white);
       border: 1px solid var(--gray-100);
       border-radius: var(--radius);
       padding: 1.25rem 1.4rem;
   }
 
-.doctor-shell /* Today's schedule timeline */ .schedule-list {
+.doctor-shell .schedule-list {
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -936,12 +936,10 @@ body {
       background: var(--teal-100);
   }
 
-.doctor-shell /* Patient table */ .table-card {
+.doctor-shell .table-card {
       background: var(--white);
       border: 1px solid var(--gray-100);
       border-radius: var(--radius);
-      /* Was `overflow: hidden` — on narrow screens that clipped the
-         right side of the table instead of letting it scroll into view. */
       overflow-x: auto;
   }
 
@@ -1133,7 +1131,7 @@ body {
       background: var(--teal-50);
   }
 
-.doctor-shell /* Right: Messages */ .msg-list {
+.doctor-shell .msg-list {
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
@@ -1201,7 +1199,7 @@ body {
       margin-top: 2px;
   }
 
-.doctor-shell /* Stats donut widget */ .donut-wrap {
+.doctor-shell .donut-wrap {
       display: flex;
       align-items: center;
       gap: 1.25rem;
@@ -1243,7 +1241,7 @@ body {
       color: var(--gray-800);
   }
 
-.doctor-shell /* Alerts */ .alert-list {
+.doctor-shell .alert-list {
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
@@ -1307,7 +1305,6 @@ body {
       margin-top: 2px;
   }
 
-  /* Responsive */
   @media (max-width: 1100px) {
 .doctor-shell .stats-grid {
           grid-template-columns: repeat(2, 1fr);

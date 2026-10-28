@@ -9,10 +9,6 @@ export default function ResetPasswordPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // No signed link in the URL at all (e.g. someone navigated here
-    // directly) — there's nothing to submit, so go straight to the
-    // "request a new one" state instead of showing a form that can only
-    // ever fail.
     if (window.location.search.includes("expired=1") || !window.location.search.includes("signed=")) {
       showState("state-expired");
       return;
@@ -122,11 +118,6 @@ export default function ResetPasswordPage() {
     resetBtn.disabled = true;
     resetBtn.innerHTML = `<div class="spinner"></div><span>Updating…</span>`;
 
-    // The emailed link is a whole URL signed by the `signed` package
-    // (e.g. "…/reset-password?userId=42&signed=e_…-r_…-<hash>") — the
-    // signature covers the full query string, not a single opaque token,
-    // so the entire thing (minus the leading "?") has to be replayed
-    // verbatim for the backend to re-verify it.
     const token = window.location.search.slice(1);
     try {
       const res = await fetch(`${apiUrl}/auth/reset-password`, {
@@ -134,16 +125,8 @@ export default function ResetPasswordPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password: pw }),
       });
-      // Previously the success screen was shown unconditionally,
-      // regardless of whether the request actually succeeded — even a
-      // failed/network-errored request told the user their password
-      // had been updated.
       if (!res.ok) {
         if (res.status === 409) {
-          // Our own ConflictException from an expired/invalid signature —
-          // route to the same "request a new one" state the direct-visit
-          // case above uses, rather than an inline error on a form that
-          // can no longer succeed.
           showState("state-expired");
           return;
         }
@@ -172,7 +155,6 @@ export default function ResetPasswordPage() {
             <span>Med Clinic</span>
           </div>
 
-          {/* State: Reset form */}
           <div className="form-state active" id="state-reset">
             <div className="form-header">
               <div className="form-icon amber"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg></div>
@@ -228,7 +210,6 @@ export default function ResetPasswordPage() {
             </div>
           </div>
 
-          {/* State: Expired */}
           <div className="form-state" id="state-expired">
             <div className="form-header">
               <div className="form-icon coral"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg></div>
@@ -244,7 +225,6 @@ export default function ResetPasswordPage() {
             </div>
           </div>
 
-          {/* State: Success */}
           <div className="form-state" id="state-success">
             <div className="form-header">
               <div className="form-icon success"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg></div>

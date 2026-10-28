@@ -1,4 +1,3 @@
-/* Med Clinic Global Styles */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -44,7 +43,6 @@ input, select, textarea {
   font-family: var(--font-body);
 }
 
-/* Shared drawer overlay */
 .drawer-overlay {
   position: fixed;
   inset: 0;
@@ -75,7 +73,6 @@ input, select, textarea {
   transform: translateX(0);
 }
 
-/* Shared modal overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -89,7 +86,6 @@ input, select, textarea {
   display: flex;
 }
 
-/* Toast shared */
 .toast {
   position: fixed;
   bottom: 1.5rem;

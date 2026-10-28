@@ -42,12 +42,12 @@ body {
       color: var(--gray-800);
   }
 
-.page-user-dashboard /* ── LAYOUT ── */ .app {
+.page-user-dashboard .app {
       display: flex;
       min-height: 100vh;
   }
 
-.page-user-dashboard /* ── SIDEBAR ── */ .sidebar {
+.page-user-dashboard .sidebar {
       width: var(--sidebar-w);
       background: var(--teal-800);
       display: flex;
@@ -113,7 +113,7 @@ body {
       color: #fff;
   }
 
-.page-user-dashboard /* Nav */ .nav-section {
+.page-user-dashboard .nav-section {
       padding: 0 0.75rem;
       margin-bottom: 0.25rem;
   }
@@ -203,7 +203,7 @@ body {
       border-radius: 0 3px 3px 0;
   }
 
-.page-user-dashboard /* User card at bottom */ .sidebar-user {
+.page-user-dashboard .sidebar-user {
       margin-top: auto;
       padding: 1rem 1.25rem;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -256,7 +256,7 @@ body {
       flex-shrink: 0;
   }
 
-.page-user-dashboard /* ── MAIN ── */ .main {
+.page-user-dashboard .main {
       margin-left: var(--sidebar-w);
       flex: 1;
       display: flex;
@@ -264,7 +264,7 @@ body {
       min-height: 100vh;
   }
 
-.page-user-dashboard /* Topbar */ .topbar {
+.page-user-dashboard .topbar {
       height: 64px;
       background: var(--white);
       border-bottom: 1px solid var(--gray-100);
@@ -390,12 +390,12 @@ body {
       cursor: pointer;
   }
 
-.page-user-dashboard /* ── CONTENT ── */ .content {
+.page-user-dashboard .content {
       padding: 2rem;
       flex: 1;
   }
 
-.page-user-dashboard /* Welcome banner */ .welcome-banner {
+.page-user-dashboard .welcome-banner {
       background: var(--teal-600);
       border-radius: var(--radius);
       padding: 1.75rem 2rem;
@@ -484,26 +484,7 @@ body {
       background: var(--teal-50);
   }
 
-.page-user-dashboard .btn-outline-white {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: var(--radius-sm);
-      padding: 10px 20px;
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 400;
-      cursor: pointer;
-      transition: background var(--transition);
-      white-space: nowrap;
-  }
-
-.page-user-dashboard .btn-outline-white:hover {
-      background: rgba(255, 255, 255, 0.2);
-  }
-
-.page-user-dashboard /* Stats row — 3 cards now, was 4 before 3 of
-   them were demo numbers with no real data behind them */ .stats-grid {
+.page-user-dashboard .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
@@ -625,13 +606,13 @@ body {
       color: var(--gray-400);
   }
 
-.page-user-dashboard /* Main grid */ .main-grid {
+.page-user-dashboard .main-grid {
       display: grid;
       grid-template-columns: 1fr 340px;
       gap: 1.5rem;
   }
 
-.page-user-dashboard /* Section headings */ .section-head {
+.page-user-dashboard .section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -655,12 +636,10 @@ body {
       text-decoration: underline;
   }
 
-.page-user-dashboard /* Appointments table */ .table-card {
+.page-user-dashboard .table-card {
       background: var(--white);
       border: 1px solid var(--gray-100);
       border-radius: var(--radius);
-      /* Was `overflow: hidden` — on narrow screens that clipped the
-         right side of the table instead of letting it scroll into view. */
       overflow-x: auto;
       margin-bottom: 1.5rem;
   }
@@ -849,13 +828,13 @@ body {
       background: var(--teal-50);
   }
 
-.page-user-dashboard /* Right column */ .right-col {
+.page-user-dashboard .right-col {
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
   }
 
-.page-user-dashboard /* Health summary card */ .card {
+.page-user-dashboard .card {
       background: var(--white);
       border: 1px solid var(--gray-100);
       border-radius: var(--radius);
@@ -930,7 +909,7 @@ body {
       color: var(--gray-400);
   }
 
-.page-user-dashboard /* Meds */ .med-list {
+.page-user-dashboard .med-list {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -994,7 +973,7 @@ body {
       border-radius: 100px;
   }
 
-.page-user-dashboard /* Quick actions */ .quick-grid {
+.page-user-dashboard .quick-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.75rem;
@@ -1062,7 +1041,6 @@ body {
       line-height: 1.35;
   }
 
-  /* Responsive */
   @media (max-width: 1100px) {
 .page-user-dashboard .stats-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -1142,7 +1120,7 @@ body {
       }
   }
 
-.page-user-dashboard /* ── Appointment details modal ── */ .modal-overlay {
+.page-user-dashboard .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.45);

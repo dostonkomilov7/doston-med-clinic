@@ -3,7 +3,7 @@ import "./globals.css";
 import AuthGuardInit from "./AuthGuardInit";
 
 export const metadata: Metadata = {
-  title: "Med Clinic — Smart Clinic Appointments",
+  title: "Med Clinic — Doston's Hospital",
   description: "Book appointments with top specialists in seconds.",
 };
 

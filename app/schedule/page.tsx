@@ -17,9 +17,6 @@ interface Appointment {
   reason: string; tag: ApptTag; status: ApptStatus;
 }
 
-// "09:00" (native <input type="time">) -> "9:00 AM", matching the format
-// every appointment_time is stored/displayed in elsewhere (book-appointment's
-// slot picker, splitTime()/timeToMinutes() above).
 const to12h = (hhmm: string) => {
   const [hStr, mStr] = hhmm.split(":");
   let h = parseInt(hStr, 10) % 12;
@@ -28,11 +25,6 @@ const to12h = (hhmm: string) => {
   return `${h}:${mStr} ${period}`;
 };
 
-// "9:00 AM"/"11:30 PM" → minutes since midnight, for real chronological
-// sorting. localeCompare() on these strings (what this page used
-// before) sorts lexically — "10:00 AM" comes before "9:00 AM" because
-// '1' < '9' as characters — so the timeline was silently out of order
-// any day with a 10+ o'clock appointment next to a single-digit one.
 const timeToMinutes = (t: string) => {
   const [time, period] = t.split(" ");
   const [h, m] = time.split(":").map(Number);
@@ -41,13 +33,6 @@ const timeToMinutes = (t: string) => {
   return hour * 60 + (m || 0);
 };
 
-// Date -> "YYYY-MM-DD" using LOCAL calendar fields. Date.toISOString()
-// converts through UTC first, which silently shifts the date by a day in
-// any positive-UTC-offset timezone (e.g. Tashkent, UTC+5): local midnight
-// Aug 12 is still Aug 11 in UTC, so `.toISOString().slice(0,10)` reports
-// "Aug 11". That was the whole "Prev/Next day buttons don't work" bug —
-// shiftDay() built the target date, then this UTC round-trip snapped it
-// right back to the day it started from.
 const toLocalISODate = (d: Date) => {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -62,9 +47,6 @@ export default function SchedulePage() {
   const stateRef = useRef({ currentDate: todayISO(), activeFilter: "all" as Filter, searchTerm: "", editingId: null as string | null });
   const [toast, setToast] = useState<{ msg: string; type: string } | null>(null);
   const toastRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Previously this page had no sidebar profile card at all, unlike
-  // doctor-dashboard/all-patients which both show one — same data
-  // this page already fetches for the appointment list.
   const [doctor, setDoctor] = useState<any>(null);
 
   const showToast = (msg: string, type = "info") => {
@@ -83,10 +65,6 @@ export default function SchedulePage() {
     loadAppointments();
   }, [router]);
 
-
-  // New Appointment modal — driven by real React state instead of
-  // document.getElementById(...).value reads, and now actually POSTs to
-  // /appointments instead of just toasting "not available".
   const [modalOpen, setModalOpen] = useState(false);
   const [formPatientId, setFormPatientId] = useState("");
   const [formDate, setFormDate] = useState(todayISO());
@@ -96,21 +74,12 @@ export default function SchedulePage() {
   const [formUrgency, setFormUrgency] = useState("Routine");
   const [saving, setSaving] = useState(false);
 
-  // A doctor can only schedule a new visit for a patient they already
-  // have a relationship with (no "search all patients" endpoint exists
-  // for this screen) — dedupe by patient id so returning patients with
-  // multiple past appointments only show once.
   const uniquePatients = () => {
     const seen = new Map<number, string>();
     apptsRef.current.forEach((a) => { if (a.patientId != null && !seen.has(a.patientId)) seen.set(a.patientId, a.name); });
     return Array.from(seen, ([id, name]) => ({ id, name }));
   };
 
-  // Previously this page showed the same 5 hardcoded fake appointments
-  // no matter which date you navigated to or which doctor was signed
-  // in — it never talked to the backend at all, so it didn't reflect
-  // the doctor's real schedule. Load their actual appointments instead
-  // (same endpoint doctor-dashboard/all-patients already use).
   const loadAppointments = async () => {
     const userId = getCookie("userId");
     if (!userId) return;
@@ -127,10 +96,6 @@ export default function SchedulePage() {
         name: a.user?.full_name ?? "Unknown patient",
         patientId: a.user?.id ?? null,
         reason: a.reason || "General checkup",
-        // Was always "" for real appointments (nothing ever set it),
-        // so the "Urgent" filter chip matched zero real appointments —
-        // clicking it silently showed an empty list no matter what.
-        // Now tied to the appointment's real urgency field.
         tag: a.urgency === "Urgent" ? "urgent" : "",
         status: (a.status ?? "Pending").toLowerCase() as ApptStatus,
       }));
@@ -161,10 +126,6 @@ export default function SchedulePage() {
 
   };
 
-  // appointment_time is stored as a human string like "9:00 AM" (see
-  // the slot picker in book-appointment), not 24-hour "HH:MM" — the
-  // old to12h() assumed 24-hour input and would have mangled it (e.g.
-  // "9:00 AM".split(":") glues the AM/PM suffix onto the minutes).
   const splitTime = (t: string) => {
     const [hour, period] = t.split(" ");
     return { hour: hour ?? t, min: period ?? "" };
@@ -218,11 +179,6 @@ export default function SchedulePage() {
     if (dateLabel) dateLabel.textContent = d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
   };
 
-  // "Virtual" was always 0 (no appointment is ever virtual — see the
-  // Appointment model, there's no such field). "Free slots" was
-  // `8 - day.length`, an invented "the day has exactly 8 slots"
-  // assumption with nothing real behind it. Both replaced with real
-  // counts instead.
   const updateStats = () => {
     const day = apptsRef.current.filter((a) => a.date === stateRef.current.currentDate && a.status !== "cancelled");
     const set = (id: string, v: number) => { const el = document.getElementById(id); if (el) el.textContent = String(v); };
@@ -256,10 +212,6 @@ export default function SchedulePage() {
     stateRef.current.editingId = null;
   };
 
-  // Editing an existing appointment's fields isn't backed by any real
-  // endpoint (PATCH /appointments/:id only advances status, ignoring any
-  // body), so that path stays an honest "not available" — but creating a
-  // new one is now a real POST to /appointments instead of a no-op toast.
   const save = async () => {
     if (stateRef.current.editingId) {
       showToast("Editing an existing appointment isn't available from this screen yet.", "warning");
@@ -289,8 +241,6 @@ export default function SchedulePage() {
       });
       const result = await res.json();
       if (!res.ok || !result.success) {
-        // e.g. "This time slot is already booked" / "Appointments can't be
-        // booked in the past" — the server says why, so say it too.
         showToast(apiErrorMessage(result, "Could not create appointment"), "error");
         return;
       }
@@ -406,7 +356,6 @@ export default function SchedulePage() {
           </div>
         </div>
 
-        {/* Modal */}
         {modalOpen && (
         <div className="modal-overlay" id="modal" onClick={(e) => { if ((e.target as HTMLElement).id === "modal") closeModal(); }}>
           <div className="modal-card">

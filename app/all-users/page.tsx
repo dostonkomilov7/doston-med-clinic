@@ -87,7 +87,6 @@ export default function AllUsersPage() {
     }
   };
 
-  // filtered list
   const filtered = (() => {
     let list = [...allUsers];
     if (search) { const q=search.toLowerCase(); list=list.filter(u=>u.full_name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q)||String(u.id).includes(q)); }
@@ -125,10 +124,6 @@ export default function AllUsersPage() {
     showToast(`${u?.full_name??"User"} deleted.`,"error");
   };
 
-  // Previously this only removed selected users from local React state —
-  // no request ever reached the server, so a page refresh brought every
-  // "deleted" user right back. Call the real DELETE endpoint per user,
-  // same as deleteSingle does for a single row.
   const bulkDelete = async () => {
     const ids = Array.from(selected);
     if (ids.length === 0) return;
@@ -178,7 +173,6 @@ export default function AllUsersPage() {
   return (
     <div className="page-all-users">
     <div className="app">
-      {/* SIDEBAR */}
       <Sidebar badge={<span className="admin-chip">Admin</span>}>
         <nav className="nav-section">
           <p className="nav-label">Overview</p>
@@ -207,7 +201,6 @@ export default function AllUsersPage() {
         </div>
       </Sidebar>
 
-      {/* MAIN */}
       <div className="main">
         <header className="topbar">
           <div className="topbar-left">
@@ -228,7 +221,6 @@ export default function AllUsersPage() {
             </div>
           </div>
 
-          {/* Stats */}
           <div className="stats-strip">
             <div className="stat-card"><div className="stat-icon si-teal"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div className="stat-text"><div className="val">{stats.total}</div><div className="lbl">Total Users</div></div></div>
             <div className="stat-card"><div className="stat-icon si-blue"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div className="stat-text"><div className="val">{stats.patients}</div><div className="lbl">Patients</div></div></div>
@@ -237,7 +229,6 @@ export default function AllUsersPage() {
             <div className="stat-card"><div className="stat-icon si-green"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div className="stat-text"><div className="val">{stats.active}</div><div className="lbl">Active</div></div></div>
           </div>
 
-          {/* Toolbar */}
           <div className="toolbar">
             <div className="search-box">
               <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -271,7 +262,6 @@ export default function AllUsersPage() {
             </div>
           </div>
 
-          {/* Bulk bar */}
           {selected.size > 0 && (
             <div className="bulk-bar visible">
               <span>{selected.size} selected</span>
@@ -284,7 +274,6 @@ export default function AllUsersPage() {
             </div>
           )}
 
-          {/* Table view */}
           {view === "table" && filtered.length > 0 && (
             <div className="users-table-wrap">
               <table className="users-table">
@@ -337,7 +326,6 @@ export default function AllUsersPage() {
             </div>
           )}
 
-          {/* Card view */}
           {view === "card" && filtered.length > 0 && (
             <div className="users-card-grid visible">
               {pageList.map((u: any, i: number) => {
@@ -376,7 +364,6 @@ export default function AllUsersPage() {
             </div>
           )}
 
-          {/* Empty state */}
           {filtered.length === 0 && (
             <div className="empty-state" style={{display:"block"}}>
               <div className="empty-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
@@ -385,7 +372,6 @@ export default function AllUsersPage() {
             </div>
           )}
 
-          {/* Pagination */}
           {filtered.length > 0 && (
             <div className="pagination" style={{display:"flex"}}>
               <button className="pg-btn" onClick={()=>setPage(p=>Math.max(1,p-1))} disabled={safePage<=1}><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -401,7 +387,6 @@ export default function AllUsersPage() {
         </div>
       </div>
 
-      {/* DRAWER */}
       <div className={`drawer-overlay${drawer?" open":""}`} onClick={e=>{if((e.target as HTMLElement).id==="drawerOverlay"||( e.target as HTMLElement).classList.contains("drawer-overlay"))setDrawer(null);}}>
         <div className="drawer">
           <div className="drawer-header">
@@ -440,7 +425,6 @@ export default function AllUsersPage() {
         </div>
       </div>
 
-      {/* DELETE MODAL */}
       {delTarget && (
         <div className="modal-overlay open" onClick={e=>{if((e.target as HTMLElement).classList.contains("modal-overlay"))setDelTarget(null);}}>
           <div className="modal">
@@ -457,7 +441,6 @@ export default function AllUsersPage() {
         </div>
       )}
 
-      {/* BULK DELETE MODAL */}
       {bulkDeleteConfirm && (
         <div className="modal-overlay open" onClick={e=>{if((e.target as HTMLElement).classList.contains("modal-overlay"))setBulkDeleteConfirm(false);}}>
           <div className="modal">
@@ -474,7 +457,6 @@ export default function AllUsersPage() {
         </div>
       )}
 
-      {/* STATUS MODAL */}
       {statusTarget && (() => {
         const u = allUsers.find(x=>x.id===statusTarget);
         const newStatus = u?.status === "Active" ? "Inactive" : "Active";

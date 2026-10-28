@@ -19,10 +19,8 @@ function statusPill(status: string) {
   return <span className={`s-pill ${STATUS_CLASS[status] ?? "inactive"}`}>{status}</span>;
 }
 
-// What the confirmation dialog is currently asking about.
 type PendingAction = { type: "advance" | "cancel"; id: number } | null;
 
-// The part of GET /users/:id this page reads (the admin's own name).
 type AdminProfile = { users?: { full_name?: string }[] } | null;
 
 export default function AppointmentManagementPage() {
@@ -55,8 +53,6 @@ export default function AppointmentManagementPage() {
     return data.appointments ?? [];
   }, []);
 
-  // For the "Try again" button and for re-syncing the table after a failed
-  // action; `silent` skips the loading state so the screen doesn't flash.
   const reloadAppointments = async (silent = false) => {
     if (!silent) { setLoading(true); setLoadError(false); }
     try {
@@ -77,7 +73,6 @@ export default function AppointmentManagementPage() {
       notFound();
     }
     getUserData().then(setUserData).catch((e) => console.error("Failed to load the admin profile:", e));
-    // `loading` starts out true, so the first load has no state to reset.
     fetchAppointments()
       .then(setRows)
       .catch((e) => {
@@ -88,7 +83,6 @@ export default function AppointmentManagementPage() {
       .finally(() => setLoading(false));
   }, [router, fetchAppointments, showToast]);
 
-  // Doctors that actually have appointments, for the doctor filter.
   const doctorOptions = Array.from(
     new Map(rows.filter((r) => r.doctor?.id != null).map((r) => [String(r.doctor.id), r.doctor.full_name] as const)),
     ([id, name]) => ({ id, name }),
@@ -112,7 +106,6 @@ export default function AppointmentManagementPage() {
     setSearch(""); setStatusFilter(""); setDoctorFilter(""); setDateFilter(""); setPage(1);
   };
 
-  // Moves an appointment one step forward (Pending → Confirmed → Completed).
   const advance = async (id: number) => {
     const row = rows.find((r) => r.id === id);
     const newStatus = row ? nextStatus(row.status) : null;
@@ -128,7 +121,7 @@ export default function AppointmentManagementPage() {
       const body = await res.json();
       if (!res.ok || !body.success) {
         showToast(apiErrorMessage(body, "Could not update the appointment."), "error");
-        reloadAppointments(true); // somebody else may have changed it meanwhile
+        reloadAppointments(true);
         return;
       }
       setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: newStatus } : r)));
@@ -142,7 +135,6 @@ export default function AppointmentManagementPage() {
     }
   };
 
-  // Cancelling keeps the record (status → Cancelled); nothing is deleted.
   const cancelAppointment = async (id: number) => {
     setBusy(true);
     try {
@@ -172,7 +164,6 @@ export default function AppointmentManagementPage() {
   return (
     <div className="page-appointment-management">
     <div className="app">
-      {/* SIDEBAR */}
       <Sidebar badge={<span className="admin-chip">Admin</span>}>
         <nav className="nav-section">
           <p className="nav-label">Overview</p>
@@ -201,7 +192,6 @@ export default function AppointmentManagementPage() {
         </div>
       </Sidebar>
 
-      {/* MAIN */}
       <div className="main">
         <header className="topbar">
           <div className="topbar-left">
@@ -222,7 +212,6 @@ export default function AppointmentManagementPage() {
             </div>
           </div>
 
-          {/* Toolbar */}
           <div className="toolbar">
             <div className="search-box">
               <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -247,7 +236,6 @@ export default function AppointmentManagementPage() {
             </div>
           </div>
 
-          {/* Loading / error */}
           {loading && <div className="appt-table-wrap"><div className="table-state">Loading appointments…</div></div>}
           {!loading && loadError && (
             <div className="appt-table-wrap">
@@ -258,7 +246,6 @@ export default function AppointmentManagementPage() {
             </div>
           )}
 
-          {/* Table */}
           {!loading && !loadError && filtered.length > 0 && (
             <div className="appt-table-wrap">
               <table className="appt-table">
@@ -318,7 +305,6 @@ export default function AppointmentManagementPage() {
             </div>
           )}
 
-          {/* Empty states */}
           {!loading && !loadError && filtered.length === 0 && (
             <div className="empty-state" style={{display:"block"}}>
               <div className="empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
@@ -337,7 +323,6 @@ export default function AppointmentManagementPage() {
             </div>
           )}
 
-          {/* Pagination */}
           {!loading && !loadError && filtered.length > 0 && (
             <div className="pagination" style={{display:"flex"}}>
               <button className="pg-btn" aria-label="Previous page" onClick={()=>setPage(Math.max(1,safePage-1))} disabled={safePage<=1}><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -353,7 +338,6 @@ export default function AppointmentManagementPage() {
         </div>
       </div>
 
-      {/* CONFIRMATION MODAL — status change and cancellation both ask first */}
       {pendingAction && target && (
         <div className="modal-overlay open" onClick={e=>{if(!busy&&(e.target as HTMLElement).classList.contains("modal-overlay"))setPendingAction(null);}}>
           <div className="modal">

@@ -6,7 +6,6 @@ import "./home.style.css";
 export default function HomePage() {
 
   useEffect(() => {
-    // ── Navbar scroll ──
     const navbar = document.getElementById("navbar");
     const handleScroll = () => {
       if (navbar) {
@@ -15,7 +14,6 @@ export default function HomePage() {
     };
     window.addEventListener("scroll", handleScroll);
 
-    // ── Hamburger ──
     const hamburger = document.getElementById("hamburger");
     const navLinks = document.querySelector(".nav-links") as HTMLElement;
     const navCtas = document.querySelector(".nav-ctas") as HTMLElement;
@@ -26,7 +24,6 @@ export default function HomePage() {
     };
     hamburger?.addEventListener("click", handleHamburger);
 
-    // ── Counter animation ──
     function animateCounter(el: HTMLElement, target: number, suffix = "") {
       let start = 0;
       const duration = 2000;
@@ -58,7 +55,6 @@ export default function HomePage() {
     const heroSection = document.querySelector(".hero");
     if (heroSection) observer.observe(heroSection);
 
-    // ── Scroll reveal ──
     const reveals = document.querySelectorAll(".reveal");
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -74,7 +70,6 @@ export default function HomePage() {
       return '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating))
     }
 
-    // ── Doctors Grid ──
     const doctorsGrid = document.getElementById("doctorsGrid");
     const sampleDoctors = [
       { name: 'Dr. Sarah Rahman', initials: 'SR', specialty: 'Cardiologist', rating: 4.9, patients: 142, years: 12, bgColor: 'linear-gradient(135deg,#1D9E75,#085041)' },
@@ -105,7 +100,6 @@ export default function HomePage() {
       `).join("");
     }
 
-    // ── Testimonials ──
     const testiGrid = document.getElementById("testiGrid");
     const testimonials = [
       { name: "Sarah M.", role: "Patient since 2024", text: "Med Clinic completely changed how I manage my healthcare. Booking is so easy!" },
@@ -129,13 +123,6 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    // Swiping/navigating "back" to this page can restore it from the
-    // browser's bfcache instead of remounting it — none of the effect
-    // above (cursor listeners, scroll handler, reveal observer) re-runs
-    // in that case, and this page's CSS is a large unscoped
-    // stylesheet, so the restored snapshot can come back visibly
-    // broken until a manual refresh. Forcing a real reload on a
-    // bfcache restore is the automated version of that same fix.
     const handlePageShow = (e: PageTransitionEvent) => {
       if (e.persisted) window.location.reload();
     };
@@ -167,10 +154,8 @@ export default function HomePage() {
     alert("Booking submitted!");
   };
 
-
   return (
     <div className="page-home">
-      {/* ── NAV ── */}
       <nav id="navbar">
         <Link href="/" className="nav-logo">
           <div className="logo-mark">
@@ -196,7 +181,6 @@ export default function HomePage() {
         </button>
       </nav>
 
-      {/* ── HERO ── */}
       <section className="hero" id="home">
         <div className="hero-left">
           <div className="hero-label">
@@ -298,7 +282,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
       <section className="how-section" id="how">
         <div className="how-header reveal">
           <div>
@@ -336,7 +319,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── SPECIALTIES ── */}
       <section className="specialties-section" id="specialties">
         <div className="spec-header reveal">
           <div className="section-tag">Specialties</div>
@@ -368,7 +350,6 @@ export default function HomePage() {
         </div >
       </section >
 
-      {/* ── DOCTORS ── */}
       < section className="doctors-section" id="doctors" >
         <div className="doctors-header reveal">
           <div>
@@ -380,7 +361,6 @@ export default function HomePage() {
         <div className="doctors-grid reveal" id="doctorsGrid"></div>
       </section >
 
-      {/* ── STATS BAND ── */}
       < div className="stats-band reveal" >
         <div className="stat-item"><div className="stat-big">12k+</div><div className="stat-sub">Patients served</div></div>
         <div className="stat-item"><div className="stat-big">340</div><div className="stat-sub">Expert doctors</div></div>
@@ -388,7 +368,6 @@ export default function HomePage() {
         <div className="stat-item"><div className="stat-big">98%</div><div className="stat-sub">Patient satisfaction</div></div>
       </div >
 
-      {/* ── TESTIMONIALS ── */}
       < section className="testimonials-section" id="testimonials" >
         <div className="testi-header reveal">
           <div className="section-tag">Reviews</div>
@@ -398,7 +377,6 @@ export default function HomePage() {
         <div className="testi-grid reveal" id="testiGrid"></div>
       </section >
 
-      {/* ── CTA ── */}
       < section className="cta-section reveal" >
         <div className="section-tag">Get started</div>
         <h2 className="cta-title">Ready to take control of<br />your <em>health journey?</em></h2>
@@ -409,7 +387,6 @@ export default function HomePage() {
         </div>
       </section >
 
-      {/* ── FOOTER ── */}
       < footer >
         <div className="footer-top">
           <div className="footer-brand">
@@ -429,7 +406,6 @@ export default function HomePage() {
         </div>
       </footer >
 
-      {/* ── BOOKING MODAL ── */}
       < div className="modal-overlay" id="bookingModal" onClick={handleModalOverlay} >
         <div className="modal">
           <div className="modal-header">

@@ -70,12 +70,6 @@ export default function MyAppointmentsPage() {
 
     const upcomingGrid = document.getElementById("upcoming-grid");
     const pastList = document.getElementById("past-list");
-    // Clear before appending — previously these were never reset, so
-    // re-running loadAppointments (Strict Mode double-invoke in dev,
-    // or navigating back to this page) duplicated every card. This has
-    // to happen regardless of whether count is 0 (below), otherwise
-    // cancelling your last appointment left the old cards on screen
-    // right next to the "No appointments found" empty state.
     if (upcomingGrid) upcomingGrid.innerHTML = "";
     if (pastList) pastList.innerHTML = "";
 
@@ -91,10 +85,6 @@ export default function MyAppointmentsPage() {
       const spec = escapeHtml(el.doctor.specialization);
       const statusLabel = escapeHtml(el.status);
       const room = el.doctor.room_number != null ? escapeHtml(String(el.doctor.room_number)) : "—";
-      // Was appending every appointment into BOTH sections regardless of
-      // its actual status — a Completed/Cancelled appointment still
-      // showed up (with a live Cancel button) in "Upcoming & Pending",
-      // and a Pending/Confirmed one also showed up in "Past Appointments".
       const isUpcoming = status === "pending" || status === "confirmed";
       if (isUpcoming && upcomingGrid) upcomingGrid.innerHTML += `
         <div class="appt-card" data-id="${escapeHtml(String(el.id))}" data-status="${status}" data-doctor="Dr. ${docName}" data-spec="${spec}">
@@ -131,10 +121,6 @@ export default function MyAppointmentsPage() {
         </div>`;
     });
 
-    // Wire up the Cancel buttons (previously dead — no handler at all),
-    // plus clicking a card to open its full-detail modal. Delegated +
-    // assigned via onclick so re-running this function (which rebuilds
-    // the DOM anyway) can't stack duplicate listeners.
     if (upcomingGrid) upcomingGrid.onclick = async (e) => {
       const target = e.target as HTMLElement;
       const cancelBtn = target.closest<HTMLElement>("[data-cancel-id]");
@@ -158,8 +144,6 @@ export default function MyAppointmentsPage() {
         }
         return;
       }
-      // Directions/Cancel live inside .appt-card-actions — let those
-      // handle their own click instead of also opening the modal.
       if (target.closest(".appt-card-actions")) return;
       const card = target.closest<HTMLElement>(".appt-card[data-id]");
       if (card) {
@@ -284,7 +268,6 @@ export default function MyAppointmentsPage() {
         </div>
       </div>
 
-      {/* APPOINTMENT DETAILS MODAL */}
       {detailAppt && (
         <div className="modal-overlay open" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setDetailAppt(null); }}>
           <div className="modal">

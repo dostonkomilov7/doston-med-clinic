@@ -55,7 +55,7 @@ body {
   min-height: 100vh;
 }
 
-.page-appointment-management /* ─── SIDEBAR ─── */ .sidebar {
+.page-appointment-management .sidebar {
   width: var(--sidebar-w);
   background: var(--bg-2);
   border-right: 1px solid var(--border);
@@ -273,7 +273,7 @@ body {
   stroke-linecap: round;
 }
 
-.page-appointment-management /* ─── MAIN ─── */ .main {
+.page-appointment-management .main {
   margin-left: var(--sidebar-w);
   flex: 1;
   display: flex;
@@ -281,7 +281,7 @@ body {
   min-height: 100vh;
 }
 
-.page-appointment-management /* ─── TOPBAR ─── */ .topbar {
+.page-appointment-management .topbar {
   height: 60px;
   background: var(--bg-2);
   border-bottom: 1px solid var(--border);
@@ -366,7 +366,7 @@ body {
   cursor: pointer;
 }
 
-.page-appointment-management /* ─── CONTENT ─── */ .content {
+.page-appointment-management .content {
   padding: 1.75rem 2rem;
   flex: 1;
   display: flex;
@@ -374,7 +374,7 @@ body {
   gap: 1.5rem;
 }
 
-.page-appointment-management /* Page header */ .page-header {
+.page-appointment-management .page-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -464,7 +464,7 @@ body {
   stroke-linecap: round;
 }
 
-.page-appointment-management /* ─── STATS ─── */ .stats-strip {
+.page-appointment-management .stats-strip {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
@@ -584,7 +584,7 @@ body {
   margin-top: 1px;
 }
 
-.page-appointment-management /* ─── TOOLBAR ─── */ .toolbar {
+.page-appointment-management .toolbar {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -664,13 +664,10 @@ body {
   margin-left: auto;
 }
 
-.page-appointment-management /* ─── TABLE ─── */ .appt-table-wrap {
+.page-appointment-management .appt-table-wrap {
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  /* Was `overflow: hidden` — on narrow screens that clipped the right
-     side of the table (Status, Joined, Actions columns) instead of
-     letting it scroll into view. */
   overflow-x: auto;
 }
 
@@ -719,7 +716,7 @@ body {
   vertical-align: middle;
 }
 
-.page-appointment-management /* User cell */ .user-cell {
+.page-appointment-management .user-cell {
   display: flex;
   align-items: center;
   gap: 11px;
@@ -760,7 +757,7 @@ body {
   letter-spacing: .04em;
 }
 
-.page-appointment-management /* Status pill */ .s-pill {
+.page-appointment-management .s-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -817,7 +814,7 @@ body {
   }
 }
 
-.page-appointment-management /* Table action buttons */ .tbl-actions {
+.page-appointment-management .tbl-actions {
   display: flex;
   gap: 5px;
   justify-content: flex-end;
@@ -862,7 +859,7 @@ body {
   background: var(--coral-glow);
 }
 
-.page-appointment-management /* ─── EMPTY STATE ─── */ .empty-state {
+.page-appointment-management .empty-state {
   text-align: center;
   padding: 4rem 2rem;
   display: none;
@@ -901,7 +898,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.page-appointment-management /* ─── PAGINATION ─── */ .pagination {
+.page-appointment-management .pagination {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -991,7 +988,7 @@ body {
   margin-left: auto;
 }
 
-.page-appointment-management /* ─── DELETE MODAL ─── */ .modal-overlay {
+.page-appointment-management .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, .65);
@@ -1051,7 +1048,7 @@ body {
   stroke-linecap: round;
 }
 
-.page-appointment-management /* Status-toggle modal — non-destructive, so teal instead of the delete modal's coral */ .modal-icon.status {
+.page-appointment-management .modal-icon.status {
   background: var(--teal-glow);
   border-color: rgba(29, 158, 117, .3);
 }
@@ -1118,7 +1115,7 @@ body {
   background: #be4d28;
 }
 
-.page-appointment-management /* Status-toggle confirm — non-destructive, so teal instead of coral */ .btn-mconfirm {
+.page-appointment-management .btn-mconfirm {
   flex: 1;
   height: 40px;
   background: var(--teal-400);
@@ -1136,7 +1133,7 @@ body {
   background: var(--teal-500);
 }
 
-.page-appointment-management /* ─── TOAST ─── */ .toast {
+.page-appointment-management .toast {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
@@ -1178,7 +1175,6 @@ body {
   color: #fff;
 }
 
-/* ─── RESPONSIVE ─── */
 @media (max-width: 1200px) {
 .page-appointment-management .stats-strip {
     grid-template-columns: repeat(3, 1fr);
@@ -1246,12 +1242,6 @@ body {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Appointment Management — rules specific to this page
-   (everything above is the shared admin-page shell, scoped here)
-   ───────────────────────────────────────────────────────────── */
-
-/* Toolbar: the extra date filter, "clear filters" and the result count */
 .page-appointment-management .toolbar {
   margin-bottom: 14px;
 }
@@ -1299,12 +1289,10 @@ body {
   white-space: nowrap;
 }
 
-/* Rows are not clickable here (the all-users table opens a drawer) */
 .page-appointment-management tbody tr {
   cursor: default;
 }
 
-/* Patient / doctor / date cells */
 .page-appointment-management .user-phone {
   font-size: 12px;
   color: var(--text-2);
@@ -1335,7 +1323,6 @@ body {
   padding-right: 8px;
 }
 
-/* Status pills for the four appointment statuses */
 .page-appointment-management .s-pill.confirmed {
   background: var(--teal-glow);
   color: var(--teal-400);
@@ -1363,7 +1350,6 @@ body {
   background: var(--coral-400);
 }
 
-/* Row actions: Confirm / Complete advance the status, Cancel cancels */
 .page-appointment-management .act-btn {
   display: inline-flex;
   align-items: center;
@@ -1424,7 +1410,6 @@ body {
   background: var(--coral-glow);
 }
 
-/* Loading / error placeholder inside the table frame */
 .page-appointment-management .table-state {
   padding: 56px 20px;
   text-align: center;
@@ -1440,7 +1425,6 @@ body {
   margin-top: 16px;
 }
 
-/* Modal text carries the booking details */
 .page-appointment-management .modal-inner .modal-sub {
   margin-top: 8px;
   font-size: 12.5px;
@@ -1466,13 +1450,10 @@ body {
   cursor: not-allowed;
 }
 
-/* The table frame scrolls sideways on its own. Without min-width: 0 this flex
-   item grows to the table's full width instead and the whole page scrolls. */
 .page-appointment-management .main {
   min-width: 0;
 }
 
-/* Room for the whole placeholder ("Search patient, phone, doctor, MB-ref…") */
 .page-appointment-management .search-box {
   min-width: 250px;
   max-width: 360px;

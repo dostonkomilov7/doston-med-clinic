@@ -50,7 +50,7 @@ body {
       min-height: 100vh;
   }
 
-.page-my-appointments /* ── SIDEBAR (same as dashboard) ── */ .sidebar {
+.page-my-appointments .sidebar {
       width: var(--sidebar-w);
       background: var(--teal-800);
       display: flex;
@@ -259,7 +259,7 @@ body {
       flex-shrink: 0;
   }
 
-.page-my-appointments /* ── MAIN ── */ .main {
+.page-my-appointments .main {
       margin-left: var(--sidebar-w);
       flex: 1;
       display: flex;
@@ -392,12 +392,12 @@ body {
       cursor: pointer;
   }
 
-.page-my-appointments /* ── PAGE CONTENT ── */ .content {
+.page-my-appointments .content {
       padding: 2rem;
       flex: 1;
   }
 
-.page-my-appointments /* Page header */ .page-header {
+.page-my-appointments .page-header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -458,7 +458,7 @@ body {
       stroke-linecap: round;
   }
 
-.page-my-appointments /* ── SUMMARY STRIPS ── */ .summary-strip {
+.page-my-appointments .summary-strip {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
@@ -544,7 +544,7 @@ body {
       margin-top: 3px;
   }
 
-.page-my-appointments /* ── FILTER BAR ── */ .filter-bar {
+.page-my-appointments .filter-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -669,7 +669,7 @@ body {
       background: var(--gray-50);
   }
 
-.page-my-appointments /* ── UPCOMING BANNER (next appt) ── */ .next-appt-banner {
+.page-my-appointments .next-appt-banner {
       background: var(--teal-600);
       border-radius: var(--radius);
       padding: 1.5rem 1.75rem;
@@ -837,7 +837,7 @@ body {
       background: rgba(255, 255, 255, 0.2);
   }
 
-.page-my-appointments /* ── APPOINTMENT CARDS GRID ── */ .appt-section-label {
+.page-my-appointments .appt-section-label {
       font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.08em;
@@ -1015,7 +1015,7 @@ body {
       background: var(--gray-400);
   }
 
-.page-my-appointments /* Divider */ .appt-divider {
+.page-my-appointments .appt-divider {
       height: 1px;
       background: var(--gray-100);
       margin: 0 -1.4rem;
@@ -1023,7 +1023,7 @@ body {
       margin-bottom: 1rem;
   }
 
-.page-my-appointments /* Date/time/type row */ .appt-meta-row {
+.page-my-appointments .appt-meta-row {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
@@ -1092,7 +1092,7 @@ body {
       stroke: var(--blue-600);
   }
 
-.page-my-appointments /* Notes */ .appt-notes {
+.page-my-appointments .appt-notes {
       background: var(--gray-50);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
@@ -1103,7 +1103,7 @@ body {
       border-left: 3px solid var(--gray-200);
   }
 
-.page-my-appointments /* Card actions */ .appt-card-actions {
+.page-my-appointments .appt-card-actions {
       display: flex;
       gap: 8px;
   }
@@ -1172,7 +1172,7 @@ body {
       stroke: var(--coral-400);
   }
 
-.page-my-appointments /* ── PAST APPOINTMENTS COMPACT LIST ── */ .past-list {
+.page-my-appointments .past-list {
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
@@ -1319,7 +1319,7 @@ body {
       background: var(--teal-50);
   }
 
-.page-my-appointments /* ── EMPTY STATE ── */ .empty-state {
+.page-my-appointments .empty-state {
       text-align: center;
       padding: 4rem 2rem;
       display: none;
@@ -1358,7 +1358,7 @@ body {
       margin-bottom: 1.5rem;
   }
 
-.page-my-appointments /* ── MODAL ── */ .modal-overlay {
+.page-my-appointments .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.45);
@@ -1443,10 +1443,7 @@ body {
       padding: 1.5rem 1.75rem;
   }
 
-.page-my-appointments /* Appointment details modal content — the .modal-* shell
-   above was already here (for a "new booking" modal that's never actually
-   wired up in the JSX) but nothing used it; reused for the read-only
-   appointment detail view opened by clicking a card. */ .detail-doc-row {
+.page-my-appointments .detail-doc-row {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -1577,7 +1574,7 @@ body {
       box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
   }
 
-.page-my-appointments /* Doctor picker inside modal */ .doctor-picker {
+.page-my-appointments .doctor-picker {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
@@ -1683,7 +1680,6 @@ body {
       background: var(--teal-800);
   }
 
-  /* Responsive */
   @media (max-width: 900px) {
 .page-my-appointments .summary-strip {
           grid-template-columns: repeat(2, 1fr);
@@ -1764,7 +1760,7 @@ body {
       }
   }
 
-.page-my-appointments /* ── Toast (local, replaces the removed shared MediAlert widget) ── */ .toast {
+.page-my-appointments .toast {
       position: fixed;
       bottom: 2rem;
       right: 2rem;

@@ -7,23 +7,9 @@ import { setCookie, getCookie, AUTH_COOKIE, apiUrl } from "../../lib/utils";
 
 export default function RegisterPage() {
   const router = useRouter();
-  // Was an uncontrolled radio pair where selecting "Doctor" tried to
-  // imperatively set `role-doctor`'s .value to "Doctor" from onChange
-  // (see updateSteps below) — but that input's JSX also declares a
-  // static value="User", and React's own input-value-tracking
-  // safeguard resets the DOM value back to match that JSX prop right
-  // after every change event fires, regardless of the imperative
-  // write. So "Doctor" never stuck: whichever role you picked, the
-  // read at submit time (`roleDoctorEl.value`) always came back
-  // "User". Driving the selection through real state sidesteps the
-  // fight with React entirely.
   const [role, setRole] = useState<"User" | "Doctor">("User");
 
   useEffect(() => {
-    // window.location.href (not router.push) for the dashboard
-    // redirects: those pages' CSS is unscoped global stylesheets, and
-    // a client-side transition could paint before it's loaded. A full
-    // page nav always waits for CSS first — see app/login/page.tsx.
     const redirectIfAuth = () => {
       if (getCookie(AUTH_COOKIE)) {
         const role = getCookie("role");
@@ -36,13 +22,6 @@ export default function RegisterPage() {
 
     redirectIfAuth();
 
-    // Swiping/navigating "back" to this page can restore it from the
-    // browser's bfcache instead of remounting it, which skips the
-    // effect above — and this page's CSS is a large unscoped
-    // stylesheet, so the restored snapshot can also come back visibly
-    // broken. A real reload fixes both the same way a manual refresh
-    // does, and still ends up redirecting once the page loads fresh.
-    // See app/login/page.tsx for the full explanation.
     const handlePageShow = (e: PageTransitionEvent) => {
       if (e.persisted) window.location.reload();
     };
@@ -128,7 +107,7 @@ export default function RegisterPage() {
       alertEl.style.display = "block";
       return;
     }
-    if (submitBtn.classList.contains("loading")) return; // guard against double submit
+    if (submitBtn.classList.contains("loading")) return;
 
     const fullName = fname + " " + lname;
     alertEl.style.display = "none";
@@ -172,7 +151,6 @@ export default function RegisterPage() {
 
   return (
     <div className="page-register">
-      {/* LEFT: FORM */}
       <div className="panel-left">
         <div className="form-card">
           <div className="brand">
@@ -291,7 +269,6 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* RIGHT: BENEFITS */}
       <div className="panel-right">
         <h2 className="benefits-title">Everything you need,<br /><em>all in one place.</em></h2>
         <ul className="benefit-list">

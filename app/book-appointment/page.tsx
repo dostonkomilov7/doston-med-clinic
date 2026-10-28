@@ -24,17 +24,6 @@ export default function BookAppointmentPage() {
   const [specialties, setSpecialties] = useState<string[]>([]);
   const [activeSpecialty, setActiveSpecialty] = useState("all");
   const [urgency, setUrgency] = useState("Routine");
-  // These three drive the step "Continue"/"Confirm" buttons' disabled
-  // state. They used to be toggled imperatively via
-  // `document.getElementById(...).disabled = false`, but the JSX had
-  // a static, unconditional `disabled` attribute on those buttons —
-  // React keeps its own copy of that prop (always `true`) separate
-  // from the live DOM property, and its synthetic event system
-  // refuses to dispatch onClick to an element it believes is
-  // disabled, regardless of the real DOM state. So the buttons looked
-  // enabled (not greyed out) but were permanently unclickable — no
-  // amount of imperative DOM mutation can fix that, only driving
-  // `disabled` from real state can.
   const [doctorSelected, setDoctorSelected] = useState(false);
   const [timeSelected, setTimeSelected] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
@@ -43,8 +32,6 @@ export default function BookAppointmentPage() {
 
   const closeBookingModal = () => window.location.reload();
 
-  // Auto-close the confirmation modal after 5s, same as clicking its
-  // close button — start the whole wizard fresh via reload either way.
   useEffect(() => {
     if (!bookingResult) return;
     const t = setTimeout(closeBookingModal, 5000);
@@ -76,10 +63,6 @@ export default function BookAppointmentPage() {
     const doctors = data.doctors || [];
     doctorsRef.current = doctors;
     renderDoctors(doctors);
-    // Specialty chips used to be a single static "All Specialties"
-    // button — there was no way to actually filter the doctor grid by
-    // specialty at all. Derive the real chip list from whatever
-    // departments the fetched doctors actually belong to.
     setSpecialties(Array.from(new Set(doctors.map((d: any) => d.department).filter(Boolean))) as string[]);
   };
 
@@ -94,9 +77,6 @@ export default function BookAppointmentPage() {
     const grid = document.getElementById("doctorGrid");
     if (!grid) return;
     grid.innerHTML = doctors.map((d: any) => {
-      // Each of these is empty for doctors the admin hasn't filled in yet
-      // (and for rows that predate the fee column) — then the row is simply
-      // left out instead of showing "null" or a blank.
       const experience = formatExperience(d.experience);
       const bio = formatBio(d.bio);
       const fee = formatFee(d.consultation_fee);
@@ -106,21 +86,17 @@ export default function BookAppointmentPage() {
           <div class="doc-card-avatar a">${escapeHtml(d.user.full_name[0])}</div>
           <div class="doc-card-info">
             <div class="doc-card-name">Dr. ${escapeHtml(d.user.full_name)}</div>
-            <div class="doc-card-spec">${escapeHtml(d.specialization)}</div>
-            <div class="doc-card-rating"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>4.9 <span>· 142 reviews</span></div>
+            <div class="doc-card-spec">${escapeHtml(d.specialization)} </div>
+            <div class="doc-card-rating"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>4.9</div>
           </div>
         </div>
-        <div class="doc-card-meta"><span>St. Mary's Hospital</span>${experience ? `<span><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>${escapeHtml(experience)} experience</span>` : ""}</div>
+        <div class="doc-card-meta"><span>Med-Clinic Hospital</span>${experience ? `<span><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>${escapeHtml(experience)} experience</span>` : ""}</div>
         ${bio ? `<p class="doc-card-bio" title="${escapeHtml(bio)}">${escapeHtml(bio)}</p>` : ""}
         ${fee ? `<div class="doc-card-fee"><span>Consultation fee</span><strong>${escapeHtml(fee)}</strong></div>` : ""}
         <button class="select-doc-btn" data-id="${escapeHtml(String(d.id))}" data-name="${escapeHtml(d.user.full_name)}" data-spec="${escapeHtml(d.specialization)}" data-dept="${escapeHtml(d.department)}">Select Doctor</button>
       </div>`;
     }).join("");
 
-    // Use a single delegated handler assigned via `onclick` (not
-    // addEventListener) so re-running renderDoctors (e.g. React
-    // Strict Mode double-invoking effects in dev) replaces the
-    // previous handler instead of stacking duplicate listeners.
     grid.onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLElement>(".select-doc-btn");
       if (!btn) return;
@@ -131,11 +107,6 @@ export default function BookAppointmentPage() {
     };
   };
 
-  // Real slot availability: fetch existing appointments and mark a slot
-  // unavailable only if this doctor already has a non-cancelled
-  // appointment at that exact date/time. Previously this was a fake
-  // hash derived from the date string, so it never reflected real
-  // bookings and allowed double-booking.
   const getSlotsForDate = async (dateStr: string) => {
     const doctorId = stateRef.current.doctor?.id;
     let taken = new Set<string>();
@@ -153,8 +124,6 @@ export default function BookAppointmentPage() {
     } catch (e) {
       console.error("Failed to load slot availability:", e);
     }
-    // A slot that has already started today can't be booked either (the
-    // server refuses it too — this just doesn't offer it).
     return allSlots.map((t) => ({ time: t, available: !taken.has(t) && !isSlotInPast(dateStr, t) }));
   };
 
@@ -182,14 +151,12 @@ export default function BookAppointmentPage() {
     }
   };
 
-  // Fills the time-slot grid for a date. Kept apart from selectDate so a
-  // rejected booking (the slot was just taken / just passed) can refresh it too.
   const loadSlots = async (dateStr: string) => {
     const grid = document.getElementById("timeslotGrid");
     if (!grid) return;
     grid.innerHTML = `<p class="timeslot-placeholder">Loading availability…</p>`;
     const slots = await getSlotsForDate(dateStr);
-    if (stateRef.current.date !== dateStr) return; // user picked a different date while this was loading
+    if (stateRef.current.date !== dateStr) return;
     grid.innerHTML = "";
     slots.forEach((slot) => {
       const btn = document.createElement("button");
@@ -258,9 +225,6 @@ export default function BookAppointmentPage() {
         const reason = apiErrorMessage(response, "Could not book the appointment.");
         showToast(reason, "error");
         setSubmitting(false);
-        // 409: somebody took the slot while the wizard was open. 400 "…in the
-        // past": the slot started in the meantime. Either way the chosen time
-        // is no good any more, so go back to the time step with a fresh list.
         if ((res.status === 409 || (res.status === 400 && /past/i.test(reason))) && stateRef.current.date) {
           stateRef.current.time = null;
           setTimeSelected(false);
@@ -270,9 +234,6 @@ export default function BookAppointmentPage() {
         }
         return;
       }
-      // Use the id the backend assigned to this appointment as the
-      // booking reference instead of a client-generated random number,
-      // which could collide and never matched the real record.
       const ref = response.appointment?.id ? `MB-${response.appointment.id}` : `MB-${Date.now()}`;
       setBookingResult({ ref });
     } catch (e) {
@@ -304,7 +265,6 @@ export default function BookAppointmentPage() {
             ))}
           </div>
 
-          {/* Step 1 */}
           <div className={`step-panel${step === 1 ? " active" : ""}`} id="step-1">
             <div className="panel-intro"><h2>Who would you like to see?</h2><p>Select a doctor from our network.</p></div>
             <div className="filter-chips" id="specialtyFilter">
@@ -317,7 +277,6 @@ export default function BookAppointmentPage() {
             <div className="step-footer"><span></span><button className="btn-primary" id="step1Next" disabled={!doctorSelected} onClick={() => goTo(2)}>Continue →</button></div>
           </div>
 
-          {/* Step 2 */}
           <div className={`step-panel${step === 2 ? " active" : ""}`} id="step-2">
             <div className="panel-intro"><h2>When works for you?</h2><p>Choose a date and time slot.</p></div>
             <div className="datetime-grid">
@@ -338,7 +297,6 @@ export default function BookAppointmentPage() {
             <div className="step-footer"><button className="btn-secondary" onClick={() => goTo(1)}>← Back</button><button className="btn-primary" id="step2Next" disabled={!timeSelected} onClick={() => goTo(3)}>Continue →</button></div>
           </div>
 
-          {/* Step 3 */}
           <div className={`step-panel${step === 3 ? " active" : ""}`} id="step-3">
             <div className="panel-intro"><h2>Appointment Details</h2><p>Tell us the reason for your visit.</p></div>
             <div className="details-grid">
@@ -381,7 +339,6 @@ export default function BookAppointmentPage() {
             <div className="step-footer"><button className="btn-secondary" onClick={() => goTo(2)}>← Back</button><button className="btn-primary" onClick={() => goTo(4)}>Review & Confirm →</button></div>
           </div>
 
-          {/* Step 4 */}
           <div className={`step-panel${step === 4 ? " active" : ""}`} id="step-4">
             <div className="panel-intro"><h2>Review & Confirm</h2><p>Review your appointment before confirming.</p></div>
             <div className="confirm-layout">
@@ -419,12 +376,6 @@ export default function BookAppointmentPage() {
         </div>
       </div>
 
-      {/* Booking confirmation modal — replaces the old full-screen
-          "success" step. Auto-closes after 5s (see the effect above)
-          or via the × / "Book Another" buttons; either way it's a
-          full reload, which is also the simplest way to reset every
-          bit of imperative wizard state (grid, calendar, refs) back
-          to a clean slate. */}
       {bookingResult && (
         <div className="success-modal-overlay" onClick={(e) => { if ((e.target as HTMLElement).classList.contains("success-modal-overlay")) closeBookingModal(); }}>
           <div className="success-modal">

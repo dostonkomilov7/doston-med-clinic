@@ -43,7 +43,7 @@ body {
             color: var(--gray-800);
         }
 
-.page-third /* ── TOP PROGRESS BAR ── */ .top-bar {
+.page-third .top-bar {
             position: fixed;
             top: 0;
             left: 0;
@@ -61,7 +61,7 @@ body {
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-.page-third /* ── NAV HEADER ── */ .nav-header {
+.page-third .nav-header {
             position: fixed;
             top: 0;
             left: 0;
@@ -109,7 +109,7 @@ body {
             color: var(--gray-800);
         }
 
-.page-third /* Step tracker */ .step-track {
+.page-third .step-track {
             display: flex;
             align-items: center;
             gap: 0;
@@ -204,14 +204,14 @@ body {
             stroke-linecap: round;
         }
 
-.page-third /* ── LAYOUT ── */ .page-layout {
+.page-third .page-layout {
             display: grid;
             grid-template-columns: 280px 1fr 300px;
             min-height: 100vh;
             padding-top: 64px;
         }
 
-.page-third /* ── LEFT SIDEBAR ── */ .left-sidebar {
+.page-third .left-sidebar {
             border-right: 1px solid var(--gray-100);
             background: var(--white);
             padding: 2.5rem 1.75rem;
@@ -358,7 +358,7 @@ body {
             display: flex;
         }
 
-.page-third /* Profile preview card at bottom of sidebar */ .profile-preview {
+.page-third .profile-preview {
             margin-top: auto;
             padding-top: 1.5rem;
             border-top: 1px solid var(--gray-100);
@@ -446,7 +446,7 @@ body {
             transition: width 0.5s ease;
         }
 
-.page-third /* ── MAIN FORM AREA ── */ .form-col {
+.page-third .form-col {
             padding: 2.5rem 2.5rem 6rem;
             overflow-y: auto;
             max-width: 720px;
@@ -454,7 +454,7 @@ body {
             margin: 0 auto;
         }
 
-.page-third /* Section header */ .form-section-head {
+.page-third .form-section-head {
             margin-bottom: 2rem;
             padding-bottom: 1.25rem;
             border-bottom: 1px solid var(--gray-100);
@@ -495,7 +495,7 @@ body {
             line-height: 1.6;
         }
 
-.page-third /* ── FORM SECTIONS ── */ .form-block {
+.page-third .form-block {
             margin-bottom: 2.5rem;
             opacity: 0;
             transform: translateY(14px);
@@ -526,7 +526,7 @@ body {
             background: var(--gray-100);
         }
 
-.page-third /* ── SPECIALTY GRID ── */ .specialty-grid {
+.page-third .specialty-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
@@ -638,7 +638,7 @@ body {
             stroke-linecap: round;
         }
 
-.page-third /* Sub-specialty input */ .sub-spec-wrap {
+.page-third .sub-spec-wrap {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -648,7 +648,7 @@ body {
             max-height: 80px;
         }
 
-.page-third /* ── DEPARTMENT CARDS ── */ .dept-grid {
+.page-third .dept-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
@@ -743,7 +743,7 @@ body {
             transform: scale(1);
         }
 
-.page-third /* ── WORK TYPE ── */ .work-type-grid {
+.page-third .work-type-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
@@ -841,7 +841,7 @@ body {
             stroke-linecap: round;
         }
 
-.page-third /* ── AVAILABILITY DAYS ── */ .days-row {
+.page-third .days-row {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
@@ -878,7 +878,7 @@ body {
             box-shadow: 0 4px 10px rgba(29, 158, 117, 0.22);
         }
 
-.page-third /* ── HOUR RANGE ── */ .hour-row {
+.page-third .hour-row {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             gap: 10px;
@@ -891,13 +891,13 @@ body {
             text-align: center;
         }
 
-.page-third /* ── EXPERIENCE ── */ .exp-row {
+.page-third .exp-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
-.page-third /* Slider */ .range-wrap {
+.page-third .range-wrap {
             position: relative;
         }
 
@@ -951,7 +951,7 @@ body {
             transform: scale(1.15);
         }
 
-.page-third /* ── CERTIFICATIONS ── */ .cert-list {
+.page-third .cert-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -1049,7 +1049,7 @@ body {
             margin-top: 8px;
         }
 
-.page-third /* ── LANGUAGES ── */ .lang-wrap {
+.page-third .lang-wrap {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
@@ -1097,7 +1097,7 @@ body {
             stroke-linecap: round;
         }
 
-.page-third /* ── BIO ── */ .bio-wrap {
+.page-third .bio-wrap {
             position: relative;
         }
 
@@ -1141,7 +1141,7 @@ body {
             color: var(--coral-400);
         }
 
-.page-third /* AI suggest btn */ .ai-btn {
+.page-third .ai-btn {
             display: inline-flex;
             align-items: center;
             gap: 7px;
@@ -1173,7 +1173,7 @@ body {
             stroke-linecap: round;
         }
 
-.page-third /* ── SHARED INPUT STYLES ── */ .field {
+.page-third .field {
             margin-bottom: 1rem;
         }
 
@@ -1224,7 +1224,7 @@ body {
             gap: 12px;
         }
 
-.page-third /* Fee input */ .fee-wrap {
+.page-third .fee-wrap {
             position: relative;
         }
 
@@ -1242,7 +1242,7 @@ body {
             padding-left: 26px;
         }
 
-.page-third /* ── RIGHT PANEL ── */ .right-panel {
+.page-third .right-panel {
             border-left: 1px solid var(--gray-100);
             background: var(--white);
             padding: 2rem 1.5rem;
@@ -1264,7 +1264,7 @@ body {
             margin-bottom: 0.85rem;
         }
 
-.page-third /* Live preview card */ .preview-card {
+.page-third .preview-card {
             background: var(--gray-50);
             border: 1px solid var(--gray-100);
             border-radius: 14px;
@@ -1340,7 +1340,7 @@ body {
             font-size: 12px;
         }
 
-.page-third /* Completion checklist */ .checklist {
+.page-third .checklist {
             display: flex;
             flex-direction: column;
             gap: 7px;
@@ -1397,7 +1397,7 @@ body {
             opacity: 1;
         }
 
-.page-third /* ── FOOTER ── */ .form-footer {
+.page-third .form-footer {
             position: fixed;
             bottom: 0;
             left: 280px;
@@ -1512,7 +1512,7 @@ body {
             left: 150%;
         }
 
-.page-third /* ── TOAST ── */ .toast {
+.page-third .toast {
             position: fixed;
             bottom: 5.5rem;
             left: 50%;
@@ -1541,7 +1541,6 @@ body {
             background: var(--coral-400);
         }
 
-        /* ── RESPONSIVE ── */
         @media (max-width: 1100px) {
 .page-third .page-layout {
                 grid-template-columns: 240px 1fr;

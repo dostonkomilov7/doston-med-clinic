@@ -1,33 +1,24 @@
-// Framework-free helpers for appointment data, shared by the admin pages
-// (dashboard snapshot, Appointment Management) and the booking wizard.
-
 export type AppointmentStatus = "Pending" | "Confirmed" | "Completed" | "Cancelled";
 
-// One row of GET /appointments/management.
 export type ManagedAppointment = {
   id: number;
   status: AppointmentStatus | string;
-  appointment_date: string; // YYYY-MM-DD
-  appointment_time: string; // "9:30 AM"
+  appointment_date: string;
+  appointment_time: string;
   urgency?: string;
   reason?: string | null;
   patient: { id: number; full_name: string; phone: string | null };
   doctor: { id: number; full_name: string; specialization: string };
 };
 
-// Same forward-only flow the backend enforces: Pending → Confirmed →
-// Completed. Cancelling is a separate action, and Completed/Cancelled are final.
 const NEXT_STATUS: Record<string, AppointmentStatus> = { Pending: "Confirmed", Confirmed: "Completed" };
 
 export const nextStatus = (status: string): AppointmentStatus | null => NEXT_STATUS[status] ?? null;
 
-// Only an appointment that is still open can be cancelled.
 export const canCancel = (status: string): boolean => status === "Pending" || status === "Confirmed";
 
-// The reference patients see after booking ("Booking Reference: MB-42").
 export const bookingRef = (id: number | string): string => `MB-${id}`;
 
-/** "9:30 AM" → 570, "12:00 AM" → 0, "1:00 PM" → 780; null if it isn't a 12-hour time. */
 export const timeToMinutes = (time: string): number | null => {
   const match = /^\s*(\d{1,2}):(\d{2})\s*(AM|PM)\s*$/i.exec(time ?? "");
   if (!match) return null;
@@ -39,7 +30,6 @@ export const timeToMinutes = (time: string): number | null => {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** True when the slot has already started (or starts this very minute), by the browser's clock. */
 export const isSlotInPast = (date: string, time: string, now: Date = new Date()): boolean => {
   const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
   if (date < today) return true;
@@ -49,10 +39,10 @@ export const isSlotInPast = (date: string, time: string, now: Date = new Date())
 };
 
 export type AppointmentFilters = {
-  search: string; // patient name, phone, doctor name or booking reference
-  status: string; // "" = any
-  doctorId: string; // "" = any
-  date: string; // YYYY-MM-DD, "" = any
+  search: string;
+  status: string;
+  doctorId: string;
+  date: string;
 };
 
 const digitsOf = (text: string) => text.replace(/\D/g, "");
@@ -72,15 +62,12 @@ export const filterAppointments = <T extends ManagedAppointment>(rows: T[], f: A
       (r.patient?.full_name ?? "").toLowerCase().includes(q) ||
       (r.doctor?.full_name ?? "").toLowerCase().includes(q) ||
       bookingRef(r.id).toLowerCase().includes(q) ||
-      // "90 123", "+998 90…" and "(90)123" should all find the same phone.
       (qDigits.length >= 3 && digitsOf(phone).includes(qDigits)) ||
       phone.toLowerCase().includes(q)
     );
   });
 };
 
-// Date first, then the time of day as minutes ("10:00 AM" must sort after
-// "9:00 AM", which plain string comparison gets wrong).
 const sortKey = (r: ManagedAppointment) =>
   `${r.appointment_date} ${String(timeToMinutes(r.appointment_time) ?? 0).padStart(4, "0")}`;
 
@@ -107,7 +94,6 @@ export const countByStatus = (rows: { status: string }[]): StatusCounts => {
   return counts;
 };
 
-/** "2031-03-05" → "Mar 5, 2031" without letting the browser's time zone shift the day. */
 export const formatApptDate = (date: string): string => {
   const [y, m, d] = date.split("-").map(Number);
   if (!y || !m || !d) return date;

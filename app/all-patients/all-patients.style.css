@@ -54,7 +54,7 @@ body {
      min-height: 100vh;
  }
 
-.page-all-patients /* ── SIDEBAR ── */ .sidebar {
+.page-all-patients .sidebar {
      width: var(--sidebar-w);
      background: var(--gray-800);
      display: flex;
@@ -189,9 +189,7 @@ body {
      flex: 1;
  }
 
-.page-all-patients /* Renamed .bdg -> .badge (unused/dead otherwise) to match the
-    class name the JSX actually renders now, and doctor-dashboard's
-    own naming, so the two sidebars' "Soon" pills look identical. */ .nav-item .badge {
+.page-all-patients .nav-item .badge {
      background: var(--coral-400);
      color: #fff;
      font-size: 10px;
@@ -245,12 +243,7 @@ body {
      border-radius: 0 3px 3px 0;
  }
 
-.page-all-patients /* Previously this page's own JSX used .doc-av-sm/.doc-info-sm/.nm/.sp
-    while the actual markup was switched to match doctor-dashboard's
-    class names (.doc-avatar-lg/.doc-info/.name/.spec) — so none of
-    these rules matched anything anymore and the profile card rendered
-    unstyled. Renamed to match, values kept identical to
-    doctor-dashboard.style.css so the two look the same. */ .sidebar-doctor {
+.page-all-patients .sidebar-doctor {
      margin: 0 0.75rem 1rem;
      padding: 1rem;
      background: rgba(255, 255, 255, 0.05);
@@ -316,7 +309,7 @@ body {
      }
  }
 
-.page-all-patients /* ── MAIN ── */ .main {
+.page-all-patients .main {
      margin-left: var(--sidebar-w);
      flex: 1;
      display: flex;
@@ -460,7 +453,7 @@ body {
      border: 2px solid var(--teal-100);
  }
 
-.page-all-patients /* ── CONTENT ── */ .content {
+.page-all-patients .content {
      padding: 1.75rem 2rem;
      flex: 1;
  }
@@ -521,7 +514,7 @@ body {
      stroke-linecap: round;
  }
 
-.page-all-patients /* ── STATS STRIP ── */ .stats-strip {
+.page-all-patients .stats-strip {
      display: grid;
      grid-template-columns: repeat(5, 1fr);
      gap: 1rem;
@@ -614,7 +607,7 @@ body {
      margin-top: 3px;
  }
 
-.page-all-patients /* ── TOOLBAR ── */ .toolbar {
+.page-all-patients .toolbar {
      display: flex;
      align-items: center;
      gap: 10px;
@@ -692,12 +685,10 @@ body {
      background: var(--gray-50);
  }
 
-.page-all-patients /* ── TABLE ── */ .table-wrap {
+.page-all-patients .table-wrap {
      background: var(--white);
      border: 1px solid var(--gray-100);
      border-radius: var(--radius);
-     /* Was `overflow: hidden` — on narrow screens that clipped the
-        right side of the table instead of letting it scroll into view. */
      overflow-x: auto;
  }
 
@@ -778,7 +769,7 @@ body {
      vertical-align: middle;
  }
 
-.page-all-patients /* Patient cell */ .pt-cell {
+.page-all-patients .pt-cell {
      display: flex;
      align-items: center;
      gap: 11px;
@@ -809,7 +800,7 @@ body {
      margin-top: 1px;
  }
 
-.page-all-patients /* Risk pill */ .risk-pill {
+.page-all-patients .risk-pill {
      font-size: 11.5px;
      font-weight: 500;
      padding: 3px 10px;
@@ -837,7 +828,7 @@ body {
      color: var(--gray-600);
  }
 
-.page-all-patients /* Status pill */ .status-pill {
+.page-all-patients .status-pill {
      display: inline-flex;
      align-items: center;
      gap: 5px;
@@ -918,7 +909,7 @@ body {
      background: var(--gray-400);
  }
 
-.page-all-patients /* Progress bar for visits */ .visits-cell {
+.page-all-patients .visits-cell {
      display: flex;
      align-items: center;
      gap: 8px;
@@ -938,7 +929,7 @@ body {
      background: var(--teal-400);
  }
 
-.page-all-patients /* Row actions */ .row-actions {
+.page-all-patients .row-actions {
      display: flex;
      gap: 5px;
      justify-content: flex-end;
@@ -992,7 +983,7 @@ body {
      background: var(--purple-50);
  }
 
-.page-all-patients /* Table footer */ .table-footer {
+.page-all-patients .table-footer {
      display: flex;
      align-items: center;
      justify-content: space-between;
@@ -1059,7 +1050,7 @@ body {
      stroke-linecap: round;
  }
 
-.page-all-patients /* ── CARD GRID VIEW ── */ .patients-grid {
+.page-all-patients .patients-grid {
      display: none;
      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
      gap: 1rem;
@@ -1176,7 +1167,7 @@ body {
      border-color: var(--teal-800);
  }
 
-.page-all-patients /* ── DRAWER ── */ .drawer-overlay {
+.page-all-patients .drawer-overlay {
      position: fixed;
      inset: 0;
      background: rgba(0, 0, 0, 0.4);
@@ -1273,7 +1264,7 @@ body {
      border-radius: 100px;
  }
 
-.page-all-patients /* Patient hero in drawer */ .pt-hero {
+.page-all-patients .pt-hero {
      display: flex;
      align-items: center;
      gap: 16px;
@@ -1319,7 +1310,7 @@ body {
      flex-wrap: wrap;
  }
 
-.page-all-patients /* KPI row */ .kpi-row {
+.page-all-patients .kpi-row {
      display: grid;
      grid-template-columns: repeat(3, 1fr);
      gap: 8px;
@@ -1349,7 +1340,7 @@ body {
      letter-spacing: 0.04em;
  }
 
-.page-all-patients /* Info sections */ .info-section {
+.page-all-patients .info-section {
      margin-bottom: 1.5rem;
  }
 
@@ -1395,7 +1386,7 @@ body {
      grid-column: 1/-1;
  }
 
-.page-all-patients /* Visit timeline */ .visit-list {
+.page-all-patients .visit-list {
      display: flex;
      flex-direction: column;
      gap: 6px;
@@ -1505,7 +1496,7 @@ body {
      background: var(--teal-800);
  }
 
-.page-all-patients /* ── EMPTY STATE ── */ .empty-state {
+.page-all-patients .empty-state {
      text-align: center;
      padding: 4rem 2rem;
      display: none;
@@ -1543,7 +1534,7 @@ body {
      color: var(--gray-400);
  }
 
-.page-all-patients /* ── TOAST ── */ .toast {
+.page-all-patients .toast {
      position: fixed;
      bottom: 2rem;
      right: 2rem;

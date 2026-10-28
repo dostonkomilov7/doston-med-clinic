@@ -75,7 +75,6 @@ export default function AdminDashboardPage() {
   return (
     <div className="page-admin-dashboard">
     <div className="app">
-      {/* SIDEBAR */}
       <Sidebar badge={<span className="admin-chip">Admin</span>}>
         <nav className="nav-section">
           <p className="nav-label">Overview</p>
@@ -98,7 +97,6 @@ export default function AdminDashboardPage() {
         </div>
       </Sidebar>
 
-      {/* MAIN */}
       <div className="main">
         <header className="topbar">
           <div className="topbar-left">
@@ -119,7 +117,6 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Stats */}
           <div className="stats-strip">
             <div className="stat-card"><div className="stat-icon teal"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div className="stat-text"><div className="val">{stats.totalDoctors}</div><div className="lbl">Total Doctors</div></div></div>
             <div className="stat-card"><div className="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div className="stat-text"><div className="val">{stats.totalPatients}</div><div className="lbl">Total Patients</div></div></div>
@@ -127,7 +124,6 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="dash-grid">
-            {/* LEFT COLUMN */}
             <div className="dash-col-main">
               <div className="panel-card">
                 <div className="panel-head"><h3>Active Doctors</h3><Link href="/doctor-management">Manage Doctors →</Link></div>
@@ -150,7 +146,6 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            {/* RIGHT COLUMN */}
             <div className="dash-col-side">
               <div className="panel-card">
                 <div className="panel-head"><h3>Quick Actions</h3></div>
@@ -180,13 +175,7 @@ export default function AdminDashboardPage() {
                 <div className="snapshot-row"><span>Inactive Doctors</span><strong>{stats.inactiveDoctors}</strong></div>
                 <div className="snapshot-row"><span>Active Users</span><strong>{stats.activeUsers}</strong></div>
                 <div className="snapshot-row"><span>Inactive Users</span><strong>{stats.inactiveUsers}</strong></div>
-                {/* stats.totalUsers already covers both patients and
-                    doctors — GET /users excludes only the Admin role. */}
                 <div className="snapshot-row"><span>Total Accounts</span><strong>{stats.totalUsers}</strong></div>
-                {/* Appointment counts come from the same GET /appointments
-                    response the dashboard already loads. "Completed" isn't
-                    in the brief but without it these rows don't add up to
-                    the total. */}
                 <div className="snapshot-row"><span>Total Appointments</span><strong>{stats.appointments.total}</strong></div>
                 <div className="snapshot-row"><span>Pending Appointments</span><strong>{stats.appointments.pending}</strong></div>
                 <div className="snapshot-row"><span>Confirmed Appointments</span><strong>{stats.appointments.confirmed}</strong></div>

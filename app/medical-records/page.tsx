@@ -56,17 +56,12 @@ export default function MedicalRecordsPage() {
     const userId = getCookie("userId");
     if (!userId) return;
     try {
-      // TODO: no backend endpoint for medical records (visit history /
-      // diagnoses) yet. Once one exists — e.g. `GET /medical-records/:userId`
-      // returning `{ records: [{id, date, type, doctor, notes}, ...] }` —
-      // this fetch starts populating the table below as-is.
       const res = await fetch(`${apiUrl}/medical-records/${userId}`, { credentials: "include" });
       if (res.ok) {
         const data = await res.json();
         setRecords(data.records ?? []);
       }
     } catch (e) {
-      // Endpoint doesn't exist yet — treated as "no records", not an error.
     }
   };
 
@@ -170,25 +165,6 @@ export default function MedicalRecordsPage() {
             </div>
           </div>
 
-          <div className="section-head"><h3>Records</h3></div>
-          <div className="table-card">
-            <table>
-              <thead><tr><th>Date</th><th>Type</th><th>Doctor</th><th>Notes</th></tr></thead>
-              <tbody>
-                {records.length === 0 ? (
-                  <tr><td colSpan={4}><div className="empty-row">No medical records yet.</div></td></tr>
-                ) : records.map((r) => (
-                  <tr key={r.id}>
-                    <td>{r.date}</td>
-                    <td>{r.type}</td>
-                    <td>{r.doctor}</td>
-                    <td>{r.notes ?? "—"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
           <div className="section-head"><h3>Medications</h3><button className="btn-add-med" onClick={openAddMed}>+ Add Medication</button></div>
           <div className="card">
             {medications.length === 0 ? (
@@ -210,18 +186,9 @@ export default function MedicalRecordsPage() {
               </div>
             )}
           </div>
-
-          <div className="empty-panel">
-            <div className="empty-panel-icon">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
-            </div>
-            <h3>Visit history tracking is coming soon</h3>
-            <p>Once this feature launches, your visit history and diagnoses from your doctors will appear in the Records table above automatically. Medications above are already yours to manage.</p>
-          </div>
         </div>
       </div>
 
-      {/* ADD MEDICATION MODAL */}
       {showAddMed && (
         <div className="modal-overlay" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setShowAddMed(false); }}>
           <div className="modal">

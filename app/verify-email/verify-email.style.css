@@ -1,4 +1,4 @@
-/* verify-email inline styles extracted from HTML */ *,
+  *,
 *::before,
 *::after {box-sizing:border-box;margin:0;padding:0}
 :root {
@@ -11,7 +11,7 @@
 }
 html,
 body {min-height:100%;font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800)}
-/* Previously this lived on the bare `body` selector — global, so this page's 2-column layout could collide with (or get overridden by) whatever other page's stylesheet happened to still be attached to the document at the same time. Scoped to the wrapper div added around this page's own JSX. */ .page-verify-email {display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+  .page-verify-email {display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
 .page-verify-email .panel-left {background:var(--teal-800);position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:3rem;overflow:hidden}
 .page-verify-email .panel-left::before {content:'';position:absolute;top:-140px;left:-100px;width:480px;height:480px;border-radius:50%;border:80px solid rgba(255,255,255,0.04);pointer-events:none}
 .page-verify-email .panel-left::after {content:'';position:absolute;bottom:-80px;right:-80px;width:360px;height:360px;border-radius:50%;border:65px solid rgba(255,255,255,0.04);pointer-events:none}
@@ -47,10 +47,7 @@ body {min-height:100%;font-family:var(--font-body);background:var(--gray-50);col
 .page-verify-email .step-pip.active {width:36px;background:#fff}
 .page-verify-email .step-pip.future {width:16px}
 .page-verify-email .step-label {font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.04em;margin-left:4px}
-.page-verify-email /* Was `overflow:hidden` — on any viewport shorter than the OTP form's
-   natural height, that hard-clipped the bottom of the form (the Verify
-   button, resend timer, security note) with no way to scroll to it at
-   all. Give it its own scroll instead of clipping. */ .panel-right {display:flex;align-items:center;justify-content:center;padding:3rem 2rem;position:relative;min-height:100vh;max-height:100vh;overflow-y:auto}
+.page-verify-email .panel-right {display:flex;align-items:center;justify-content:center;padding:3rem 2rem;position:relative;min-height:100vh;max-height:100vh;overflow-y:auto}
 .page-verify-email .panel-right::before {content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(29,158,117,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(29,158,117,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
 .page-verify-email .form-wrap {width:100%;max-width:420px;position:relative;z-index:1}
 .page-verify-email .form-header {margin-bottom:2.5rem}
@@ -113,9 +110,6 @@ body {min-height:100%;font-family:var(--font-body);background:var(--gray-50);col
 .page-verify-email .btn-go-dashboard svg {width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}
 .page-verify-email .confetti-dot {position:absolute;border-radius:50%;animation:confettiFly var(--dur,1s) var(--delay,0s) ease-out forwards;opacity:0}
 
-/* Lockout overlay — same full-screen pattern as .success-overlay, but
-   warning-colored and rendered only while `locked` is true (mounted/
-   unmounted by React, not opacity-toggled), with no way to dismiss it. */
 .page-verify-email .lockout-overlay {position:fixed;inset:0;background:rgba(245,242,236,0.97);backdrop-filter:blur(12px);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;opacity:1;padding:0 1.5rem;text-align:center}
 .page-verify-email .lockout-icon-wrap {position:relative;margin-bottom:2rem}
 .page-verify-email .lockout-circle {width:96px;height:96px;border-radius:50%;background:var(--coral-50);border:3px solid var(--coral-400);display:flex;align-items:center;justify-content:center;animation:scaleIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both}

@@ -47,7 +47,6 @@ body {
     min-height: 100vh;
 }
 
-/* ── SIDEBAR ── */
 .page-medical-records .sidebar {
     width: var(--sidebar-w);
     background: var(--teal-800);
@@ -247,7 +246,6 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
-/* ── MAIN ── */
 .page-medical-records .main {
     margin-left: var(--sidebar-w);
     flex: 1;
@@ -340,7 +338,6 @@ body {
     cursor: pointer;
 }
 
-/* ── CONTENT ── */
 .page-medical-records .content {
     padding: 2rem;
     flex: 1;
@@ -398,7 +395,6 @@ body {
     background: var(--teal-800);
 }
 
-/* ── RECORDS TABLE ── */
 .page-medical-records .table-card {
     background: var(--white);
     border: 1px solid var(--gray-100);
@@ -446,7 +442,6 @@ body {
     font-size: 13.5px;
 }
 
-/* ── MEDICATIONS CARD ── */
 .page-medical-records .card {
     background: var(--white);
     border: 1px solid var(--gray-100);
@@ -528,7 +523,6 @@ body {
     stroke: var(--coral-400);
 }
 
-/* ── EMPTY PANEL ── */
 .page-medical-records .empty-panel {
     background: var(--white);
     border: 1px dashed var(--gray-200);
@@ -574,7 +568,6 @@ body {
     line-height: 1.5;
 }
 
-/* ── ADD MEDICATION MODAL ── */
 .page-medical-records .modal-overlay {
     position: fixed;
     inset: 0;
@@ -759,7 +752,6 @@ body {
     cursor: not-allowed;
 }
 
-/* ── TOAST ── */
 .page-medical-records .toast {
     position: fixed;
     bottom: 2rem;
@@ -793,7 +785,6 @@ body {
     color: #fff;
 }
 
-/* ── RESPONSIVE ── */
 .page-medical-records .hamburger-btn {
     display: none;
     background: none;

@@ -42,14 +42,6 @@ const HOURS = ["06:00 AM", "07:00 AM", "08:00 AM", "08:30 AM", "09:00 AM", "09:3
 function ThirdPageContent() {
   const router = useRouter();
   const [name, setName] = useState()
-  // The Continue button used a static `disabled` literal in JSX while
-  // updateChecklist()/handleNext() tried to imperatively flip
-  // `nextBtn.disabled` — same failure mode as book-appointment's
-  // Continue/Confirm buttons had: React keeps its own copy of the
-  // `disabled` prop from the last render and re-syncs the DOM to match
-  // it after every relevant event, so the imperative write never
-  // actually stuck and the button was permanently unclickable. Driving
-  // it from real state fixes that at the root.
   const [canContinue, setCanContinue] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -302,9 +294,6 @@ function ThirdPageContent() {
       if (!res1.ok || !response1.success) { showToast(response1.message ?? "Could not save your schedule.", "error"); return; }
 
       showToast("Professional profile saved!");
-      // email came from a decoded search param — re-encode it before
-      // putting it back into a URL, or a "+" or "&" in the address
-      // would corrupt the query string on the next page.
       setTimeout(() => { router.push(`/doctor-dashboard`); }, 1500);
     } catch (e) {
       console.error("Failed to save professional profile:", e);
@@ -314,7 +303,6 @@ function ThirdPageContent() {
     }
   };
 
-  // expose to window for inline onclick handlers
   useEffect(() => {
     (window as any).__selectSpecialty = selectSpecialty;
     (window as any).__selectDepartment = selectDepartment;
@@ -323,13 +311,6 @@ function ThirdPageContent() {
   });
 
   useEffect(() => {
-    // No "already logged in, redirect away" guard here on purpose: this
-    // page is reached right after verify-email, which is exactly when a
-    // new doctor account gets a real session for the first time — an
-    // "am I authenticated?" check would fire immediately and bounce them
-    // to their dashboard before they ever get to fill in their
-    // specialty/department/schedule, since finishing onboarding is the
-    // one thing this page is for.
     const handlePageShow = (e: PageTransitionEvent) => {
       if (e.persisted) window.location.reload();
     };
@@ -356,7 +337,6 @@ function ThirdPageContent() {
       </header>
 
       <div className="page-layout">
-        {/* SIDEBAR */}
         <aside className="left-sidebar">
           <div className="sidebar-heading">Profile Setup</div>
           <div className="sidebar-steps">
@@ -393,7 +373,6 @@ function ThirdPageContent() {
           </div>
         </aside>
 
-        {/* MAIN FORM */}
         <div className="form-col" id="formCol">
           <div className="form-section-head">
             <div className="section-badge">Step 3 of 3 — Professional Profile</div>
@@ -401,7 +380,6 @@ function ThirdPageContent() {
             <p>Tell patients about your expertise, availability, and background.</p>
           </div>
 
-          {/* SPECIALTY */}
           <div className="form-block visible" id="block-specialty">
             <div className="block-title">Specialty</div>
             <div className="specialty-grid" id="specialtyGrid"></div>
@@ -409,19 +387,16 @@ function ThirdPageContent() {
             </div>
           </div>
 
-          {/* DEPARTMENT */}
           <div className="form-block visible" id="block-department">
             <div className="block-title">Department</div>
             <div className="dept-grid" id="deptGrid"></div>
           </div>
 
-          {/* WORK TYPE */}
           <div className="form-block visible" id="block-worktype">
             <div className="block-title">Work Type</div>
             <div className="work-type-grid" id="workTypeGrid"></div>
           </div>
 
-          {/* AVAILABILITY */}
           <div className="form-block visible" id="block-availability">
             <div className="block-title">Availability</div>
             <div className="field">
@@ -438,7 +413,6 @@ function ThirdPageContent() {
             </div>
           </div>
 
-          {/* EXPERIENCE */}
           <div className="form-block visible" id="block-experience">
             <div className="block-title">Experience</div>
             <div className="exp-row">
@@ -453,7 +427,6 @@ function ThirdPageContent() {
             </div>
           </div>
 
-          {/* BIO */}
           <div className="form-block visible" id="block-bio">
             <div className="block-title">Bio & Profile</div>
             <div className="field">
@@ -474,7 +447,6 @@ function ThirdPageContent() {
           </div>
         </div>
 
-        {/* RIGHT PANEL */}
         <aside className="right-panel">
           <div className="rp-section">
             <h4>Live Preview</h4>
@@ -511,7 +483,6 @@ function ThirdPageContent() {
         </aside>
       </div>
 
-      {/* FOOTER */}
       <div className="form-footer">
         <div className="footer-info">Completion: <span id="footerPct">0%</span></div>
         <div className="footer-actions">

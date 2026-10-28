@@ -22,8 +22,6 @@ const STATUS_COLORS: Record<string, string> = {
 const DONUT_R = 38;
 const DONUT_C = 2 * Math.PI * DONUT_R;
 
-// "9:00 AM"/"11:30 PM" -> minutes since midnight, for correctly ordering
-// same-day visits (a plain string compare puts "10:00 AM" before "9:00 AM").
 function timeToMinutes(t: string): number {
   const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i.exec(String(t).trim());
   if (!m) return 0;
@@ -86,15 +84,7 @@ export default function DoctorDashboardPage() {
 
     const appointments: any[] = data.doctors[0].appointments ?? [];
 
-    // Reset before appending — without this, re-running getDoctorApp
-    // (e.g. React Strict Mode double-invoking effects in dev, or the
-    // user navigating back to this page) kept appending rows on top
-    // of the ones already rendered, duplicating the list.
     recentPatients.innerHTML = "";
-    // Cap to the 5 most recent visits here — the rest is a click away via
-    // "All patients →". Sorted by date (then time) descending so "recent"
-    // actually means recent, not just whatever order the API happened to
-    // return rows in.
     const recentFive = [...appointments]
       .sort((a: any, b: any) => {
         const dateDiff = String(b.appointment_date).localeCompare(String(a.appointment_date));
@@ -122,10 +112,6 @@ export default function DoctorDashboardPage() {
         </tr>`;
     });
 
-    // Every number below used to be a hardcoded mockup value (7 today's
-    // appts, 142 active patients, a fake donut chart keyed off a
-    // "type" field the Appointment model doesn't even have…). All of
-    // it is now derived from this doctor's real appointment list.
     const todayStr = new Date().toISOString().slice(0, 10);
     const todaysAppts = appointments.filter((a) => a.appointment_date === todayStr).length;
     const totalPatients = new Set(appointments.map((a) => a.user?.id)).size;
@@ -152,7 +138,6 @@ export default function DoctorDashboardPage() {
   return (
     <div className="doctor-shell">
     <div className="app">
-      {/* SIDEBAR */}
       <Sidebar badge={<span className="brand-badge">MD</span>}>
         <div style={{ padding: "0.75rem 0.75rem 0.25rem" }}>
           <div className="sidebar-doctor">
@@ -172,7 +157,6 @@ export default function DoctorDashboardPage() {
         </nav>
       </Sidebar>
 
-      {/* MAIN */}
       <div className="main">
         <header className="topbar">
           <div className="topbar-left">
@@ -180,17 +164,12 @@ export default function DoctorDashboardPage() {
             <div className="topbar-title">Doctor <span>Overview</span></div>
             <div className="topbar-sub"></div>
           </div>
-          <div className="search-box">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-            <input type="text" placeholder="Search patients, records…" />
-          </div>
           <div className="topbar-actions">
             <div className="avatar-btn"></div>
           </div>
         </header>
 
         <div className="content">
-          {/* Today Banner */}
           <div className="today-banner">
             <div className="banner-copy">
               <p className="date"></p>
@@ -206,13 +185,6 @@ export default function DoctorDashboardPage() {
             </div>
           </div>
 
-          {/* Stats — every card here used to be a fixed mockup number
-              (142 patients, 3 urgent, 18 "Lab Results" — a feature that
-              doesn't exist server-side, 4.9★ "Patient Rating" — no
-              rating system exists either). All four are now computed
-              from this doctor's real appointment list; the fake
-              "↑ X this week"/"94%" trend badges were dropped since
-              there's no real trend computation behind them. */}
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-top"><div className="stat-icon teal"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg></div></div>
@@ -232,7 +204,6 @@ export default function DoctorDashboardPage() {
             </div>
           </div>
 
-          {/* Main grid */}
           <div className="main-grid">
             <div className="left-col">
               <div>
@@ -256,13 +227,6 @@ export default function DoctorDashboardPage() {
             <div className="right-col">
               <div className="card">
                 <div className="section-head" style={{ marginBottom: "1.1rem" }}><h3>This Week</h3></div>
-                {/* This whole widget used to be a fixed illustration —
-                    fake arc lengths adding up to a fake "28 appts", with
-                    a legend keyed off a "type" (in-person/virtual) that
-                    the Appointment model doesn't even have a column
-                    for. It's now a real donut: one arc per appointment
-                    status that actually occurred this week, sized to
-                    its real share of the week's total. */}
                 <div className="donut-wrap">
                   <svg className="donut-svg" width="100" height="100" viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r={DONUT_R} fill="none" stroke="#EDEDEA" strokeWidth="14" />

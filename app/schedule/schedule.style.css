@@ -1,4 +1,4 @@
-.page-schedule /* ── Schedule page additions (reuses dashboard tokens) ── */ .icon-btn.sm {
+.page-schedule .icon-btn.sm {
     width: 32px;
     height: 32px;
 }
@@ -8,7 +8,7 @@
     height: 14px;
 }
 
-.page-schedule /* Toolbar */ .sched-toolbar {
+.page-schedule .sched-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -79,7 +79,7 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-.page-schedule /* Mini stats */ .mini-stats {
+.page-schedule .mini-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
@@ -108,7 +108,7 @@
     color: var(--gray-400);
 }
 
-.page-schedule /* Empty state */ .empty-state {
+.page-schedule .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -131,7 +131,7 @@
     color: var(--gray-400);
 }
 
-.page-schedule /* Schedule action variants */ .schedule-action.edit:hover {
+.page-schedule .schedule-action.edit:hover {
     border-color: var(--blue-400);
     color: var(--blue-600);
     background: var(--blue-50);
@@ -144,7 +144,7 @@
     margin-top: 2px;
 }
 
-.page-schedule /* ── MODAL ── */ .modal-overlay {
+.page-schedule .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(44, 44, 42, 0.45);
@@ -156,7 +156,7 @@
   backdrop-filter: blur(2px);
 }
 
-.page-schedule /* add this — overrides display:flex when hidden */ .modal-overlay[hidden] {
+.page-schedule .modal-overlay[hidden] {
   display: none;
 }
 
@@ -265,18 +265,12 @@
     }
 }
 
-/* .sidebar / .hamburger-btn / .sidebar-overlay (including their
-   mobile breakpoint) now come from the shared
-   ../doctor-dashboard/doctor-dashboard.style.css import — this file
-   used to carry its own stale duplicate of all three, which is what
-   made it necessary for a while. */
 @media (max-width: 768px) {
 .page-schedule .field-row {
         flex-direction: column;
     }
 }
 
-/* ── Toast (local, replaces the removed shared MediAlert widget) ── */
 .page-schedule .toast {
     position: fixed;
     bottom: 2rem;

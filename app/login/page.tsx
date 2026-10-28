@@ -124,7 +124,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* RIGHT PANEL */}
       <div className="panel-right">
         <div className="form-card">
           <div className="form-header">

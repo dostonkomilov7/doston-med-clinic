@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Mobile menu button for the topbar — toggles the .open class on the
- * nearest .sidebar / .sidebar-overlay (rendered by <Sidebar>). Plain
- * DOM class toggling rather than React state to match how the rest of
- * this codebase already wires up interactivity (querySelector +
- * classList), so it drops in without touching each page's render logic.
- */
 export default function HamburgerToggle() {
   return (
     <button

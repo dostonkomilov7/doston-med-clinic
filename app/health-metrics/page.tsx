@@ -174,17 +174,9 @@ export default function HealthMetricsPage() {
             })}
           </div>
 
-          <div className="empty-panel">
-            <div className="empty-panel-icon">
-              <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
-            </div>
-            <h3>Self-reported readings</h3>
-            <p>Click the pencil on any card above to log or update your own reading. Readings synced automatically from your doctor visits are coming in a future update.</p>
-          </div>
         </div>
       </div>
 
-      {/* EDIT METRIC MODAL */}
       {editKey && editingType && (
         <div className="modal-overlay" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setEditKey(null); }}>
           <div className="modal">

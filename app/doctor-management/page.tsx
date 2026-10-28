@@ -181,7 +181,6 @@ export default function DoctorManagementPage() {
         method:"PATCH",
         headers:{"Content-Type":"application/json"},
         credentials:"include",
-        // An emptied fee field is sent as null so the price really is cleared.
         body:JSON.stringify({specialization:spec,department:dept,experience,bio,type,room_number:Number(room),consultation_fee:consultationFee}),
       });
       const r = await res.json();
@@ -201,7 +200,6 @@ export default function DoctorManagementPage() {
   return (
     <div className="page-doctor-management">
     <div className="app">
-      {/* SIDEBAR */}
       <Sidebar badge={<span className="admin-chip">Admin</span>}>
         <nav className="nav-section">
           <p className="nav-label">Overview</p>
@@ -224,7 +222,6 @@ export default function DoctorManagementPage() {
         </div>
       </Sidebar>
 
-      {/* MAIN */}
       <div className="main">
         <header className="topbar">
           <div className="topbar-left">
@@ -247,7 +244,6 @@ export default function DoctorManagementPage() {
             </div>
           </div>
 
-          {/* Stats */}
           <div className="stats-strip">
             <div className="stat-card"><div className="stat-icon teal"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div className="stat-text"><div className="val total-dc">{stats.total}</div><div className="lbl">Total Doctors</div></div></div>
             <div className="stat-card"><div className="stat-icon teal"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div className="stat-text"><div className="val">{stats.active}</div><div className="lbl">Active</div></div></div>
@@ -255,7 +251,6 @@ export default function DoctorManagementPage() {
             <div className="stat-card"><div className="stat-icon blue"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div className="stat-text"><div className="val">{stats.appointments}</div><div className="lbl">Total Appointments</div></div></div>
           </div>
 
-          {/* Toolbar */}
           <div className="toolbar">
             <div className="search-box">
               <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -278,7 +273,6 @@ export default function DoctorManagementPage() {
             </select>
           </div>
 
-          {/* Bulk bar */}
           {selected.size > 0 && (
             <div className="bulk-bar visible">
               <span>{selected.size} selected</span>
@@ -291,7 +285,6 @@ export default function DoctorManagementPage() {
             </div>
           )}
 
-          {/* Table */}
           <div className="table-wrap">
             <table id="doctors-table">
               <thead>
@@ -331,10 +324,6 @@ export default function DoctorManagementPage() {
                       </td>
                       <td>
                         <div className="doc-cell">
-                          {/* Was Math.random() — picked a new color on every
-                              re-render (e.g. each keystroke in search),
-                              making each doctor's avatar flicker between
-                              colors instead of having a stable identity. */}
                           <div className="doc-av" style={{background:COLORS[Number(d.id)%COLORS.length]}}>{d.user?.full_name?.[0]?.toUpperCase()}</div>
                           <div><div className="doc-name">{d.user?.full_name}</div><div className="doc-id">ID: {d.id} · {d.user?.email}</div></div>
                         </div>
@@ -371,7 +360,6 @@ export default function DoctorManagementPage() {
         </div>
       </div>
 
-      {/* DRAWER */}
       <div className={`drawer-overlay${drawerMode?" open":""}`} onClick={e=>{if((e.target as HTMLElement).classList.contains("drawer-overlay"))setDrawerMode(null);}}>
         <div className="drawer">
           <div className="drawer-header">
@@ -383,7 +371,6 @@ export default function DoctorManagementPage() {
           </div>
 
           <div className="drawer-body">
-            {/* ADD FORM */}
             {drawerMode === "add" && (
               <div>
                 <div className="form-fields-row">
@@ -436,7 +423,6 @@ export default function DoctorManagementPage() {
               </div>
             )}
 
-            {/* VIEW */}
             {drawerMode === "view" && drawerDoc && (
               <div>
                 <div className="drawer-doc-profile">
@@ -484,7 +470,6 @@ export default function DoctorManagementPage() {
               </div>
             )}
 
-            {/* EDIT */}
             {drawerMode === "edit" && drawerDoc && (
               <div>
                 <div className="form-field"><label>Department</label>
@@ -533,7 +518,6 @@ export default function DoctorManagementPage() {
         </div>
       </div>
 
-      {/* DELETE MODAL */}
       {delTarget && (
         <div className="modal-overlay open" onClick={e=>{if((e.target as HTMLElement).classList.contains("modal-overlay"))setDelTarget(null);}}>
           <div className="modal">
@@ -550,7 +534,6 @@ export default function DoctorManagementPage() {
         </div>
       )}
 
-      {/* BULK DELETE MODAL */}
       {bulkDeleteConfirm && (
         <div className="modal-overlay open" onClick={e=>{if((e.target as HTMLElement).classList.contains("modal-overlay"))setBulkDeleteConfirm(false);}}>
           <div className="modal">

@@ -9,11 +9,6 @@ import HamburgerToggle from "../../components/sidebar/HamburgerToggle";
 const COLORS = ["#1D9E75", "#378ADD", "#D85A30", "#EF9F27", "#8B7EF8", "#34C97A", "#E0608A", "#22C5D9", "#F07B3F"];
 const PER_PAGE = 8;
 
-// "Risk" used to be a fully fake, hardcoded "Medium" everywhere (filter,
-// table, grid card, drawer) — the filter dropdown didn't even read its own
-// value (`riskFilter === "Medium"`, ignoring which option was picked), so
-// nothing here ever reflected a real patient. Now driven by each
-// appointment's real urgency field, same mapping doctor-dashboard uses.
 const URGENCY_RISK: Record<string, { cls: string; label: string }> = {
   Urgent: { cls: "high", label: "Urgent" },
   Soon: { cls: "medium", label: "Soon" },
@@ -100,11 +95,6 @@ export default function AllPatientsPage() {
     if (riskFilter) list = list.filter(p => (p.urgency || "Routine") === riskFilter);
     if (statusFilter) list = list.filter(p => p.user?.status === statusFilter);
 
-    // "Sort" used to just sit there — sortKey was tracked in state but
-    // never actually applied to the list. "Visits" counts each patient's
-    // total appointments across the *unfiltered* list, since that's the
-    // real measure of "how many times has this patient been seen", not
-    // just how many of their rows survived the current filters.
     if (sortKey === "name") {
       list.sort((a, b) => (a.user?.full_name || "").localeCompare(b.user?.full_name || ""));
     } else if (sortKey === "recent") {
@@ -122,7 +112,6 @@ export default function AllPatientsPage() {
   const pageSlice = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
 
-  // Stats
   const statTotal = filtered.length;
   const statActive = filtered.filter(p => p.user?.status === "Active").length;
   const statInactive = filtered.filter(p => p.user?.status === "Inactive").length;
@@ -161,7 +150,6 @@ export default function AllPatientsPage() {
   return (
     <div className="page-all-patients">
     <div className="app">
-      {/* SIDEBAR */}
       <Sidebar badge={<span className="brand-badge">MD</span>}>
         <div style={{ padding: "0.75rem 0.75rem 0.25rem" }}>
           <div className="sidebar-doctor">
@@ -181,7 +169,6 @@ export default function AllPatientsPage() {
         </nav>
       </Sidebar>
 
-      {/* MAIN */}
       <div className="main">
         <header className="topbar">
           <div className="topbar-left">
@@ -204,7 +191,6 @@ export default function AllPatientsPage() {
         </header>
 
         <div className="content">
-          {/* Page header */}
           <div className="page-header">
             <div className="page-header-left">
               <h1>All <em>Patients</em></h1>
@@ -212,7 +198,6 @@ export default function AllPatientsPage() {
             </div>
           </div>
 
-          {/* Stats strip */}
           <div className="stats-strip">
             <div className="stat-card">
               <div className="stat-icon teal"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></div>
@@ -236,7 +221,6 @@ export default function AllPatientsPage() {
             </div>
           </div>
 
-          {/* Toolbar */}
           <div className="toolbar">
             <select className="filter-select" value={riskFilter} onChange={e => setRiskFilter(e.target.value)}>
               <option value="">All Urgency Levels</option>
@@ -254,19 +238,8 @@ export default function AllPatientsPage() {
               <option value="recent">Sort: Recent</option>
               <option value="visits">Sort: Visits</option>
             </select>
-            <div className="toolbar-right">
-              <div className="view-toggle">
-                <button className={`view-btn${currentView === "table" ? " active" : ""}`} onClick={() => setCurrentView("table")} title="Table view">
-                  <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
-                </button>
-                <button className={`view-btn${currentView === "grid" ? " active" : ""}`} onClick={() => setCurrentView("grid")} title="Grid view">
-                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
-                </button>
-              </div>
-            </div>
           </div>
 
-          {/* Table view */}
           {currentView === "table" && filtered.length > 0 && (
             <div className="table-wrap">
               <table>
@@ -334,7 +307,6 @@ export default function AllPatientsPage() {
             </div>
           )}
 
-          {/* Grid view */}
           {currentView === "grid" && filtered.length > 0 && (
             <div className="patients-grid">
               {pageSlice.map((p: any, i) => (
@@ -359,7 +331,6 @@ export default function AllPatientsPage() {
             </div>
           )}
 
-          {/* Empty state */}
           {filtered.length === 0 && (
             <div className="empty-state">
               <div className="empty-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></div>
@@ -370,7 +341,6 @@ export default function AllPatientsPage() {
         </div>
       </div>
 
-      {/* DRAWER */}
       <div className={`drawer-overlay${drawer ? " open" : ""}`} onClick={e => { if ((e.target as HTMLElement).classList.contains("drawer-overlay")) setDrawer(null); }}>
         <div className="drawer">
           <div className="drawer-header">
@@ -416,7 +386,6 @@ export default function AllPatientsPage() {
         </div>
       </div>
 
-      {/* TOAST */}
       {toast && <div className={`toast ${toast.type} show`}>{toast.msg}</div>}
     </div>
     </div>
