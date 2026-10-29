@@ -286,7 +286,7 @@ export default function DoctorManagementPage() {
           )}
 
           <div className="table-wrap">
-            <table id="doctors-table">
+            <table id="doctors-table" data-cards>
               <thead>
                 <tr>
                   <th className="th-check">
@@ -316,24 +316,24 @@ export default function DoctorManagementPage() {
                   const isSelected = selected.has(d.id);
                   return (
                     <tr key={d.id} className={isSelected?"selected":""} onClick={()=>{setDrawerDoc(d);setDrawerMode("view");}}>
-                      <td onClick={e=>e.stopPropagation()}>
+                      <td data-cell="check" onClick={e=>e.stopPropagation()}>
                         <label className="cb-wrap">
                           <input type="checkbox" checked={isSelected} onChange={e=>{const n=new Set(selected);e.target.checked?n.add(d.id):n.delete(d.id);setSelected(n);}}/>
                           <span className="cb-custom"></span>
                         </label>
                       </td>
-                      <td>
+                      <td data-cell="main">
                         <div className="doc-cell">
                           <div className="doc-av" style={{background:COLORS[Number(d.id)%COLORS.length]}}>{d.user?.full_name?.[0]?.toUpperCase()}</div>
                           <div><div className="doc-name">{d.user?.full_name}</div><div className="doc-id">ID: {d.id} · {d.user?.email}</div></div>
                         </div>
                       </td>
-                      <td><span className={`spec-badge ${specClass}`}>{d.specialization}</span></td>
-                      <td style={{color:"var(--gray-600)",fontSize:"13px"}}>{d.type}</td>
-                      <td><div className="rating-cell"><span className="stars">{stars}</span><span className="rating-val">4.9</span></div></td>
-                      <td style={{color:"var(--gray-600)",fontSize:"13px"}}>{strJoined(d.createdAt??d.created_at??"")}</td>
-                      <td><span className={`status-pill ${sClass}`}>{d.user?.status}</span></td>
-                      <td>
+                      <td data-label="Specialty"><span className={`spec-badge ${specClass}`}>{d.specialization}</span></td>
+                      <td data-label="Type" style={{color:"var(--gray-600)",fontSize:"13px"}}>{d.type}</td>
+                      <td data-label="Rating"><div className="rating-cell"><span className="stars">{stars}</span><span className="rating-val">4.9</span></div></td>
+                      <td data-label="Joined" style={{color:"var(--gray-600)",fontSize:"13px"}}>{strJoined(d.createdAt??d.created_at??"")}</td>
+                      <td data-label="Status"><span className={`status-pill ${sClass}`}>{d.user?.status}</span></td>
+                      <td data-cell="actions">
                         <div className="row-actions" style={{justifyContent:"flex-end"}}>
                           <button className="row-btn edit" title="Edit" onClick={e=>{e.stopPropagation();openEdit(d);}}>
                             <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>

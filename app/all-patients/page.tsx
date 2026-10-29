@@ -6,6 +6,7 @@ import "./all-patients.style.css";
 import { getCookie, AUTH_COOKIE, getUserData, strMonth, getAge, apiUrl, signOut } from "../../lib/utils";
 import Sidebar from "../../components/sidebar/Sidebar";
 import HamburgerToggle from "../../components/sidebar/HamburgerToggle";
+import { useMediaQuery, PHONE_QUERY } from "../../lib/useMediaQuery";
 const COLORS = ["#1D9E75", "#378ADD", "#D85A30", "#EF9F27", "#8B7EF8", "#34C97A", "#E0608A", "#22C5D9", "#F07B3F"];
 const PER_PAGE = 8;
 
@@ -23,7 +24,8 @@ export default function AllPatientsPage() {
   const [filtered, setFiltered] = useState<any[]>([]);
   const [userData, setUserData] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentView, setCurrentView] = useState<"table" | "grid">("table");
+  const [chosenView] = useState<"table" | "grid">("table");
+  const currentView = useMediaQuery(PHONE_QUERY) ? "grid" : chosenView;
   const [search, setSearch] = useState("");
   const [riskFilter, setRiskFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");

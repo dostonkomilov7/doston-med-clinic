@@ -96,7 +96,7 @@ export default function DoctorDashboardPage() {
       const risk = URGENCY_RISK[element.urgency] ?? URGENCY_RISK.Routine;
       recentPatients.innerHTML += `
         <tr>
-          <td>
+          <td data-cell="main">
             <div class="patient-cell">
               <div class="pt-avatar b">${escapeHtml(element.user.full_name[0].toUpperCase())}</div>
               <div>
@@ -105,10 +105,10 @@ export default function DoctorDashboardPage() {
               </div>
             </div>
           </td>
-          <td style="color:var(--gray-600);font-size:13px;">${strMonth(element.appointment_date)} ${element.appointment_date.split("-").at(2)}</td>
-          <td><span class="risk-pill ${risk.cls}">${risk.label}</span></td>
-          <td style="font-size:13px;color:var(--gray-600);">${escapeHtml(element.reason || "Not specified")}</td>
-          <td><span class="status-pill ${element.status.toLowerCase()}">${escapeHtml(element.status)}</span></td>
+          <td data-label="Visit Date" style="color:var(--gray-600);font-size:13px;">${strMonth(element.appointment_date)} ${element.appointment_date.split("-").at(2)}</td>
+          <td data-label="Urgency"><span class="risk-pill ${risk.cls}">${risk.label}</span></td>
+          <td data-label="Reason" data-cell="wide" style="font-size:13px;color:var(--gray-600);">${escapeHtml(element.reason || "Not specified")}</td>
+          <td data-label="Status"><span class="status-pill ${element.status.toLowerCase()}">${escapeHtml(element.status)}</span></td>
         </tr>`;
     });
 
@@ -209,7 +209,7 @@ export default function DoctorDashboardPage() {
               <div>
                 <div className="section-head"><h3>Recent Patients</h3><Link href="/all-patients">All patients →</Link></div>
                 <div className="table-card">
-                  <table>
+                  <table data-cards>
                     <thead>
                       <tr>
                         <th>Patient</th>

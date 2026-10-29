@@ -1,0 +1,168 @@
+.app > .main {
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .app > .main > .topbar {
+    height: auto;
+    min-height: 60px;
+    padding: 10px 1rem;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+  }
+
+  .app > .main > .topbar:has(.search-box) {
+    position: static;
+  }
+
+  .app > .main > .topbar .search-box {
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .app > .main > .topbar > .topbar-left {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 12px;
+    align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .app > .main > .topbar > .topbar-left > .hamburger-btn {
+    grid-row: 1 / span 2;
+  }
+
+  .app > .main > .topbar > .topbar-left > .topbar-title,
+  .app > .main > .topbar > .topbar-left > .topbar-sub {
+    grid-column: 2;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app > .main > .topbar > .topbar-title {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .app > .main > .topbar > .topbar-actions,
+  .app > .main > .topbar > .topbar-right {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .app > .main > .content {
+    padding: 1.25rem 1rem;
+  }
+
+  .app > .main .page-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .app > .main .page-header-left {
+    flex: 1 1 220px;
+    min-width: 0;
+  }
+
+  .app > .main .content .stats-strip,
+  .app > .main .content .stats-grid,
+  .app > .main > .content .stats-strip,
+  .app > .main > .content .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .app > .main > .content .stats-strip > :last-child:nth-child(odd),
+  .app > .main > .content .stats-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .app > .main > .content .quick-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .app .view-toggle {
+    display: none !important;
+  }
+
+  .app table[data-cards],
+  .app table[data-cards] > tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .app table[data-cards] > thead {
+    display: none;
+  }
+
+  .app table[data-cards] > tbody > tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+    position: relative;
+    margin: 0 0 12px;
+    padding: 14px 16px;
+    border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    border-radius: 14px;
+  }
+
+  .app table[data-cards] > tbody > tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .app table[data-cards] > tbody > tr > td {
+    display: block;
+    min-width: 0;
+    width: auto;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  .app table[data-cards] > tbody > tr > td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  .app table[data-cards] > tbody > tr > td[data-cell="main"],
+  .app table[data-cards] > tbody > tr > td[data-cell="wide"],
+  .app table[data-cards] > tbody > tr > td[data-cell="actions"],
+  .app table[data-cards] > tbody > tr > td[colspan] {
+    grid-column: 1 / -1;
+  }
+
+  .app table[data-cards] > tbody > tr > td[data-cell="main"] {
+    padding-right: 28px;
+  }
+
+  .app table[data-cards] > tbody > tr > td[data-cell="actions"] {
+    padding-top: 12px;
+    border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .app table[data-cards] > tbody > tr > td[data-cell="actions"] > * {
+    justify-content: flex-start !important;
+    flex-wrap: wrap;
+  }
+
+  .app table[data-cards] > tbody > tr > td[data-cell="check"] {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
+  }
+}

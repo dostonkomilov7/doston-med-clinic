@@ -182,14 +182,14 @@ export default function UserDashboardPage() {
             <div>
               <div className="section-head"><h3>Upcoming Appointments</h3><Link href="/my-appointments">View all →</Link></div>
               <div className="table-card">
-                <table>
+                <table data-cards>
                   <thead><tr><th>Doctor</th><th>Date & Time</th><th>Type</th><th>Status</th><th></th></tr></thead>
                   <tbody className="app-list">
                     {upcomingAppointments.length === 0 ? (
                       <tr><td colSpan={5} style={{ textAlign: "center", padding: "20px 0", color: "var(--gray-400)" }}>Appointments not found</td></tr>
                     ) : upcomingAppointments.map((a: any) => (
                       <tr key={a.id} onClick={() => setDetailAppt(a)}>
-                        <td>
+                        <td data-cell="main">
                           <div className="doctor-cell">
                             <div className="doc-avatar a">{a.doctor.user.full_name[0]}</div>
                             <div>
@@ -198,13 +198,13 @@ export default function UserDashboardPage() {
                             </div>
                           </div>
                         </td>
-                        <td>
+                        <td data-label="Date & Time">
                           <div className="apt-date">{a.appointment_date}</div>
                           <div className="apt-time">{a.appointment_time}</div>
                         </td>
-                        <td><span className="type-tag in-person">In-person</span></td>
-                        <td><span className={`status-pill ${a.status?.toLowerCase()}`}>{a.status}</span></td>
-                        <td><button className="row-action" onClick={(e) => { e.stopPropagation(); setDetailAppt(a); }}>Details</button></td>
+                        <td data-label="Type"><span className="type-tag in-person">In-person</span></td>
+                        <td data-label="Status"><span className={`status-pill ${a.status?.toLowerCase()}`}>{a.status}</span></td>
+                        <td data-cell="actions"><button className="row-action" onClick={(e) => { e.stopPropagation(); setDetailAppt(a); }}>Details</button></td>
                       </tr>
                     ))}
                   </tbody>

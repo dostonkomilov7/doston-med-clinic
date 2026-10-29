@@ -52,9 +52,7 @@ body {
   min-height: 100vh;
 }
 
-.page-doctor-management
-
-.sidebar {
+.page-doctor-management .sidebar {
   width: var(--sidebar-w);
   background: var(--bg-2);
   border-right: 1px solid var(--border);
@@ -266,9 +264,7 @@ body {
   stroke-linecap: round;
 }
 
-.page-doctor-management
-
-.main {
+.page-doctor-management .main {
   margin-left: var(--sidebar-w);
   flex: 1;
   display: flex;
@@ -355,16 +351,12 @@ body {
   border: 1.5px solid var(--bg-2);
 }
 
-.page-doctor-management
-
-.content {
+.page-doctor-management .content {
   padding: 1.75rem 2rem;
   flex: 1;
 }
 
-.page-doctor-management
-
-.page-header {
+.page-doctor-management .page-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -461,9 +453,7 @@ body {
   stroke-linecap: round;
 }
 
-.page-doctor-management
-
-.stats-strip {
+.page-doctor-management .stats-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
@@ -558,9 +548,7 @@ body {
   margin-top: 3px;
 }
 
-.page-doctor-management
-
-.toolbar {
+.page-doctor-management .toolbar {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -641,9 +629,7 @@ body {
   align-items: center;
 }
 
-.page-doctor-management
-
-.bulk-bar {
+.page-doctor-management .bulk-bar {
   display: none;
   align-items: center;
   gap: 14px;
@@ -754,9 +740,7 @@ body {
   color: var(--text-1);
 }
 
-.page-doctor-management
-
-.table-wrap {
+.page-doctor-management .table-wrap {
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -833,9 +817,7 @@ body {
   padding: 13px 16px;
 }
 
-.page-doctor-management
-
-.cb-wrap {
+.page-doctor-management .cb-wrap {
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -874,9 +856,7 @@ body {
   transform: rotate(45deg) translate(-1px, -1px);
 }
 
-.page-doctor-management
-
-.doc-cell {
+.page-doctor-management .doc-cell {
   display: flex;
   align-items: center;
   gap: 11px;
@@ -943,9 +923,7 @@ body {
   margin-top: 1px;
 }
 
-.page-doctor-management
-
-.spec-badge {
+.page-doctor-management .spec-badge {
   font-size: 11.5px;
   font-weight: 500;
   padding: 3px 10px;
@@ -989,9 +967,7 @@ body {
   color: #DD6B8A;
 }
 
-.page-doctor-management
-
-.role-pill {
+.page-doctor-management .role-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1006,9 +982,7 @@ body {
   color: var(--blue-400);
 }
 
-.page-doctor-management
-
-.status-pill {
+.page-doctor-management .status-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1052,9 +1026,7 @@ body {
   background: var(--coral-400);
 }
 
-.page-doctor-management
-
-.rating-cell {
+.page-doctor-management .rating-cell {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -1071,9 +1043,7 @@ body {
   color: var(--text-2);
 }
 
-.page-doctor-management
-
-.patients-cell {
+.page-doctor-management .patients-cell {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1093,9 +1063,7 @@ body {
   background: var(--teal-400);
 }
 
-.page-doctor-management
-
-.row-actions {
+.page-doctor-management .row-actions {
   display: flex;
   gap: 5px;
   justify-content: flex-end;
@@ -1154,9 +1122,7 @@ body {
   background: var(--coral-50);
 }
 
-.page-doctor-management
-
-.table-footer {
+.page-doctor-management .table-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1223,9 +1189,7 @@ body {
   stroke-linecap: round;
 }
 
-.page-doctor-management
-
-.drawer-overlay {
+.page-doctor-management .drawer-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
@@ -1328,9 +1292,7 @@ body {
   border-radius: 100px;
 }
 
-.page-doctor-management
-
-.drawer-doc-profile {
+.page-doctor-management .drawer-doc-profile {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -1373,9 +1335,7 @@ body {
   flex-wrap: wrap;
 }
 
-.page-doctor-management
-
-.info-section {
+.page-doctor-management .info-section {
   margin-bottom: 1.5rem;
 }
 
@@ -1419,9 +1379,7 @@ body {
   grid-column: 1 / -1;
 }
 
-.page-doctor-management
-
-.form-field {
+.page-doctor-management .form-field {
   margin-bottom: 1rem;
 }
 
@@ -1488,9 +1446,7 @@ body {
   box-shadow: 0 0 0 3px var(--teal-glow);
 }
 
-.page-doctor-management
-
-.days-row {
+.page-doctor-management .days-row {
   display: flex;
   gap: 7px;
   flex-wrap: wrap;
@@ -1559,9 +1515,7 @@ body {
   background: var(--teal-500);
 }
 
-.page-doctor-management
-
-.modal-overlay {
+.page-doctor-management .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.65);
@@ -1679,9 +1633,7 @@ body {
   background: #be4d28;
 }
 
-.page-doctor-management
-
-.toast {
+.page-doctor-management .toast {
   position: fixed;
   bottom: 2rem;
   right: 2rem;

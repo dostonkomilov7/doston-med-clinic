@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import "./third.style.css";
-import { getCookie, apiUrl, getUserData } from "../../lib/utils";
+import { getCookie, AUTH_COOKIE, apiUrl, getUserData } from "../../lib/utils";
 
 const SPECIALTIES = [
   { id: "Cardiologist", name: "Cardiologist", icon: "heart", color: "#D85A30", bg: "#FAECE7" },
@@ -51,6 +51,7 @@ function ThirdPageContent() {
   });
 
   useEffect(() => {
+    if (!getCookie(AUTH_COOKIE)) { router.push("/login"); return; }
     renderSpecialties();
     renderDepartments();
     renderWorkTypes();
@@ -71,6 +72,7 @@ function ThirdPageContent() {
 
   const renderSpecialties = async () => {
     const userData = await getUserData();
+    if (!userData?.users?.[0]) { router.push("/login"); return; }
     setName(userData.users[0].full_name);
 
     const grid = document.getElementById("specialtyGrid");

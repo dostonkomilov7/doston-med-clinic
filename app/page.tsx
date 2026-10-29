@@ -73,9 +73,9 @@ export default function HomePage() {
     const doctorsGrid = document.getElementById("doctorsGrid");
     const sampleDoctors = [
       { name: 'Dr. Sarah Rahman', initials: 'SR', specialty: 'Cardiologist', rating: 4.9, patients: 142, years: 12, bgColor: 'linear-gradient(135deg,#1D9E75,#085041)' },
-      { name: 'Dr. Michael Kim', initials: 'MK', specialty: 'Dermatologist', rating: 4.7, patients: 98, years: 8, bgColor: 'linear-gradient(135deg,#378ADD,#185FA5)' },
-      { name: 'Dr. Ayesha Patel', initials: 'AP', specialty: 'Neurologist', rating: 4.8, patients: 74, years: 10, bgColor: 'linear-gradient(135deg,#D85A30,#8B3515)' },
-      { name: 'Dr. Thomas Nguyen', initials: 'TN', specialty: 'General Practitioner', rating: 4.6, patients: 210, years: 15, bgColor: 'linear-gradient(135deg,#EF9F27,#A56B0A)' },
+      { name: 'Dr. Baxrom Olimov', initials: 'BO', specialty: 'Dermatologist', rating: 4.7, patients: 98, years: 8, bgColor: 'linear-gradient(135deg,#378ADD,#185FA5)' },
+      { name: 'Dr. Hakimov Sanjar', initials: 'HS', specialty: 'Neurologist', rating: 4.8, patients: 74, years: 5, bgColor: 'linear-gradient(135deg,#D85A30,#8B3515)' },
+      { name: 'Dr. Oripov Bekzod', initials: 'OB', specialty: 'General Practitioner', rating: 4.6, patients: 55, years: 1, bgColor: 'linear-gradient(135deg,#EF9F27,#A56B0A)' },
     ];
     if (doctorsGrid) {
       doctorsGrid.innerHTML = sampleDoctors.map((doc) => `
@@ -102,9 +102,9 @@ export default function HomePage() {
 
     const testiGrid = document.getElementById("testiGrid");
     const testimonials = [
-      { name: "Sarah M.", role: "Patient since 2024", text: "Med Clinic completely changed how I manage my healthcare. Booking is so easy!" },
-      { name: "James T.", role: "Patient since 2023", text: "I got an appointment within minutes. The doctors are absolutely top-notch." },
-      { name: "Priya K.", role: "Patient since 2024", text: "Amazing platform. My medical records are always accessible and up-to-date." },
+      { name: "Jamila H.", role: "Patient since 2024", text: "Med Clinic completely changed how I manage my healthcare. Booking is so easy!" },
+      { name: "Jasur T.", role: "Patient since 2023", text: "I got an appointment within minutes. The doctors are absolutely top-notch." },
+      { name: "Umid K.", role: "Patient since 2024", text: "Amazing platform. My medical records are always accessible and up-to-date." },
     ];
     if (testiGrid) {
       testiGrid.innerHTML = testimonials.map((t) => `

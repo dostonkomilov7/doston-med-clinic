@@ -168,7 +168,34 @@ export default function SchedulePage() {
         </div>`;
     }).join("");
     if (emptyState) emptyState.hidden = items.length !== 0;
+    if (items.length === 0) renderEmptyHint();
     updateStats();
+  };
+
+  const nextAppointmentDate = () => {
+    const { currentDate } = stateRef.current;
+    const later = apptsRef.current
+      .filter((a) => a.date > currentDate && a.status !== "cancelled")
+      .map((a) => a.date)
+      .sort();
+    return later[0] ?? null;
+  };
+
+  const renderEmptyHint = () => {
+    const { currentDate } = stateRef.current;
+    const text = document.getElementById("emptyText");
+    const jump = document.getElementById("jumpNext") as HTMLElement | null;
+    const dayHasAppts = apptsRef.current.some((a) => a.date === currentDate);
+    const next = dayHasAppts ? null : nextAppointmentDate();
+    if (text) {
+      if (dayHasAppts) text.textContent = "No appointments match the current filter or search.";
+      else if (next) text.textContent = `No appointments on this day. Your next appointment is on ${next}.`;
+      else text.textContent = "No appointments on this day.";
+    }
+    if (jump) {
+      jump.hidden = !next;
+      jump.dataset.date = next ?? "";
+    }
   };
 
   const formatLabels = () => {
@@ -349,7 +376,11 @@ export default function SchedulePage() {
               <div className="schedule-list" id="scheduleList" onClick={handleListClick}></div>
               <div className="empty-state" id="emptyState" hidden>
                 <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /></svg>
-                <p>No appointments match this view.</p>
+                <p id="emptyText">No appointments on this day.</p>
+                <button className="tbl-btn" id="jumpNext" hidden onClick={(e) => {
+                  const date = (e.currentTarget as HTMLElement).dataset.date;
+                  if (date) { stateRef.current.currentDate = date; render(); }
+                }}>Go to next appointment</button>
                 <button className="tbl-btn" onClick={() => openModal()}>Add one</button>
               </div>
             </div>

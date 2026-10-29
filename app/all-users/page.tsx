@@ -6,6 +6,7 @@ import "./all-users.style.css";
 import { getCookie, AUTH_COOKIE, deleteCookie, getUserData, apiUrl } from "../../lib/utils";
 import Sidebar from "../../components/sidebar/Sidebar";
 import HamburgerToggle from "../../components/sidebar/HamburgerToggle";
+import { useMediaQuery, PHONE_QUERY } from "../../lib/useMediaQuery";
 
 const COLORS = ["#1D9E75","#378ADD","#D85A30","#EF9F27","#8B7EF8"];
 const PER_PAGE = 15;
@@ -31,7 +32,8 @@ export default function AllUsersPage() {
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [userData, setUserData] = useState<any>(null);
   const [stats, setStats] = useState({total:0,patients:0,doctors:0,inactive:0,active:0});
-  const [view, setView] = useState<"table"|"card">("table");
+  const [chosenView, setView] = useState<"table"|"card">("table");
+  const view = useMediaQuery(PHONE_QUERY) ? "card" : chosenView;
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("");
   const [sort, setSort] = useState("newest");

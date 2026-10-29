@@ -248,7 +248,7 @@ export default function AppointmentManagementPage() {
 
           {!loading && !loadError && filtered.length > 0 && (
             <div className="appt-table-wrap">
-              <table className="appt-table">
+              <table className="appt-table" data-cards>
                 <thead>
                   <tr>
                     <th>Patient</th>
@@ -263,7 +263,7 @@ export default function AppointmentManagementPage() {
                     const next = nextStatus(r.status);
                     return (
                       <tr key={r.id}>
-                        <td>
+                        <td data-cell="main">
                           <div className="user-cell">
                             <div className="user-av" style={{background:COLORS[Number(r.patient?.id)%COLORS.length]}}>{r.patient?.full_name?.[0]?.toUpperCase() ?? "?"}</div>
                             <div>
@@ -273,16 +273,16 @@ export default function AppointmentManagementPage() {
                             </div>
                           </div>
                         </td>
-                        <td>
+                        <td data-label="Doctor">
                           <div className="doc-name">Dr. {r.doctor?.full_name ?? "—"}</div>
                           <div className="doc-spec">{r.doctor?.specialization}</div>
                         </td>
-                        <td>
+                        <td data-label="Date & Time">
                           <div className="dt-date">{formatApptDate(r.appointment_date)}</div>
                           <div className="dt-time">{r.appointment_time}</div>
                         </td>
-                        <td>{statusPill(r.status)}</td>
-                        <td>
+                        <td data-label="Status">{statusPill(r.status)}</td>
+                        <td data-cell="actions">
                           <div className="tbl-actions">
                             {next && (
                               <button className={`act-btn ${next==="Confirmed"?"confirm":"complete"}`} disabled={busy} onClick={()=>setPendingAction({type:"advance",id:r.id})}>
