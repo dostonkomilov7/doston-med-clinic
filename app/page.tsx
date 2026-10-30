@@ -397,8 +397,8 @@ export default function HomePage() {
             <p>Smart clinic appointment platform connecting patients with world-class medical professionals.</p>
           </div>
           <div className="footer-col"><h4>Platform</h4><ul><li><a href="#">Book Appointment</a></li><li><a href="#">Find a Doctor</a></li><li><a href="#">Medical Records</a></li></ul></div>
-          <div className="footer-col"><h4>Company</h4><ul><li><a href="#">About Med Clinic</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
-          <div className="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">HIPAA Compliance</a></li></ul></div>
+          <div className="footer-col"><h4>Company</h4><ul><li><a href="#">About Med Clinic</a></li><li><a href="#">Careers</a></li><li><a href="#">Reviews</a></li></ul></div>
+          <div className="footer-col"><h4>Contact</h4><ul><li><a href="tel:+998995005003">+998 (99) 500-500-3</a></li><li><a href="mailto:dostonkomilov070@gmail.com">info@doston-med-clinic.com</a></li><li><a href="#">Tashkent, Uzbekistan</a></li></ul></div>
         </div>
         <div className="footer-bottom">
           <p>© 2026 Med Clinic Technologies. All rights reserved.</p>

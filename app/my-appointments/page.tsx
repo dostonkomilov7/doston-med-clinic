@@ -10,6 +10,7 @@ import HamburgerToggle from "../../components/sidebar/HamburgerToggle";
 export default function MyAppointmentsPage() {
   const router = useRouter();
   const appointmentsRef = useRef<any[]>([]);
+  const [delTarget, setDelTarget] = useState<string | null>(null);
   const [detailAppt, setDetailAppt] = useState<any | null>(null);
   const [toast, setToast] = useState<{ msg: string; type: string } | null>(null);
   const toastRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -126,23 +127,7 @@ export default function MyAppointmentsPage() {
       const cancelBtn = target.closest<HTMLElement>("[data-cancel-id]");
       if (cancelBtn) {
         const id = cancelBtn.dataset.cancelId!;
-        cancelBtn.setAttribute("disabled", "true");
-        try {
-          const res = await fetch(`${apiUrl}/appointments/${id}`, { method: "DELETE", credentials: "include" });
-          const result = await res.json();
-          if (!res.ok || !result.success) {
-            showToast("Could not cancel appointment", "error");
-            cancelBtn.removeAttribute("disabled");
-            return;
-          }
-          showToast("Appointment cancelled", "success");
-          await loadAppointments();
-        } catch (err) {
-          console.error("Failed to cancel appointment:", err);
-          showToast("Something went wrong", "error");
-          cancelBtn.removeAttribute("disabled");
-        }
-        return;
+        setDelTarget(id)
       }
       if (target.closest(".appt-card-actions")) return;
       const card = target.closest<HTMLElement>(".appt-card[data-id]");
@@ -159,6 +144,25 @@ export default function MyAppointmentsPage() {
       if (appt) setDetailAppt(appt);
     };
   };
+
+  const cancelAppointment = async () => {
+    if (!delTarget) return;
+    const d = appointmentsRef.current.find(x => x.id === delTarget);
+    try {
+      const res = await fetch(`${apiUrl}/appointments/${delTarget}`, { method: "DELETE", credentials: "include" });
+      const result = await res.json();
+      if (!res.ok || !result.success) {
+        showToast("Could not cancel appointment", "error");
+        return;
+      }
+      showToast("Appointment cancelled", "success");
+      setDelTarget(null);
+      await loadAppointments();
+    } catch (err) {
+      console.error("Failed to cancel appointment:", err);
+      showToast("Something went wrong", "error")
+    }
+  }
 
   const filterTab = (btn: HTMLElement, tab: string) => {
     document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
@@ -181,130 +185,146 @@ export default function MyAppointmentsPage() {
 
   return (
     <div className="page-my-appointments">
-    <div className="app">
-      <Sidebar>
-        <nav className="nav-section">
-          <p className="nav-label">Overview</p>
-          <Link prefetch={false} className="nav-item" href="/user-dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg><span>Dashboard</span></Link>
-          <a className="nav-item active" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg><span>Appointments</span></a>
-        </nav>
-        <nav className="nav-section">
-          <p className="nav-label">Health</p>
-          <Link prefetch={false} className="nav-item" href="/medical-records"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg><span>Medical Records</span></Link>
-          <Link prefetch={false} className="nav-item" href="/health-metrics"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg><span>Health Metrics</span></Link>
-        </nav>
-        <nav className="nav-section">
-          <p className="nav-label">Account</p>
-          <a className="nav-item" style={{ cursor: "pointer" }} onClick={signOut}><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg><span>Sign out</span></a>
-        </nav>
-        <div className="sidebar-user">
-          <div className="user-avatar">U</div>
-          <div className="user-meta"><p className="name">User</p><p className="role">User · ID #777</p></div>
-          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
-        </div>
-      </Sidebar>
-
-      <div className="main">
-        <header className="topbar">
-          <HamburgerToggle />
-          <h1 className="topbar-title">My <span>Appointments</span></h1>
-          <div className="search-box">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-            <input type="text" placeholder="Search doctor, specialty…" onChange={(e) => handleSearch(e.target.value)} />
+      <div className="app">
+        <Sidebar>
+          <nav className="nav-section">
+            <p className="nav-label">Overview</p>
+            <Link prefetch={false} className="nav-item" href="/user-dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg><span>Dashboard</span></Link>
+            <a className="nav-item active" href="#"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg><span>Appointments</span></a>
+          </nav>
+          <nav className="nav-section">
+            <p className="nav-label">Health</p>
+            <Link prefetch={false} className="nav-item" href="/medical-records"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg><span>Medical Records</span></Link>
+            <Link prefetch={false} className="nav-item" href="/health-metrics"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg><span>Health Metrics</span></Link>
+          </nav>
+          <nav className="nav-section">
+            <p className="nav-label">Account</p>
+            <a className="nav-item" style={{ cursor: "pointer" }} onClick={signOut}><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg><span>Sign out</span></a>
+          </nav>
+          <div className="sidebar-user">
+            <div className="user-avatar">U</div>
+            <div className="user-meta"><p className="name">User</p><p className="role">User · ID #777</p></div>
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
           </div>
-          <div className="topbar-actions">
-            <div className="topbar-avatar">U</div>
-          </div>
-        </header>
+        </Sidebar>
 
-        <div className="content">
-          <div className="page-header">
-            <div className="page-header-left">
-              <h1>All <em>Appointments</em></h1>
-              <p>Manage, reschedule or book new appointments.</p>
+        <div className="main">
+          <header className="topbar">
+            <HamburgerToggle />
+            <h1 className="topbar-title">My <span>Appointments</span></h1>
+            <div className="search-box">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+              <input type="text" placeholder="Search doctor, specialty…" onChange={(e) => handleSearch(e.target.value)} />
             </div>
-            <Link href="/book-appointment"><button className="btn-primary"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>Book Appointment</button></Link>
-          </div>
+            <div className="topbar-actions">
+              <div className="topbar-avatar">U</div>
+            </div>
+          </header>
 
-          <div className="summary-strip">
-            {[
-              { id: "upcoming", icon: "teal", label: "Upcoming", path: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>` },
-              { id: "pending", icon: "amber", label: "Pending", path: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>` },
-              { id: "completed", icon: "blue", label: "Completed", path: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>` },
-              { id: "cancelled", icon: "coral", label: "Cancelled", path: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>` },
-            ].map((s) => (
-              <div className="strip-card" key={s.id}>
-                <div className={`strip-icon ${s.icon}`}><svg viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: s.path}}></svg></div>
-                <div className="strip-text"><div className="val" id={`${s.id}-val`}>0</div><div className="lbl">{s.label}</div></div>
+          <div className="content">
+            <div className="page-header">
+              <div className="page-header-left">
+                <h1>All <em>Appointments</em></h1>
+                <p>Manage, reschedule or book new appointments.</p>
               </div>
-            ))}
-          </div>
+              <Link href="/book-appointment"><button className="btn-primary"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>Book Appointment</button></Link>
+            </div>
 
-          <div className="filter-bar">
-            <div className="tabs">
-              {["all", "upcoming", "pending", "completed", "cancelled"].map((tab) => (
-                <button key={tab} className={`tab-btn${tab === "all" ? " active" : ""}`}
-                  onClick={(e) => filterTab(e.currentTarget, tab === 'upcoming' ? 'confirmed' : tab)}>
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)} <span className="count" id={`${tab}-count`}>0</span>
-                </button>
+            <div className="summary-strip">
+              {[
+                { id: "upcoming", icon: "teal", label: "Upcoming", path: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>` },
+                { id: "pending", icon: "amber", label: "Pending", path: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>` },
+                { id: "completed", icon: "blue", label: "Completed", path: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>` },
+                { id: "cancelled", icon: "coral", label: "Cancelled", path: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>` },
+              ].map((s) => (
+                <div className="strip-card" key={s.id}>
+                  <div className={`strip-icon ${s.icon}`}><svg viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: s.path }}></svg></div>
+                  <div className="strip-text"><div className="val" id={`${s.id}-val`}>0</div><div className="lbl">{s.label}</div></div>
+                </div>
               ))}
             </div>
-          </div>
 
-          <div id="upcoming-section">
-            <p className="appt-section-label">Upcoming & Pending</p>
-            <div className="appts-grid" id="upcoming-grid"></div>
-          </div>
-          <div id="past-section" style={{ marginTop: "0.5rem" }}>
-            <p className="appt-section-label">Past Appointments</p>
-            <div className="past-list" id="past-list"></div>
-          </div>
-          <div className="empty-state" id="empty-state" style={{ display: "none" }}>
-            <div className="empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /></svg></div>
-            <h3>No appointments found</h3>
-            <p>Book a new appointment to get started.</p>
-            <Link href="/book-appointment"><button className="btn-primary" style={{ display: "inline-flex" }}>Book Appointment</button></Link>
+            <div className="filter-bar">
+              <div className="tabs">
+                {["all", "upcoming", "pending", "completed", "cancelled"].map((tab) => (
+                  <button key={tab} className={`tab-btn${tab === "all" ? " active" : ""}`}
+                    onClick={(e) => filterTab(e.currentTarget, tab === 'upcoming' ? 'confirmed' : tab)}>
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)} <span className="count" id={`${tab}-count`}>0</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div id="upcoming-section">
+              <p className="appt-section-label">Upcoming & Pending</p>
+              <div className="appts-grid" id="upcoming-grid"></div>
+            </div>
+            <div id="past-section" style={{ marginTop: "0.5rem" }}>
+              <p className="appt-section-label">Past Appointments</p>
+              <div className="past-list" id="past-list"></div>
+            </div>
+            <div className="empty-state" id="empty-state" style={{ display: "none" }}>
+              <div className="empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /></svg></div>
+              <h3>No appointments found</h3>
+              <p>Book a new appointment to get started.</p>
+              <Link href="/book-appointment"><button className="btn-primary" style={{ display: "inline-flex" }}>Book Appointment</button></Link>
+            </div>
           </div>
         </div>
-      </div>
 
-      {detailAppt && (
-        <div className="modal-overlay open" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setDetailAppt(null); }}>
-          <div className="modal">
-            <div className="modal-header">
-              <div>
-                <h2>Appointment Details</h2>
-                <p>Dr. {detailAppt.doctor?.user?.full_name} · {detailAppt.appointment_date}</p>
-              </div>
-              <button className="modal-close" onClick={() => setDetailAppt(null)}><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></button>
-            </div>
-            <div className="modal-body">
-              <div className="detail-doc-row">
-                <div className="detail-doc-avatar">{detailAppt.doctor?.user?.full_name?.[0]?.toUpperCase()}</div>
+        {detailAppt && (
+          <div className="modal-overlay open" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setDetailAppt(null); }}>
+            <div className="modal">
+              <div className="modal-header">
                 <div>
-                  <div className="detail-doc-name">Dr. {detailAppt.doctor?.user?.full_name}</div>
-                  <div className="detail-doc-spec">{detailAppt.doctor?.specialization}</div>
+                  <h2>Appointment Details</h2>
+                  <p>Dr. {detailAppt.doctor?.user?.full_name} · {detailAppt.appointment_date}</p>
                 </div>
-                <span className={`status-pill ${detailAppt.status?.toLowerCase()}`} style={{ marginLeft: "auto" }}>{detailAppt.status}</span>
+                <button className="modal-close" onClick={() => setDetailAppt(null)}><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></button>
               </div>
-              <div className="detail-grid">
-                <div className="detail-item"><div className="detail-label">Date</div><div className="detail-val">{detailAppt.appointment_date}</div></div>
-                <div className="detail-item"><div className="detail-label">Time</div><div className="detail-val">{detailAppt.appointment_time}</div></div>
-                <div className="detail-item"><div className="detail-label">Department</div><div className="detail-val">{detailAppt.doctor?.department ?? "—"}</div></div>
-                <div className="detail-item"><div className="detail-label">Room</div><div className="detail-val">{detailAppt.doctor?.room_number ?? "—"}</div></div>
-                <div className="detail-item full"><div className="detail-label">Reason for Visit</div><div className="detail-val">{detailAppt.reason || "Not specified"}</div></div>
-                <div className="detail-item full"><div className="detail-label">Notes</div><div className="detail-val">{detailAppt.notes || "—"}</div></div>
+              <div className="modal-body">
+                <div className="detail-doc-row">
+                  <div className="detail-doc-avatar">{detailAppt.doctor?.user?.full_name?.[0]?.toUpperCase()}</div>
+                  <div>
+                    <div className="detail-doc-name">Dr. {detailAppt.doctor?.user?.full_name}</div>
+                    <div className="detail-doc-spec">{detailAppt.doctor?.specialization}</div>
+                  </div>
+                  <span className={`status-pill ${detailAppt.status?.toLowerCase()}`} style={{ marginLeft: "auto" }}>{detailAppt.status}</span>
+                </div>
+                <div className="detail-grid">
+                  <div className="detail-item"><div className="detail-label">Date</div><div className="detail-val">{detailAppt.appointment_date}</div></div>
+                  <div className="detail-item"><div className="detail-label">Time</div><div className="detail-val">{detailAppt.appointment_time}</div></div>
+                  <div className="detail-item"><div className="detail-label">Department</div><div className="detail-val">{detailAppt.doctor?.department ?? "—"}</div></div>
+                  <div className="detail-item"><div className="detail-label">Room</div><div className="detail-val">{detailAppt.doctor?.room_number ?? "—"}</div></div>
+                  <div className="detail-item full"><div className="detail-label">Reason for Visit</div><div className="detail-val">{detailAppt.reason || "Not specified"}</div></div>
+                  <div className="detail-item full"><div className="detail-label">Notes</div><div className="detail-val">{detailAppt.notes || "—"}</div></div>
+                </div>
               </div>
-            </div>
-            <div className="modal-footer">
-              <button className="btn-cancel" onClick={() => setDetailAppt(null)}>Close</button>
+              <div className="modal-footer">
+                <button className="btn-cancel" onClick={() => setDetailAppt(null)}>Close</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {toast && <div className={`toast show ${toast.type}`}>{toast.msg}</div>}
-    </div>
+        {delTarget && (
+          <div className="modal-overlay open" onClick={e => { if ((e.target as HTMLElement).classList.contains("modal-overlay")) setDelTarget(null); }}>
+            <div className="modal">
+              <div className="modal-body-inner">
+                <div className="modal-del-icon"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /></svg></div>
+                <h3>Cancel Appointment</h3>
+                <p>Are you sure you want to cancel <strong>this appointment</strong>? This action is permanent.</p>
+              </div>
+              <div className="modal-footer-inner">
+                <button className="btn-del-cancel" onClick={() => setDelTarget(null)}>Keep Appointment</button>
+                <button className="btn-del-confirm" onClick={cancelAppointment}>Yes, Cancel</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {toast && <div className={`toast show ${toast.type}`}>{toast.msg}</div>}
+      </div>
     </div>
   );
 }
