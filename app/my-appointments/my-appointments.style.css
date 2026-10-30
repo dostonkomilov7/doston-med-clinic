@@ -1783,17 +1783,6 @@ body {
   pointer-events: all;
 }
 
-.page-my-appointments .modal {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  width: 100%;
-  max-width: 400px;
-  transform: scale(0.96);
-  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-}
-
 .page-my-appointments .modal-overlay.open .modal {
   transform: scale(1);
 }
@@ -1827,18 +1816,18 @@ body {
 .page-my-appointments .modal-body-inner h3 {
   font-family: var(--font-display);
   font-size: 20px;
-  color: var(--text-1);
+  color: var(--text-3);
   margin-bottom: 8px;
 }
 
 .page-my-appointments .modal-body-inner p {
   font-size: 13.5px;
-  color: var(--text-2);
+  color: var(--text-3);
   line-height: 1.55;
 }
 
 .page-my-appointments .modal-body-inner p strong {
-  color: var(--text-1);
+  color: black;
 }
 
 .page-my-appointments .modal-footer-inner {

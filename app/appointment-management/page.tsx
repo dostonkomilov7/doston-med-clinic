@@ -354,7 +354,6 @@ export default function AppointmentManagementPage() {
                   <div className="modal-icon status"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
                   <h3>{targetNext==="Confirmed"?"Confirm Appointment":"Complete Appointment"}</h3>
                   <p>Mark <strong>{bookingRef(target.id)}</strong> for <strong>{target.patient?.full_name}</strong> with <strong>Dr. {target.doctor?.full_name}</strong> on <strong>{formatApptDate(target.appointment_date)} at {target.appointment_time}</strong> as <strong>{targetNext}</strong>?</p>
-                  <p className="modal-sub">The patient and the doctor are notified on Telegram if they have linked it.</p>
                 </>
               )}
             </div>
